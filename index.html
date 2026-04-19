@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>中文 Travel</title>
 
-<!-- iOS PWA meta tags -->
+<!-- PWA meta tags -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="中文">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#1a1208">
+<link rel="manifest" href="./manifest.json">
 
 <!-- Inline SVG favicon / app icon (red seal with 中) -->
 <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%23c0392b'/><text x='90' y='128' font-size='110' text-anchor='middle' font-family='PingFang SC,sans-serif' font-weight='700' fill='%23f5efe3'>中</text></svg>">
@@ -35,6 +36,7 @@
 <div class="install-hint" id="installHint">
   <span style="font-size:1.1rem;">📱</span>
   <span data-i18n-html="installHint"><strong>Works offline!</strong> Tap Safari's Share button → <strong>Add to Home Screen</strong> to install as an app. Perfect for your trip.</span>
+  <button id="installBtn" class="install-btn" style="display:none" data-i18n="installBtnLabel">Install</button>
   <button class="close-hint" onclick="this.parentElement.style.display='none'; try{localStorage.setItem('hintDismissed','1')}catch(e){}">✕</button>
 </div>
 
@@ -52,14 +54,53 @@
 <div class="app-version" aria-hidden="true">v0.4.0</div>
 
 <script>
-  // Hide install hint if already dismissed or running standalone
+  // Show install hint only on iOS/Android, hide if standalone or dismissed
   (function() {
     const hint = document.getElementById('installHint');
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches
                       || window.navigator.standalone === true;
     let dismissed = false;
     try { dismissed = localStorage.getItem('hintDismissed') === '1'; } catch(e) {}
-    if (isStandalone || dismissed) hint.style.display = 'none';
+
+    const ua = navigator.userAgent;
+    const isIOS = /iphone|ipad|ipod/i.test(ua) ||
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /android/i.test(ua);
+
+    if (isStandalone || dismissed || (!isIOS && !isAndroid)) {
+      hint.style.display = 'none';
+      return;
+    }
+
+    if (isAndroid) {
+      const textEl = hint.querySelector('[data-i18n-html]');
+      if (textEl) textEl.dataset.i18nHtml = 'installHintAndroid';
+
+      let deferredPrompt = null;
+      const installBtn = document.getElementById('installBtn');
+
+      window.addEventListener('beforeinstallprompt', e => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if (installBtn) installBtn.style.display = '';
+      });
+
+      if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+          if (!deferredPrompt) return;
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          deferredPrompt = null;
+          hint.style.display = 'none';
+          try { localStorage.setItem('hintDismissed', '1'); } catch(e) {}
+        });
+      }
+
+      window.addEventListener('appinstalled', () => {
+        hint.style.display = 'none';
+        try { localStorage.setItem('hintDismissed', '1'); } catch(e) {}
+      });
+    }
   })();
 
   const SPEAKER_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>`;
@@ -99,6 +140,14 @@
     installHint: {
       en: '<strong>Works offline!</strong> Tap Safari\'s Share button → <strong>Add to Home Screen</strong> to install as an app. Perfect for your trip.',
       it: '<strong>Funziona offline!</strong> Tocca il pulsante Condividi di Safari → <strong>Aggiungi alla schermata Home</strong> per installarla come app. Perfetta per il tuo viaggio.'
+    },
+    installHintAndroid: {
+      en: '<strong>Works offline!</strong> Tap <strong>Install</strong> or use your browser menu → <strong>Add to Home Screen</strong>.',
+      it: '<strong>Funziona offline!</strong> Tocca <strong>Installa</strong> o usa il menu del browser → <strong>Aggiungi alla schermata Home</strong>.'
+    },
+    installBtnLabel: {
+      en: 'Install',
+      it: 'Installa'
     },
     tip: {
       en: '<strong>Tip:</strong> In Chinese apps, <strong>确认 (quèrèn)</strong> and <strong>取消 (qǔxiāo)</strong> are often swapped compared to Western UI conventions — read carefully before tapping! <strong>扫码 (sǎo mǎ)</strong> is everywhere: metro, restaurants, shops, bikes.',

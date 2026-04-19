@@ -346,7 +346,7 @@ h1 {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Install hint banner (shown only in Safari, not standalone) */
+/* Install hint banner (shown on iOS/Android, not when standalone or dismissed) */
 .install-hint {
   max-width: 860px;
   margin: 0 auto 1.5rem;
@@ -373,6 +373,23 @@ h1 {
   cursor: pointer;
   padding: 0.2rem 0.4rem;
 }
+.install-hint .install-btn {
+  flex-shrink: 0;
+  align-self: center;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  border-radius: 4px;
+  padding: 0.35rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.install-hint .install-btn:hover { background: var(--red); }
 /* Hide when in standalone mode */
 @media (display-mode: standalone) {
   .install-hint { display: none !important; }
