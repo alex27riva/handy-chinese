@@ -180,6 +180,32 @@
   .card.speaking .speaker { opacity: 1; color: var(--red); }
   .speaker svg { width: 14px; height: 14px; }
 
+  .favorite-btn {
+    position: absolute;
+    top: 0.6rem;
+    left: 0.6rem;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    color: var(--muted);
+    opacity: 0.35;
+    transition: opacity 0.15s, color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .card:hover .favorite-btn,
+  .phrase-card:hover .favorite-btn { opacity: 0.8; }
+  .favorite-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .favorite-btn.active { opacity: 1; color: var(--gold); }
+  .favorite-btn.active svg { fill: var(--gold); stroke: var(--gold); }
+  .phrase-card .favorite-btn { top: 0.75rem; left: 0.75rem; }
+
   .hanzi {
     font-family: var(--font-hanzi);
     font-size: 2rem;
@@ -187,6 +213,7 @@
     color: var(--ink);
     line-height: 1;
     margin-bottom: 0.35rem;
+    padding-left: 1.8rem;
   }
 
   .pinyin {
@@ -264,6 +291,7 @@
     line-height: 1.3;
     margin-bottom: 0.35rem;
     padding-right: 1.8rem;
+    padding-left: 1.8rem;
   }
 
   .phrase-pinyin {
@@ -369,6 +397,18 @@
     .install-hint { display: none !important; }
   }
 
+  .favorites-empty {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3rem 1rem;
+    text-align: center;
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
   .load-error {
     max-width: 860px;
     margin: 0 auto;
@@ -469,7 +509,28 @@
 
   const SPEAKER_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>`;
 
+  const STAR_SVG = `<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+
   const SUPPORTED_LANGS = ['en', 'it'];
+
+  const FAVORITES_KEY = 'favorites';
+  let favorites = new Set();
+  try {
+    const raw = localStorage.getItem(FAVORITES_KEY);
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) favorites = new Set(arr);
+    }
+  } catch (e) {}
+
+  const favoriteKey = (tabId, hanzi) => tabId + ':' + hanzi;
+  const isFavorite = (tabId, hanzi) => favorites.has(favoriteKey(tabId, hanzi));
+  function toggleFavorite(tabId, hanzi) {
+    const key = favoriteKey(tabId, hanzi);
+    if (favorites.has(key)) favorites.delete(key);
+    else favorites.add(key);
+    try { localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favorites])); } catch (e) {}
+  }
 
   const CHROME = {
     subtitle: {
@@ -487,6 +548,14 @@
     tip: {
       en: '<strong>Tip:</strong> In Chinese apps, <strong>确认 (quèrèn)</strong> and <strong>取消 (qǔxiāo)</strong> are often swapped compared to Western UI conventions — read carefully before tapping! <strong>扫码 (sǎo mǎ)</strong> is everywhere: metro, restaurants, shops, bikes.',
       it: '<strong>Suggerimento:</strong> Nelle app cinesi, <strong>确认 (quèrèn)</strong> e <strong>取消 (qǔxiāo)</strong> sono spesso invertiti rispetto alle convenzioni occidentali — leggi con attenzione prima di toccare! <strong>扫码 (sǎo mǎ)</strong> è ovunque: metro, ristoranti, negozi, bici.'
+    },
+    favoritesLabel: {
+      en: 'Favorites',
+      it: 'Preferiti'
+    },
+    favoritesEmpty: {
+      en: 'Tap the ☆ on any card to save it here.',
+      it: 'Tocca la ☆ su una carta per salvarla qui.'
     }
   };
 
@@ -511,7 +580,7 @@
   const fieldPrefix = cls => cls === 'phrase-card' ? 'phrase-' : '';
   const gridClass = cls => cls === 'phrase-card' ? 'phrase-grid' : 'grid';
 
-  function renderCard(entry, cardClass) {
+  function renderCard(entry, cardClass, tabId) {
     const prefix = fieldPrefix(cardClass);
     const card = document.createElement('div');
     card.className = cardClass;
@@ -525,6 +594,19 @@
     icon.className = 'speaker';
     icon.innerHTML = SPEAKER_SVG;
     card.appendChild(icon);
+
+    const star = document.createElement('button');
+    star.type = 'button';
+    star.className = 'favorite-btn' + (isFavorite(tabId, entry.hanzi) ? ' active' : '');
+    star.setAttribute('aria-label', 'Toggle favorite');
+    star.innerHTML = STAR_SVG;
+    star.addEventListener('click', e => {
+      e.stopPropagation();
+      toggleFavorite(tabId, entry.hanzi);
+      star.classList.toggle('active');
+      refreshFavoritesPanel();
+    });
+    card.appendChild(star);
     return card;
   }
 
@@ -541,9 +623,19 @@
       btn.appendChild(document.createTextNode(t(tab.label)));
       container.appendChild(btn);
     });
+    const favBtn = document.createElement('button');
+    favBtn.className = 'tab';
+    favBtn.dataset.tab = 'favorites';
+    favBtn.setAttribute('role', 'tab');
+    const favHanzi = document.createElement('span');
+    favHanzi.className = 'tab-hanzi';
+    favHanzi.textContent = '收藏';
+    favBtn.appendChild(favHanzi);
+    favBtn.appendChild(document.createTextNode(t(CHROME.favoritesLabel)));
+    container.appendChild(favBtn);
   }
 
-  function renderSection(sec, cardClass) {
+  function renderSection(sec, cardClass, tabId) {
     const section = document.createElement('div');
     section.className = 'section';
     const title = document.createElement('div');
@@ -551,12 +643,12 @@
     title.textContent = t(sec.title);
     const grid = document.createElement('div');
     grid.className = gridClass(cardClass);
-    sec.entries.forEach(entry => grid.appendChild(renderCard(entry, cardClass)));
+    sec.entries.forEach(entry => grid.appendChild(renderCard(entry, cardClass, tabId)));
     section.append(title, grid);
     return section;
   }
 
-  function renderSubsection(sub, cardClass) {
+  function renderSubsection(sub, cardClass, tabId) {
     const wrap = document.createElement('div');
     wrap.className = 'subsection';
     if (sub.title) {
@@ -565,8 +657,59 @@
       title.textContent = t(sub.title);
       wrap.appendChild(title);
     }
-    sub.sections.forEach(sec => wrap.appendChild(renderSection(sec, cardClass)));
+    sub.sections.forEach(sec => wrap.appendChild(renderSection(sec, cardClass, tabId)));
     return wrap;
+  }
+
+  function renderFavoritesPanel() {
+    const panel = document.createElement('div');
+    panel.className = 'tab-panel';
+    panel.id = 'tab-favorites';
+
+    let total = 0;
+    if (contentData) {
+      contentData.tabs.forEach(tab => {
+        const groups = tab.subsections || [{ sections: tab.sections }];
+        const entries = [];
+        groups.forEach(g => g.sections.forEach(s => s.entries.forEach(e => {
+          if (isFavorite(tab.id, e.hanzi)) entries.push(e);
+        })));
+        if (!entries.length) return;
+        total += entries.length;
+        const section = document.createElement('div');
+        section.className = 'section';
+        const title = document.createElement('div');
+        title.className = 'subsection-title';
+        title.textContent = t(tab.label);
+        const grid = document.createElement('div');
+        grid.className = gridClass(tab.cardClass);
+        entries.forEach(e => grid.appendChild(renderCard(e, tab.cardClass, tab.id)));
+        section.append(title, grid);
+        panel.appendChild(section);
+      });
+    }
+    if (!total) {
+      const empty = document.createElement('div');
+      empty.className = 'favorites-empty';
+      empty.textContent = t(CHROME.favoritesEmpty);
+      panel.appendChild(empty);
+    }
+    return panel;
+  }
+
+  function refreshFavoritesPanel() {
+    const existing = document.getElementById('tab-favorites');
+    if (!existing) return;
+    const wasActive = existing.classList.contains('active');
+    const fresh = renderFavoritesPanel();
+    if (wasActive) fresh.classList.add('active');
+    existing.replaceWith(fresh);
+    fresh.querySelectorAll('.card, .phrase-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const hanziEl = card.querySelector('.hanzi, .phrase-hanzi');
+        speak(hanziEl.textContent.trim(), card);
+      });
+    });
   }
 
   function renderPanels(tabs, container) {
@@ -575,12 +718,13 @@
       panel.className = 'tab-panel' + (i === 0 ? ' active' : '');
       panel.id = 'tab-' + tab.id;
       if (tab.subsections) {
-        tab.subsections.forEach(sub => panel.appendChild(renderSubsection(sub, tab.cardClass)));
+        tab.subsections.forEach(sub => panel.appendChild(renderSubsection(sub, tab.cardClass, tab.id)));
       } else {
-        tab.sections.forEach(sec => panel.appendChild(renderSection(sec, tab.cardClass)));
+        tab.sections.forEach(sec => panel.appendChild(renderSection(sec, tab.cardClass, tab.id)));
       }
       container.appendChild(panel);
     });
+    container.appendChild(renderFavoritesPanel());
   }
 
   function applyChrome() {
@@ -632,12 +776,11 @@
 
   function wireTabs() {
     const tabs = document.querySelectorAll('.tab');
-    const panels = document.querySelectorAll('.tab-panel');
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
         const target = tab.dataset.tab;
         tabs.forEach(t => t.classList.toggle('active', t === tab));
-        panels.forEach(p => p.classList.toggle('active', p.id === 'tab-' + target));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + target));
         if (window.speechSynthesis) window.speechSynthesis.cancel();
         document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
         window.scrollTo({ top: 0, behavior: 'smooth' });

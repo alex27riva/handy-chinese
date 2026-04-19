@@ -41,6 +41,9 @@ A tab has **either** `sections` (flat: section → entries) **or** `subsections`
 ### Language switch
 Top-right fixed toggle (EN / IT). State is module-level (`currentLang` in the script block), persisted to `localStorage.lang`, and initialized from `navigator.language` on first visit (Italian browsers default to IT). Flipping the switch calls `rerenderContent()` (wipes and rebuilds tabs + panels using the new language) and `applyChrome()` (updates static UI strings via `data-i18n` / `data-i18n-html` attributes against the `CHROME` map in the script). To add UI chrome text, add a key to `CHROME` and tag the element with `data-i18n="key"` (textContent) or `data-i18n-html="key"` (innerHTML — use for strings containing inline `<strong>` etc).
 
+### Favorites
+A star button (top-left of every card, mirroring the top-right speaker) toggles an entry into a dedicated **Favorites** tab (`收藏`, rightmost). State lives in `localStorage.favorites` as a JSON array of `"{tabId}:{hanzi}"` keys — so `菜单` in `vocab` and `菜单` in `phrases` star independently. The Favorites tab and panel are **renderer-injected** (not present in `content.json`): `renderTabs` appends the tab button, `renderPanels` appends the panel via `renderFavoritesPanel()`. The empty-state and tab-label strings live in `CHROME` (`favoritesLabel`, `favoritesEmpty`). Toggling a star calls `refreshFavoritesPanel()` to rebuild just `#tab-favorites` in place, so starring from any tab (including from within Favorites) keeps the view consistent. Star clicks use `stopPropagation()` so TTS doesn't fire.
+
 ### TTS
 One generic click handler on `.card, .phrase-card` reads `.hanzi` or `.phrase-hanzi` and speaks it via `window.speechSynthesis`. Voice selection prefers `zh-CN`, falls back to any `zh-*`. `synth.cancel()` runs on tab switch and before each utterance to prevent overlap. The `.speaking` class is the visual-feedback hook.
 
