@@ -476,8 +476,16 @@ h1 {
   justify-content: center;
 }
 
+.toolbar {
+  max-width: 860px;
+  margin: 0 auto 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
 .search-input {
-  width: 100%;
+  flex: 1;
   max-width: 260px;
   padding: 0.42rem 0.9rem;
   font-family: var(--font-mono);
@@ -500,6 +508,93 @@ h1 {
 
 /* remove native clear button on webkit */
 .search-input::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+.fav-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.2s;
+}
+
+.fav-btn:hover, .fav-btn.active {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.fav-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.favorites-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(26,18,8,0.85);
+  z-index: 1000;
+  display: none;
+  overflow-y: auto;
+  padding: 2rem 1rem;
+}
+
+.favorites-overlay.active {
+  display: block;
+  animation: fadeIn 0.2s ease-out;
+}
+
+body.fav-open {
+  overflow: hidden;
+}
+
+.favorites-panel {
+  max-width: 860px;
+  margin: 0 auto;
+  background: var(--paper);
+  border-radius: 12px;
+  min-height: 60vh;
+}
+
+.favorites-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.favorites-header h2 {
+  font-family: var(--font-hanzi);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.fav-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--muted);
+  padding: 0.3rem;
+}
+
+.fav-close:hover {
+  color: var(--ink);
+}
+
+.favorites-content {
+  padding: 1rem;
+}
 
 /* App cards */
 .app-intro {

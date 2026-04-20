@@ -67,7 +67,7 @@
                 {"hanzi": "待处理", "pinyin": "dài chǔ lǐ", "meaning": {"en": "Pending", "it": "In attesa"}}
               ]
             },
-              {
+            {
               "title": {"en": "Maps, Transport & Daily Life", "it": "Mappe, trasporti e vita quotidiana"},
               "entries": [
                 {"hanzi": "地图", "pinyin": "dì tú", "meaning": {"en": "Map", "it": "Mappa"}},
@@ -184,78 +184,78 @@
             {"hanzi": "高铁", "pinyin": "gāo tiě", "meaning": {"en": "High-speed rail", "it": "Treno ad alta velocità"}}
           ]
         },
-{
-              "title": {"en": "Food & Restaurants", "it": "Cibo e ristoranti"},
-              "entries": [
-                {"hanzi": "菜单", "pinyin": "cài dān", "meaning": {"en": "Menu", "it": "Menu"}},
-                {"hanzi": "我要这个", "pinyin": "wǒ yào zhè ge", "meaning": {"en": "I want this (point at menu)", "it": "Voglio questo (indica sul menu)"}},
-                {"hanzi": "不要辣", "pinyin": "bú yào là", "meaning": {"en": "Not spicy", "it": "Non piccante"}},
-                {"hanzi": "微辣", "pinyin": "wēi là", "meaning": {"en": "Mildly spicy", "it": "Poco piccante"}},
-                {"hanzi": "我吃素", "pinyin": "wǒ chī sù", "meaning": {"en": "I'm vegetarian", "it": "Sono vegetariano/a"}},
-                {"hanzi": "我对...过敏", "pinyin": "wǒ duì... guò mǐn", "meaning": {"en": "I'm allergic to…", "it": "Sono allergico/a a…"}},
-                {"hanzi": "一瓶水", "pinyin": "yì píng shuǐ", "meaning": {"en": "A bottle of water", "it": "Una bottiglia d'acqua"}},
-                {"hanzi": "买单", "pinyin": "mǎi dān", "meaning": {"en": "The bill, please", "it": "Il conto, per favore"}},
-                {"hanzi": "很好吃", "pinyin": "hěn hǎo chī", "meaning": {"en": "Very delicious", "it": "Molto buono"}},
-                {"hanzi": "打包", "pinyin": "dǎ bāo", "meaning": {"en": "To take away / To go", "it": "Da asporto"}},
-                {"hanzi": "我饿了", "pinyin": "wǒ è le", "meaning": {"en": "I'm hungry", "it": "Ho fame"}},
-                {"hanzi": "我渴了", "pinyin": "wǒ kě le", "meaning": {"en": "I'm thirsty", "it": "Ho sete"}},
-                {"hanzi": "我要喝茶", "pinyin": "wǒ yào hē chá", "meaning": {"en": "I want tea", "it": "Voglio un tè"}},
-                {"hanzi": "我要喝咖啡", "pinyin": "wǒ yào hē kā fēi", "meaning": {"en": "I want coffee", "it": "Voglio un caffè"}},
-                {"hanzi": "我吃饱了", "pinyin": "wǒ chī bǎo le", "meaning": {"en": "I'm full (after eating)", "it": "Sono pieno/a"}},
-                {"hanzi": "好吃", "pinyin": "hǎo chī", "meaning": {"en": "Delicious", "it": "Buono"}}
-              ]
-            },
-            {
-              "title": {"en": "Shopping & Money", "it": "Shopping e denaro"},
-              "entries": [
-                {"hanzi": "多少钱?", "pinyin": "duō shǎo qián?", "meaning": {"en": "How much does it cost?", "it": "Quanto costa?"}},
-                {"hanzi": "太贵了", "pinyin": "tài guì le", "meaning": {"en": "Too expensive", "it": "Troppo caro"}},
-                {"hanzi": "便宜一点", "pinyin": "pián yi yì diǎn", "meaning": {"en": "A bit cheaper, please", "it": "Un po' meno, per favore"}},
-                {"hanzi": "可以刷卡吗?", "pinyin": "kě yǐ shuā kǎ ma?", "meaning": {"en": "Can I pay by card?", "it": "Posso pagare con la carta?"}},
-                {"hanzi": "支付宝可以吗?", "pinyin": "zhī fù bǎo kě yǐ ma?", "meaning": {"en": "Can I pay with Alipay?", "it": "Posso pagare con Alipay?"}},
-                {"hanzi": "微信支付", "pinyin": "wēi xìn zhī fù", "meaning": {"en": "WeChat Pay", "it": "WeChat Pay"}},
-                {"hanzi": "现金", "pinyin": "xiàn jīn", "meaning": {"en": "Cash", "it": "Contanti"}},
-                {"hanzi": "发票", "pinyin": "fā piào", "meaning": {"en": "Receipt / Invoice", "it": "Ricevuta / Fattura"}}
-              ]
-            },
-            {
-              "title": {"en": "Emergencies & Help", "it": "Emergenze e aiuto"},
-              "entries": [
-                {"hanzi": "救命!", "pinyin": "jiù mìng!", "meaning": {"en": "Help! (emergency)", "it": "Aiuto! (emergenza)"}},
-                {"hanzi": "请帮我", "pinyin": "qǐng bāng wǒ", "meaning": {"en": "Please help me", "it": "Aiutami, per favore"}},
-                {"hanzi": "我生病了", "pinyin": "wǒ shēng bìng le", "meaning": {"en": "I'm sick", "it": "Sto male"}},
-                {"hanzi": "医院在哪里?", "pinyin": "yī yuàn zài nǎ lǐ?", "meaning": {"en": "Where is the hospital?", "it": "Dov'è l'ospedale?"}},
-                {"hanzi": "叫救护车", "pinyin": "jiào jiù hù chē", "meaning": {"en": "Call an ambulance", "it": "Chiama un'ambulanza"}},
-                {"hanzi": "叫警察", "pinyin": "jiào jǐng chá", "meaning": {"en": "Call the police", "it": "Chiama la polizia"}},
-                {"hanzi": "我的护照丢了", "pinyin": "wǒ de hù zhào diū le", "meaning": {"en": "I lost my passport", "it": "Ho perso il passaporto"}},
-                {"hanzi": "意大利大使馆", "pinyin": "yì dà lì dà shǐ guǎn", "meaning": {"en": "Italian embassy", "it": "Ambasciata italiana"}}
-]
-            }
-        ]
+        {
+          "title": {"en": "Food & Restaurants", "it": "Cibo e ristoranti"},
+          "entries": [
+            {"hanzi": "菜单", "pinyin": "cài dān", "meaning": {"en": "Menu", "it": "Menu"}},
+            {"hanzi": "我要这个", "pinyin": "wǒ yào zhè ge", "meaning": {"en": "I want this (point at menu)", "it": "Voglio questo (indica sul menu)"}},
+            {"hanzi": "不要辣", "pinyin": "bú yào là", "meaning": {"en": "Not spicy", "it": "Non piccante"}},
+            {"hanzi": "微辣", "pinyin": "wēi là", "meaning": {"en": "Mildly spicy", "it": "Poco piccante"}},
+            {"hanzi": "我吃素", "pinyin": "wǒ chī sù", "meaning": {"en": "I'm vegetarian", "it": "Sono vegetariano/a"}},
+            {"hanzi": "我对...过敏", "pinyin": "wǒ duì... guò mǐn", "meaning": {"en": "I'm allergic to…", "it": "Sono allergico/a a…"}},
+            {"hanzi": "一瓶水", "pinyin": "yì píng shuǐ", "meaning": {"en": "A bottle of water", "it": "Una bottiglia d'acqua"}},
+            {"hanzi": "买单", "pinyin": "mǎi dān", "meaning": {"en": "The bill, please", "it": "Il conto, per favore"}},
+            {"hanzi": "很好吃", "pinyin": "hěn hǎo chī", "meaning": {"en": "Very delicious", "it": "Molto buono"}},
+            {"hanzi": "打包", "pinyin": "dǎ bāo", "meaning": {"en": "To take away / To go", "it": "Da asporto"}},
+            {"hanzi": "我饿了", "pinyin": "wǒ è le", "meaning": {"en": "I'm hungry", "it": "Ho fame"}},
+            {"hanzi": "我渴了", "pinyin": "wǒ kě le", "meaning": {"en": "I'm thirsty", "it": "Ho sete"}},
+            {"hanzi": "我要喝茶", "pinyin": "wǒ yào hē chá", "meaning": {"en": "I want tea", "it": "Voglio un tè"}},
+            {"hanzi": "我要喝咖啡", "pinyin": "wǒ yào hē kā fēi", "meaning": {"en": "I want coffee", "it": "Voglio un caffè"}},
+            {"hanzi": "我吃饱了", "pinyin": "wǒ chī bǎo le", "meaning": {"en": "I'm full (after eating)", "it": "Sono pieno/a"}},
+            {"hanzi": "好吃", "pinyin": "hǎo chī", "meaning": {"en": "Delicious", "it": "Buono"}}
+          ]
         },
         {
-          "id": "apps",
-          "label": {"en": "Apps", "it": "App"},
-          "hanziLabel": "推荐",
-          "cardClass": "app-card",
-          "intro": {"en": "In China, cash and credit cards are rarely used. WeChat and Alipay are essential for everything: paying at restaurants, shops, metro, bikes, and even splitting bills with friends.", "it": "In Cina contanti e carte di credito sono raramente usati. WeChat e Alipay sono essenziali per tutto: pagare al ristorante, negozi, metro, bici, e anche dividere i conti con gli amici."},
-          "sections": [
-            {
-              "title": {"en": "Essential Apps", "it": "App essenziali"},
-              "entries": [
-                {"icon": "💬", "hanzi": "微信", "pinyin": "wēi xìn", "name": "WeChat", "description": {"en": "The app for everything: messaging, video calls, payments (WeChat Pay), social media, reading news, ordering food, booking taxis. Everyone in China uses it.", "it": "L'app per tutto: messaggistica, videochiamate, pagamenti (WeChat Pay), social media, leggere notizie, ordinare cibo, prenotare taxi. Tutti in Cina la usano."}},
-                {"icon": "💳", "hanzi": "支付宝", "pinyin": "zhī fù bǎo", "name": "Alipay", "description": {"en": "Main competitor to WeChat Pay. Also handles: utility bills, investments, credit score (Sesame Credit), paying friends, insurance, public transport cards.", "it": "Principale concorrente di WeChat Pay. Gestisce anche: bollette, investimenti, punteggio creditizio (Sesame Credit), pagare amici, assicurazioni, carte dei trasporti."}},
-                {"icon": "🗺️", "hanzi": "高德地图", "pinyin": "gāo dé dì tú", "name": "Amap", "description": {"en": "Best maps app in China. Accurate directions, real-time traffic, public transit navigation, shows business hours and reviews.", "it": "La migliore app di mappe in Cina. Direzioni precise, traffico in tempo reale, navigazione trasporti pubblici, mostra orari e recensioni."}},
-                {"icon": "🚗", "hanzi": "滴滴", "pinyin": "dī dī", "name": "Didi", "description": {"en": "Ride-hailing: taxis, private cars, ride-sharing. Choose 'Didi Express' for cheaper shared rides. Link your foreign card for payments.", "it": "Prenotazione taxi: taxi, macchine private, ride-sharing. Scegli 'Didi Express' per corse condivise più economiche. Collega la tua carta straniera per i pagamenti."}},
-                {"icon": "🍜", "hanzi": "美团", "pinyin": "měi tuán", "name": "Meituan", "description": {"en": "Food delivery, restaurant reservations, movie tickets, hotel bookings, group deals. Use it for delivery when WeChat isn't enough.", "it": "Consegna cibo, prenotazioni ristoranti, biglietti cinema, prenotazioni hotel, offerte di gruppo. Usalo per la consegna quando WeChat non basta."}},
-                {"icon": "🎬", "hanzi": "抖音", "pinyin": "dǒu yīn", "name": "Douyin", "description": {"en": "Chinese TikTok. Short videos, live streaming, e-commerce, discovering trends and products. Very addictive!", "it": "Il TikTok cinese. Video brevi, live streaming, e-commerce, scoprire tendenze e prodotti. Molto coinvolgente!"}},
-                {"icon": "🛍️", "hanzi": "淘宝", "pinyin": "táo bǎo", "name": "Taobao", "description": {"en": "Huge online marketplace. Everything from clothes to electronics. Search by image, negotiate with sellers, huge selection.", "it": "Enorme mercato online. Tutto dai vestiti all'elettronica. Cerca per immagine, negozia con i venditori, enorme selezione."}},
-                {"icon": "📦", "hanzi": "京东", "pinyin": "jīng dōng", "name": "JD.com", "description": {"en": "Reliable e-commerce with fast delivery. Great for electronics and authentic products. Self-owns warehouses for speed.", "it": "E-commerce affidabile con consegna veloce. Ottimo per elettronica e prodotti autentici. Possiede magazzini propri per la velocità."}},
-                {"icon": "✈️", "hanzi": "携程", "pinyin": "xié chéng", "name": "Trip.com", "description": {"en": "Flights, trains, hotels, travel packages. English interface available. Best for booking high-speed trains (高铁).", "it": "Voli, treni, hotel, pacchetti viaggio. Interfaccia inglese disponibile. Meglio per prenotare treni ad alta velocità (高铁)."}},
-                {"icon": "📕", "hanzi": "小红书", "pinyin": "xiǎo hóng shū", "name": "Xiaohongshu", "description": {"en": "\"RED\" - Social shopping app. Reviews, product recommendations, travel tips, lifestyle content. Great for discovering what's popular.", "it": "\"RED\" - App di shopping sociale. Recensioni, raccomandazioni prodotti, consigli viaggio, contenuti lifestyle. Ottimo per scoprire cosa va di moda."}}
-              ]
-            }
+          "title": {"en": "Shopping & Money", "it": "Shopping e denaro"},
+          "entries": [
+            {"hanzi": "多少钱?", "pinyin": "duō shǎo qián?", "meaning": {"en": "How much does it cost?", "it": "Quanto costa?"}},
+            {"hanzi": "太贵了", "pinyin": "tài guì le", "meaning": {"en": "Too expensive", "it": "Troppo caro"}},
+            {"hanzi": "便宜一点", "pinyin": "pián yi yì diǎn", "meaning": {"en": "A bit cheaper, please", "it": "Un po' meno, per favore"}},
+            {"hanzi": "可以刷卡吗?", "pinyin": "kě yǐ shuā kǎ ma?", "meaning": {"en": "Can I pay by card?", "it": "Posso pagare con la carta?"}},
+            {"hanzi": "支付宝可以吗?", "pinyin": "zhī fù bǎo kě yǐ ma?", "meaning": {"en": "Can I pay with Alipay?", "it": "Posso pagare con Alipay?"}},
+            {"hanzi": "微信支付", "pinyin": "wēi xìn zhī fù", "meaning": {"en": "WeChat Pay", "it": "WeChat Pay"}},
+            {"hanzi": "现金", "pinyin": "xiàn jīn", "meaning": {"en": "Cash", "it": "Contanti"}},
+            {"hanzi": "发票", "pinyin": "fā piào", "meaning": {"en": "Receipt / Invoice", "it": "Ricevuta / Fattura"}}
+          ]
+        },
+        {
+          "title": {"en": "Emergencies & Help", "it": "Emergenze e aiuto"},
+          "entries": [
+            {"hanzi": "救命!", "pinyin": "jiù mìng!", "meaning": {"en": "Help! (emergency)", "it": "Aiuto! (emergenza)"}},
+            {"hanzi": "请帮我", "pinyin": "qǐng bāng wǒ", "meaning": {"en": "Please help me", "it": "Aiutami, per favore"}},
+            {"hanzi": "我生病了", "pinyin": "wǒ shēng bìng le", "meaning": {"en": "I'm sick", "it": "Sto male"}},
+            {"hanzi": "医院在哪里?", "pinyin": "yī yuàn zài nǎ lǐ?", "meaning": {"en": "Where is the hospital?", "it": "Dov'è l'ospedale?"}},
+            {"hanzi": "叫救护车", "pinyin": "jiào jiù hù chē", "meaning": {"en": "Call an ambulance", "it": "Chiama un'ambulanza"}},
+            {"hanzi": "叫警察", "pinyin": "jiào jǐng chá", "meaning": {"en": "Call the police", "it": "Chiama la polizia"}},
+            {"hanzi": "我的护照丢了", "pinyin": "wǒ de hù zhào diū le", "meaning": {"en": "I lost my passport", "it": "Ho perso il passaporto"}},
+            {"hanzi": "意大利大使馆", "pinyin": "yì dà lì dà shǐ guǎn", "meaning": {"en": "Italian embassy", "it": "Ambasciata italiana"}}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "apps",
+      "label": {"en": "Apps", "it": "App"},
+      "hanziLabel": "推荐",
+      "cardClass": "app-card",
+      "intro": {"en": "In China, cash and credit cards are rarely used. WeChat and Alipay are essential for everything: paying at restaurants, shops, metro, bikes, and even splitting bills with friends.", "it": "In Cina contanti e carte di credito sono raramente usati. WeChat e Alipay sono essenziali per tutto: pagare al ristorante, negozi, metro, bici, e anche dividere i conti con gli amici."},
+      "sections": [
+        {
+          "title": {"en": "Essential Apps", "it": "App essenziali"},
+          "entries": [
+            {"icon": "💬", "hanzi": "微信", "pinyin": "wēi xìn", "name": "WeChat", "description": {"en": "The app for everything: messaging, video calls, payments (WeChat Pay), social media, reading news, ordering food, booking taxis. Everyone in China uses it.", "it": "L'app per tutto: messaggistica, videochiamate, pagamenti (WeChat Pay), social media, leggere notizie, ordinare cibo, prenotare taxi. Tutti in Cina la usano."}},
+            {"icon": "💳", "hanzi": "支付宝", "pinyin": "zhī fù bǎo", "name": "Alipay", "description": {"en": "Main competitor to WeChat Pay. Also handles: utility bills, investments, credit score (Sesame Credit), paying friends, insurance, public transport cards.", "it": "Principale concorrente di WeChat Pay. Gestisce anche: bollette, investimenti, punteggio creditizio (Sesame Credit), pagare amici, assicurazioni, carte dei trasporti."}},
+            {"icon": "🗺️", "hanzi": "高德地图", "pinyin": "gāo dé dì tú", "name": "Amap", "description": {"en": "Best maps app in China. Accurate directions, real-time traffic, public transit navigation, shows business hours and reviews.", "it": "La migliore app di mappe in Cina. Direzioni precise, traffico in tempo reale, navigazione trasporti pubblici, mostra orari e recensioni."}},
+            {"icon": "🚗", "hanzi": "滴滴", "pinyin": "dī dī", "name": "Didi", "description": {"en": "Ride-hailing: taxis, private cars, ride-sharing. Choose 'Didi Express' for cheaper shared rides. Link your foreign card for payments.", "it": "Prenotazione taxi: taxi, macchine private, ride-sharing. Scegli 'Didi Express' per corse condivise più economiche. Collega la tua carta straniera per i pagamenti."}},
+            {"icon": "🍜", "hanzi": "美团", "pinyin": "měi tuán", "name": "Meituan", "description": {"en": "Food delivery, restaurant reservations, movie tickets, hotel bookings, group deals. Use it for delivery when WeChat isn't enough.", "it": "Consegna cibo, prenotazioni ristoranti, biglietti cinema, prenotazioni hotel, offerte di gruppo. Usalo per la consegna quando WeChat non basta."}},
+            {"icon": "🎬", "hanzi": "抖音", "pinyin": "dǒu yīn", "name": "Douyin", "description": {"en": "Chinese TikTok. Short videos, live streaming, e-commerce, discovering trends and products. Very addictive!", "it": "Il TikTok cinese. Video brevi, live streaming, e-commerce, scoprire tendenze e prodotti. Molto coinvolgente!"}},
+            {"icon": "🛍️", "hanzi": "淘宝", "pinyin": "táo bǎo", "name": "Taobao", "description": {"en": "Huge online marketplace. Everything from clothes to electronics. Search by image, negotiate with sellers, huge selection.", "it": "Enorme mercato online. Tutto dai vestiti all'elettronica. Cerca per immagine, negozia con i venditori, enorme selezione."}},
+            {"icon": "📦", "hanzi": "京东", "pinyin": "jīng dōng", "name": "JD.com", "description": {"en": "Reliable e-commerce with fast delivery. Great for electronics and authentic products. Self-owns warehouses for speed.", "it": "E-commerce affidabile con consegna veloce. Ottimo per elettronica e prodotti autentici. Possiede magazzini propri per la velocità."}},
+            {"icon": "✈️", "hanzi": "携程", "pinyin": "xié chéng", "name": "Trip.com", "description": {"en": "Flights, trains, hotels, travel packages. English interface available. Best for booking high-speed trains (高铁).", "it": "Voli, treni, hotel, pacchetti viaggio. Interfaccia inglese disponibile. Meglio per prenotare treni ad alta velocità (高铁)."}},
+            {"icon": "📕", "hanzi": "小红书", "pinyin": "xiǎo hóng shū", "name": "Xiaohongshu", "description": {"en": "\"RED\" - Social shopping app. Reviews, product recommendations, travel tips, lifestyle content. Great for discovering what's popular.", "it": "\"RED\" - App di shopping sociale. Recensioni, raccomandazioni prodotti, consigli viaggio, contenuti lifestyle. Ottimo per scoprire cosa va di moda."}}
           ]
         }
       ]
     }
+  ]
+}

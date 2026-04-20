@@ -42,8 +42,13 @@
 </div>
 
 <div class="tabs" id="tabs" role="tablist"></div>
-<div class="search-wrap">
-  <input type="search" id="searchInput" class="search-input" autocomplete="off" autocorrect="off" spellcheck="false">
+<div class="toolbar">
+  <div class="search-wrap">
+    <input type="search" id="searchInput" class="search-input" autocomplete="off" autocorrect="off" spellcheck="false">
+  </div>
+  <button class="fav-btn" id="favBtn" aria-label="View favorites" title="Favorites">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+  </button>
 </div>
 <div id="panels"></div>
 
@@ -52,7 +57,7 @@
   <span data-i18n-html="tip"><strong>Tip:</strong> In Chinese apps, <strong>确认 (quèrèn)</strong> and <strong>取消 (qǔxiāo)</strong> are often swapped compared to Western UI conventions — read carefully before tapping! <strong>扫码 (sǎo mǎ)</strong> is everywhere: metro, restaurants, shops, bikes.</span>
 </div>
 
-<div class="app-version" aria-hidden="true">v0.5.0</div>
+<div class="app-version" aria-hidden="true">v0.6.0</div>
 
 <script>
   // Show install hint only on iOS/Android, hide if standalone or dismissed
@@ -234,16 +239,6 @@
       btn.appendChild(document.createTextNode(t(tab.label)));
       container.appendChild(btn);
     });
-    const favBtn = document.createElement('button');
-    favBtn.className = 'tab';
-    favBtn.dataset.tab = 'favorites';
-    favBtn.setAttribute('role', 'tab');
-    const favHanzi = document.createElement('span');
-    favHanzi.className = 'tab-hanzi';
-    favHanzi.textContent = '收藏';
-    favBtn.appendChild(favHanzi);
-    favBtn.appendChild(document.createTextNode(t(CHROME.favoritesLabel)));
-    container.appendChild(favBtn);
   }
 
   function renderSection(sec, cardClass, tabId) {
@@ -309,14 +304,11 @@
     container.appendChild(intro);
   }
 
-  function renderFavoritesPanel() {
-    const panel = document.createElement('div');
-    panel.className = 'tab-panel';
-    panel.id = 'tab-favorites';
-
+  function renderFavoritesContent(container) {
     let total = 0;
     if (contentData) {
       contentData.tabs.forEach(tab => {
+        if (tab.id === 'favorites') return;
         const groups = tab.subsections || [{ sections: tab.sections }];
         const entries = [];
         groups.forEach(g => g.sections.forEach(s => s.entries.forEach(e => {
@@ -333,26 +325,23 @@
         grid.className = gridClass(tab.cardClass);
         entries.forEach(e => grid.appendChild(renderCard(e, tab.cardClass, tab.id)));
         section.append(title, grid);
-        panel.appendChild(section);
+        container.appendChild(section);
       });
     }
     if (!total) {
       const empty = document.createElement('div');
       empty.className = 'favorites-empty';
       empty.textContent = t(CHROME.favoritesEmpty);
-      panel.appendChild(empty);
+      container.appendChild(empty);
     }
-    return panel;
   }
 
   function refreshFavoritesPanel() {
-    const existing = document.getElementById('tab-favorites');
-    if (!existing) return;
-    const wasActive = existing.classList.contains('active');
-    const fresh = renderFavoritesPanel();
-    if (wasActive) fresh.classList.add('active');
-    existing.replaceWith(fresh);
-    fresh.querySelectorAll('.card, .phrase-card').forEach(card => {
+    const content = document.getElementById('favorites-content');
+    if (!content) return;
+    content.innerHTML = '';
+    renderFavoritesContent(content);
+    content.querySelectorAll('.card, .phrase-card').forEach(card => {
       card.addEventListener('click', () => {
         const hanziEl = card.querySelector('.hanzi, .phrase-hanzi');
         speak(hanziEl.textContent.trim(), card);
@@ -365,7 +354,9 @@
       const panel = document.createElement('div');
       panel.className = 'tab-panel' + (i === 0 ? ' active' : '');
       panel.id = 'tab-' + tab.id;
-      if (tab.cardClass === 'app-card' && tab.intro) {
+      if (tab.id === 'favorites') {
+        renderFavoritesContent(panel);
+      } else if (tab.cardClass === 'app-card' && tab.intro) {
         renderAppIntro(tab.intro, panel);
         tab.sections.forEach(sec => {
           const section = document.createElement('div');
@@ -386,7 +377,36 @@
       }
       container.appendChild(panel);
     });
-    container.appendChild(renderFavoritesPanel());
+    container.appendChild(renderFavoritesOverlay());
+  }
+
+  function renderFavoritesOverlay() {
+    const overlay = document.createElement('div');
+    overlay.className = 'favorites-overlay';
+    overlay.id = 'favorites-overlay';
+    overlay.innerHTML = '<div class="favorites-panel"><div class="favorites-header"><h2>收藏</h2><button class="fav-close" aria-label="Close">✕</button></div><div class="favorites-content" id="favorites-content"></div></div>';
+    return overlay;
+  }
+
+  function showFavorites() {
+    const overlay = document.getElementById('favorites-overlay');
+    const content = document.getElementById('favorites-content');
+    content.innerHTML = '';
+    renderFavoritesContent(content);
+    overlay.classList.add('active');
+    document.body.classList.add('fav-open');
+    content.querySelectorAll('.card, .phrase-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const hanziEl = card.querySelector('.hanzi, .phrase-hanzi');
+        speak(hanziEl.textContent.trim(), card);
+      });
+    });
+  }
+
+  function hideFavorites() {
+    const overlay = document.getElementById('favorites-overlay');
+    overlay.classList.remove('active');
+    document.body.classList.remove('fav-open');
   }
 
   function applyChrome() {
@@ -439,6 +459,13 @@
   });
 
   applyChrome();
+
+  document.getElementById('favBtn').addEventListener('click', showFavorites);
+  document.addEventListener('click', e => {
+    if (e.target.classList.contains('favorites-overlay') || e.target.classList.contains('fav-close')) {
+      hideFavorites();
+    }
+  });
 
   function filterCards(query) {
     const q = query.trim().toLowerCase();
