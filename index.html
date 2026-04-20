@@ -52,7 +52,7 @@
   <span data-i18n-html="tip"><strong>Tip:</strong> In Chinese apps, <strong>确认 (quèrèn)</strong> and <strong>取消 (qǔxiāo)</strong> are often swapped compared to Western UI conventions — read carefully before tapping! <strong>扫码 (sǎo mǎ)</strong> is everywhere: metro, restaurants, shops, bikes.</span>
 </div>
 
-<div class="app-version" aria-hidden="true">v0.4.0</div>
+<div class="app-version" aria-hidden="true">v0.5.0</div>
 
 <script>
   // Show install hint only on iOS/Android, hide if standalone or dismissed
@@ -272,6 +272,43 @@
     return wrap;
   }
 
+  function renderAppCard(entry, tabId) {
+    const card = document.createElement('div');
+    card.className = 'app-card';
+    const icon = document.createElement('div');
+    icon.className = 'app-icon';
+    icon.textContent = entry.icon || '📱';
+    const content = document.createElement('div');
+    content.className = 'app-content';
+    const nameRow = document.createElement('div');
+    nameRow.className = 'app-name-row';
+    const name = document.createElement('span');
+    name.className = 'app-name';
+    name.textContent = entry.name;
+    nameRow.appendChild(name);
+    const hanzi = document.createElement('span');
+    hanzi.className = 'app-hanzi';
+    hanzi.textContent = entry.hanzi;
+    nameRow.appendChild(hanzi);
+    const pinyin = document.createElement('div');
+    pinyin.className = 'app-pinyin';
+    pinyin.textContent = entry.pinyin;
+    const desc = document.createElement('div');
+    desc.className = 'app-desc';
+    desc.textContent = t(entry.description);
+    content.append(nameRow, pinyin, desc);
+    card.append(icon, content);
+    card.dataset.search = [entry.hanzi, entry.pinyin, entry.name, t(entry.description)].join(' ').toLowerCase();
+    return card;
+  }
+
+  function renderAppIntro(introText, container) {
+    const intro = document.createElement('div');
+    intro.className = 'app-intro';
+    intro.textContent = t(introText);
+    container.appendChild(intro);
+  }
+
   function renderFavoritesPanel() {
     const panel = document.createElement('div');
     panel.className = 'tab-panel';
@@ -328,7 +365,21 @@
       const panel = document.createElement('div');
       panel.className = 'tab-panel' + (i === 0 ? ' active' : '');
       panel.id = 'tab-' + tab.id;
-      if (tab.subsections) {
+      if (tab.cardClass === 'app-card' && tab.intro) {
+        renderAppIntro(tab.intro, panel);
+        tab.sections.forEach(sec => {
+          const section = document.createElement('div');
+          section.className = 'section';
+          const title = document.createElement('div');
+          title.className = 'section-title';
+          title.textContent = t(sec.title);
+          const grid = document.createElement('div');
+          grid.className = 'app-grid';
+          sec.entries.forEach(entry => grid.appendChild(renderAppCard(entry, tab.id)));
+          section.append(title, grid);
+          panel.appendChild(section);
+        });
+      } else if (tab.subsections) {
         tab.subsections.forEach(sub => panel.appendChild(renderSubsection(sub, tab.cardClass, tab.id)));
       } else {
         tab.sections.forEach(sec => panel.appendChild(renderSection(sec, tab.cardClass, tab.id)));
@@ -393,11 +444,11 @@
     const q = query.trim().toLowerCase();
     const activePanel = document.querySelector('.tab-panel.active');
     if (!activePanel) return;
-    activePanel.querySelectorAll('.card, .phrase-card').forEach(card => {
+    activePanel.querySelectorAll('.card, .phrase-card, .app-card').forEach(card => {
       card.style.display = (!q || card.dataset.search.includes(q)) ? '' : 'none';
     });
     activePanel.querySelectorAll('.section').forEach(section => {
-      const any = [...section.querySelectorAll('.card, .phrase-card')].some(c => c.style.display !== 'none');
+      const any = [...section.querySelectorAll('.card, .phrase-card, .app-card')].some(c => c.style.display !== 'none');
       section.style.display = any ? '' : 'none';
     });
     activePanel.querySelectorAll('.subsection').forEach(sub => {
