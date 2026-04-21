@@ -308,6 +308,7 @@
         {
           "title": {"en": "Europe", "it": "Europa"},
           "entries": [
+            {"icon": "🇮🇹", "hanzi": "意大利", "pinyin": "yì dà lì", "name": "Italy", "description": {"en": "Visa-free 30 days", "it": "Senza visto 30 giorni"}},
             {"icon": "🇨🇭", "hanzi": "瑞士", "pinyin": "ruì shì", "name": "Switzerland", "description": {"en": "Visa-free 90 days", "it": "Senza visto 90 giorni"}},
             {"icon": "🇳🇴", "hanzi": "挪威", "pinyin": "nuó wēi", "name": "Norway", "description": {"en": "Visa-free 90 days", "it": "Senza visto 90 giorni"}},
             {"icon": "🇮🇸", "hanzi": "冰岛", "pinyin": "bīng dǎo", "name": "Iceland", "description": {"en": "Visa-free 90 days", "it": "Senza visto 90 giorni"}}
