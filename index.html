@@ -51,11 +51,12 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
   </button>
   <button class="pinyin-btn" id="pinyinBtn" aria-label="Toggle pinyin" title="Hide/show pinyin">拼</button>
+  <button class="quiz-btn" id="quizBtn" aria-label="Toggle quiz mode" title="Quiz mode">？</button>
 </div>
 <div id="panels"></div>
 
 
-<div class="app-version" aria-hidden="true">v0.8.2</div>
+<div class="app-version" aria-hidden="true">v0.9.0</div>
 
 <script>
   // Show install hint only on iOS/Android, hide if standalone or dismissed
@@ -179,6 +180,34 @@
     try { localStorage.setItem(PINYIN_KEY, hidden ? '1' : '0'); } catch (e) {}
     const btn = document.getElementById('pinyinBtn');
     if (btn) btn.classList.toggle('active', hidden);
+  }
+
+  let quizMode = false;
+
+  function setQuizMode(on) {
+    quizMode = on;
+    if (on) document.documentElement.dataset.quiz = 'on';
+    else delete document.documentElement.dataset.quiz;
+    document.querySelectorAll('.card.revealed, .phrase-card.revealed').forEach(c => c.classList.remove('revealed'));
+    const btn = document.getElementById('quizBtn');
+    if (btn) btn.classList.toggle('active', on);
+  }
+
+  function handleCardClick(card) {
+    if (quizMode) {
+      const wasRevealed = card.classList.contains('revealed');
+      card.classList.toggle('revealed');
+      if (!wasRevealed) {
+        const hanziEl = card.querySelector('.hanzi, .phrase-hanzi');
+        speak(hanziEl.textContent.trim(), card);
+      } else {
+        if (synth) synth.cancel();
+        card.classList.remove('speaking');
+      }
+    } else {
+      const hanziEl = card.querySelector('.hanzi, .phrase-hanzi');
+      speak(hanziEl.textContent.trim(), card);
+    }
   }
 
   const CHROME = {
@@ -399,10 +428,7 @@
     content.innerHTML = '';
     renderFavoritesContent(content);
     content.querySelectorAll('.card, .phrase-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const hanziEl = card.querySelector('.hanzi, .phrase-hanzi');
-        speak(hanziEl.textContent.trim(), card);
-      });
+      card.addEventListener('click', () => handleCardClick(card));
     });
   }
 
@@ -453,10 +479,7 @@
     overlay.classList.add('active');
     document.body.classList.add('fav-open');
     content.querySelectorAll('.card, .phrase-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const hanziEl = card.querySelector('.hanzi, .phrase-hanzi');
-        speak(hanziEl.textContent.trim(), card);
-      });
+      card.addEventListener('click', () => handleCardClick(card));
     });
   }
 
@@ -527,6 +550,11 @@
     pinyinBtn.addEventListener('click', () => setPinyinMode(!pinyinHidden));
   }
 
+  const quizBtn = document.getElementById('quizBtn');
+  if (quizBtn) {
+    quizBtn.addEventListener('click', () => setQuizMode(!quizMode));
+  }
+
   applyChrome();
 
   document.getElementById('favBtn').addEventListener('click', showFavorites);
@@ -563,6 +591,7 @@
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + target));
         if (window.speechSynthesis) window.speechSynthesis.cancel();
         document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
+        document.querySelectorAll('.card.revealed, .phrase-card.revealed').forEach(c => c.classList.remove('revealed'));
         const si = document.getElementById('searchInput');
         if (si) si.value = '';
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -614,10 +643,7 @@
 
   function wireCards() {
     document.querySelectorAll('.card, .phrase-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const hanziEl = card.querySelector('.hanzi, .phrase-hanzi');
-        speak(hanziEl.textContent.trim(), card);
-      });
+      card.addEventListener('click', () => handleCardClick(card));
     });
   }
 

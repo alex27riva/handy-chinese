@@ -724,6 +724,37 @@ body.fav-open {
   --focus-ring: rgba(240,112,96,0.3);
 }
 
+/* ── Quiz mode ────────────────────────────────────────────── */
+[data-quiz="on"] .card:not(.revealed) .pinyin,
+[data-quiz="on"] .card:not(.revealed) .meaning,
+[data-quiz="on"] .phrase-card:not(.revealed) .phrase-pinyin,
+[data-quiz="on"] .phrase-card:not(.revealed) .phrase-meaning { visibility: hidden; }
+
+.quiz-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  font-family: var(--font-hanzi);
+  font-size: 1rem;
+  color: var(--muted);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.quiz-btn:hover { color: var(--ink); }
+.quiz-btn.active {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: rgba(184,150,12,0.1);
+}
+[data-theme="dark"] .quiz-btn.active { background: rgba(224,184,40,0.12); }
+
 /* ── Hide pinyin mode ─────────────────────────────────────── */
 [data-pinyin="hidden"] .pinyin,
 [data-pinyin="hidden"] .phrase-pinyin,
