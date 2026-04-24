@@ -113,6 +113,8 @@
 
   const STAR_SVG = `<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
 
+  const CHEVRON_SVG = `<svg class="collapse-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`;
+
   const SUPPORTED_LANGS = ['en', 'it'];
 
   const FAVORITES_KEY = 'favorites';
@@ -132,6 +134,22 @@
     if (favorites.has(key)) favorites.delete(key);
     else favorites.add(key);
     try { localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favorites])); } catch (e) {}
+  }
+
+  const COLLAPSED_KEY = 'collapsedGroups';
+  let collapsedGroups = new Set();
+  try {
+    const raw = localStorage.getItem(COLLAPSED_KEY);
+    if (raw) { const arr = JSON.parse(raw); if (Array.isArray(arr)) collapsedGroups = new Set(arr); }
+  } catch (e) {}
+  function collapseKey(tabId, titleObj) {
+    return tabId + ':' + ((titleObj && titleObj.en) ? titleObj.en : String(titleObj));
+  }
+  function isCollapsed(tabId, titleObj) { return collapsedGroups.has(collapseKey(tabId, titleObj)); }
+  function toggleCollapse(tabId, titleObj) {
+    const key = collapseKey(tabId, titleObj);
+    if (collapsedGroups.has(key)) collapsedGroups.delete(key); else collapsedGroups.add(key);
+    try { localStorage.setItem(COLLAPSED_KEY, JSON.stringify([...collapsedGroups])); } catch (e) {}
   }
 
   const CHROME = {
@@ -241,12 +259,20 @@
     });
   }
 
-  function renderSection(sec, cardClass, tabId) {
+  function renderSection(sec, cardClass, tabId, collapsible = false) {
     const section = document.createElement('div');
     section.className = 'section';
     const title = document.createElement('div');
     title.className = 'section-title';
     title.textContent = t(sec.title);
+    if (collapsible && sec.title) {
+      if (isCollapsed(tabId, sec.title)) section.classList.add('is-collapsed');
+      title.insertAdjacentHTML('beforeend', CHEVRON_SVG);
+      title.addEventListener('click', () => {
+        toggleCollapse(tabId, sec.title);
+        section.classList.toggle('is-collapsed');
+      });
+    }
     const grid = document.createElement('div');
     grid.className = gridClass(cardClass);
     sec.entries.forEach(entry => grid.appendChild(renderCard(entry, cardClass, tabId)));
@@ -258,9 +284,15 @@
     const wrap = document.createElement('div');
     wrap.className = 'subsection';
     if (sub.title) {
+      if (isCollapsed(tabId, sub.title)) wrap.classList.add('is-collapsed');
       const title = document.createElement('div');
       title.className = 'subsection-title';
       title.textContent = t(sub.title);
+      title.insertAdjacentHTML('beforeend', CHEVRON_SVG);
+      title.addEventListener('click', () => {
+        toggleCollapse(tabId, sub.title);
+        wrap.classList.toggle('is-collapsed');
+      });
       wrap.appendChild(title);
     }
     sub.sections.forEach(sec => wrap.appendChild(renderSection(sec, cardClass, tabId)));
@@ -373,7 +405,7 @@
       } else if (tab.subsections) {
         tab.subsections.forEach(sub => panel.appendChild(renderSubsection(sub, tab.cardClass, tab.id)));
       } else {
-        tab.sections.forEach(sec => panel.appendChild(renderSection(sec, tab.cardClass, tab.id)));
+        tab.sections.forEach(sec => panel.appendChild(renderSection(sec, tab.cardClass, tab.id, true)));
       }
       container.appendChild(panel);
     });
@@ -471,6 +503,7 @@
     const q = query.trim().toLowerCase();
     const activePanel = document.querySelector('.tab-panel.active');
     if (!activePanel) return;
+    activePanel.classList.toggle('search-active', !!q);
     activePanel.querySelectorAll('.card, .phrase-card, .app-card').forEach(card => {
       card.style.display = (!q || card.dataset.search.includes(q)) ? '' : 'none';
     });

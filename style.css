@@ -681,3 +681,15 @@ body.fav-open {
   margin-top: 0.4rem;
   opacity: 0.85;
 }
+
+/* ── Collapsible groups ───────────────────────────────────── */
+.subsection-title { cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: space-between; }
+.section-title    { cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: space-between; }
+.collapse-chevron { width: 16px; height: 16px; flex-shrink: 0; transition: transform 0.2s ease; }
+.is-collapsed .collapse-chevron { transform: rotate(-90deg); }
+.subsection.is-collapsed > .section { display: none; }
+.section.is-collapsed > .grid,
+.section.is-collapsed > .phrase-grid { display: none; }
+.search-active .subsection.is-collapsed > .section,
+.search-active .section.is-collapsed > .grid,
+.search-active .section.is-collapsed > .phrase-grid { display: block; }
