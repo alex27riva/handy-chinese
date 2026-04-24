@@ -89,7 +89,6 @@ Rough priority order — high impact items first.
 ### Content
 - **Medical / hospital tab** — fever, allergy, pharmacy, emergency phrases; high value for travelers
 - **Hotel check-in phrases** — currently missing from phrases tab
-- **Common signs vocabulary** — 出口, 入口, 禁止, 卫生间, 小心地滑…; practical day-1 recognition
 
 ### Polish
 - **Android PWA manifest** — `manifest.json` for Play Store / Android install prompt; app currently iOS-only

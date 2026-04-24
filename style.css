@@ -724,6 +724,35 @@ body.fav-open {
   --focus-ring: rgba(240,112,96,0.3);
 }
 
+/* ── Hide pinyin mode ─────────────────────────────────────── */
+[data-pinyin="hidden"] .pinyin,
+[data-pinyin="hidden"] .phrase-pinyin,
+[data-pinyin="hidden"] .app-pinyin { display: none; }
+
+.pinyin-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  font-family: var(--font-hanzi);
+  font-size: 1rem;
+  color: var(--muted);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.pinyin-btn:hover { color: var(--ink); }
+.pinyin-btn.active {
+  color: var(--red);
+  border-color: var(--red);
+  background: var(--focus-ring);
+}
+
 /* Theme toggle button */
 .theme-btn {
   position: fixed;

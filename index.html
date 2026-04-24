@@ -50,11 +50,12 @@
   <button class="fav-btn" id="favBtn" aria-label="View favorites" title="Favorites">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
   </button>
+  <button class="pinyin-btn" id="pinyinBtn" aria-label="Toggle pinyin" title="Hide/show pinyin">拼</button>
 </div>
 <div id="panels"></div>
 
 
-<div class="app-version" aria-hidden="true">v0.8.0</div>
+<div class="app-version" aria-hidden="true">v0.8.1</div>
 
 <script>
   // Show install hint only on iOS/Android, hide if standalone or dismissed
@@ -164,6 +165,20 @@
     try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
     const btn = document.getElementById('themeBtn');
     if (btn) btn.textContent = theme === 'dark' ? '☀︎' : '☾';
+  }
+
+  const PINYIN_KEY = 'pinyinHidden';
+  let pinyinHidden = false;
+  try { pinyinHidden = localStorage.getItem(PINYIN_KEY) === '1'; } catch (e) {}
+  if (pinyinHidden) document.documentElement.dataset.pinyin = 'hidden';
+
+  function setPinyinMode(hidden) {
+    pinyinHidden = hidden;
+    if (hidden) document.documentElement.dataset.pinyin = 'hidden';
+    else delete document.documentElement.dataset.pinyin;
+    try { localStorage.setItem(PINYIN_KEY, hidden ? '1' : '0'); } catch (e) {}
+    const btn = document.getElementById('pinyinBtn');
+    if (btn) btn.classList.toggle('active', hidden);
   }
 
   const CHROME = {
@@ -504,6 +519,12 @@
   if (themeBtn) {
     themeBtn.textContent = currentTheme === 'dark' ? '☀︎' : '☾';
     themeBtn.addEventListener('click', () => setTheme(currentTheme === 'dark' ? 'light' : 'dark'));
+  }
+
+  const pinyinBtn = document.getElementById('pinyinBtn');
+  if (pinyinBtn) {
+    pinyinBtn.classList.toggle('active', pinyinHidden);
+    pinyinBtn.addEventListener('click', () => setPinyinMode(!pinyinHidden));
   }
 
   applyChrome();
