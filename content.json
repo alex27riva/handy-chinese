@@ -234,6 +234,73 @@
       ]
     },
     {
+      "id": "signs",
+      "label": {"en": "Signs", "it": "Insegne"},
+      "hanziLabel": "标识",
+      "cardClass": "card",
+      "sections": [
+        {
+          "title": {"en": "Entry & Exit", "it": "Entrata e uscita"},
+          "entries": [
+            {"hanzi": "入口", "pinyin": "rù kǒu", "meaning": {"en": "Entrance", "it": "Entrata"}},
+            {"hanzi": "出口", "pinyin": "chū kǒu", "meaning": {"en": "Exit", "it": "Uscita"}},
+            {"hanzi": "安全出口", "pinyin": "ān quán chū kǒu", "meaning": {"en": "Emergency exit", "it": "Uscita di emergenza"}},
+            {"hanzi": "推", "pinyin": "tuī", "meaning": {"en": "Push", "it": "Spingere"}},
+            {"hanzi": "拉", "pinyin": "lā", "meaning": {"en": "Pull", "it": "Tirare"}},
+            {"hanzi": "楼上", "pinyin": "lóu shàng", "meaning": {"en": "Upstairs", "it": "Piano superiore"}},
+            {"hanzi": "楼下", "pinyin": "lóu xià", "meaning": {"en": "Downstairs", "it": "Piano inferiore"}}
+          ]
+        },
+        {
+          "title": {"en": "Facilities", "it": "Servizi"},
+          "entries": [
+            {"hanzi": "卫生间", "pinyin": "wèi shēng jiān", "meaning": {"en": "Restroom / Toilet", "it": "Bagno"}},
+            {"hanzi": "厕所", "pinyin": "cè suǒ", "meaning": {"en": "Toilet", "it": "Bagno / Toilette"}},
+            {"hanzi": "男", "pinyin": "nán", "meaning": {"en": "Men (restroom)", "it": "Uomini (bagno)"}},
+            {"hanzi": "女", "pinyin": "nǚ", "meaning": {"en": "Women (restroom)", "it": "Donne (bagno)"}},
+            {"hanzi": "停车场", "pinyin": "tíng chē chǎng", "meaning": {"en": "Parking lot", "it": "Parcheggio"}},
+            {"hanzi": "电梯", "pinyin": "diàn tī", "meaning": {"en": "Elevator / Lift", "it": "Ascensore"}},
+            {"hanzi": "楼梯", "pinyin": "lóu tī", "meaning": {"en": "Stairs", "it": "Scale"}}
+          ]
+        },
+        {
+          "title": {"en": "Warnings & Rules", "it": "Avvisi e regole"},
+          "entries": [
+            {"hanzi": "禁止", "pinyin": "jìn zhǐ", "meaning": {"en": "Prohibited / No…", "it": "Vietato / Proibito"}},
+            {"hanzi": "小心地滑", "pinyin": "xiǎo xīn dì huá", "meaning": {"en": "Caution: slippery floor", "it": "Attenzione: pavimento scivoloso"}},
+            {"hanzi": "禁止吸烟", "pinyin": "jìn zhǐ xī yān", "meaning": {"en": "No smoking", "it": "Vietato fumare"}},
+            {"hanzi": "禁止拍照", "pinyin": "jìn zhǐ pāi zhào", "meaning": {"en": "No photography", "it": "Vietato fotografare"}},
+            {"hanzi": "注意安全", "pinyin": "zhù yì ān quán", "meaning": {"en": "Safety notice / Caution", "it": "Attenzione alla sicurezza"}},
+            {"hanzi": "请勿打扰", "pinyin": "qǐng wù dǎ rǎo", "meaning": {"en": "Do not disturb", "it": "Non disturbare"}},
+            {"hanzi": "严禁", "pinyin": "yán jìn", "meaning": {"en": "Strictly prohibited", "it": "Severamente vietato"}}
+          ]
+        },
+        {
+          "title": {"en": "Open & Shopping", "it": "Aperto e shopping"},
+          "entries": [
+            {"hanzi": "营业中", "pinyin": "yíng yè zhōng", "meaning": {"en": "Open (business hours)", "it": "Aperto (orario lavorativo)"}},
+            {"hanzi": "休息", "pinyin": "xiū xi", "meaning": {"en": "Closed / Resting", "it": "Chiuso / Riposo"}},
+            {"hanzi": "免费", "pinyin": "miǎn fèi", "meaning": {"en": "Free of charge", "it": "Gratuito"}},
+            {"hanzi": "打折", "pinyin": "dǎ zhé", "meaning": {"en": "Discount / Sale", "it": "Sconto / Saldi"}},
+            {"hanzi": "特价", "pinyin": "tè jià", "meaning": {"en": "Special price / Deal", "it": "Prezzo speciale"}},
+            {"hanzi": "收银台", "pinyin": "shōu yín tái", "meaning": {"en": "Cash register / Checkout", "it": "Cassa"}}
+          ]
+        },
+        {
+          "title": {"en": "Directions", "it": "Direzioni"},
+          "entries": [
+            {"hanzi": "左", "pinyin": "zuǒ", "meaning": {"en": "Left", "it": "Sinistra"}},
+            {"hanzi": "右", "pinyin": "yòu", "meaning": {"en": "Right", "it": "Destra"}},
+            {"hanzi": "直走", "pinyin": "zhí zǒu", "meaning": {"en": "Go straight", "it": "Dritto"}},
+            {"hanzi": "前方", "pinyin": "qián fāng", "meaning": {"en": "Ahead / Forward", "it": "Davanti / Avanti"}},
+            {"hanzi": "候车室", "pinyin": "hòu chē shì", "meaning": {"en": "Waiting room", "it": "Sala d'attesa"}},
+            {"hanzi": "检票口", "pinyin": "jiǎn piào kǒu", "meaning": {"en": "Ticket gate", "it": "Cancello biglietti"}},
+            {"hanzi": "行李", "pinyin": "xíng lǐ", "meaning": {"en": "Luggage", "it": "Bagaglio"}}
+          ]
+        }
+      ]
+    },
+    {
       "id": "apps",
       "label": {"en": "Apps", "it": "App"},
       "hanziLabel": "推荐",
