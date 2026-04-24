@@ -741,8 +741,10 @@ body.fav-open {
   border: 1px solid var(--border);
   border-radius: 50%;
   cursor: pointer;
-  font-family: var(--font-hanzi);
-  font-size: 1rem;
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1;
   color: var(--muted);
   transition: color 0.2s, border-color 0.2s, background 0.2s;
   -webkit-tap-highlight-color: transparent;
@@ -777,7 +779,8 @@ body.fav-open {
   transition: color 0.2s, border-color 0.2s, background 0.2s;
   -webkit-tap-highlight-color: transparent;
 }
-.pinyin-btn:hover { color: var(--ink); }
+.pinyin-btn:hover:not(:disabled) { color: var(--ink); }
+.pinyin-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 .pinyin-btn.active {
   color: var(--red);
   border-color: var(--red);

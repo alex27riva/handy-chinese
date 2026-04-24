@@ -53,8 +53,19 @@ Vocab subsections (App UI / Food / Signs) and phrase sections collapse on tap. S
 ### Favorites
 A star button (top-left of every card, mirroring the top-right speaker) toggles an entry into a dedicated **Favorites** tab (`收藏`, rightmost). State lives in `localStorage.favorites` as a JSON array of `"{tabId}:{hanzi}"` keys — so `菜单` in `vocab` and `菜单` in `phrases` star independently. The Favorites tab and panel are **renderer-injected** (not present in `content.json`): `renderTabs` appends the tab button, `renderPanels` appends the panel via `renderFavoritesPanel()`. The empty-state and tab-label strings live in `CHROME` (`favoritesLabel`, `favoritesEmpty`). Toggling a star calls `refreshFavoritesPanel()` to rebuild just `#tab-favorites` in place, so starring from any tab (including from within Favorites) keeps the view consistent. Star clicks use `stopPropagation()` so TTS doesn't fire.
 
+### Hide Pinyin
+Toolbar button (拼). Toggles `data-pinyin="hidden"` on `<html>`; CSS hides `.pinyin`, `.phrase-pinyin`, `.app-pinyin` globally with `display:none`. State is `pinyinHidden` (bool), persisted to `localStorage.pinyinHidden`. Applied synchronously before render to prevent flash. `setPinyinMode(hidden)` is the toggle function. Button gets `.active` class when hiding.
+
+### Quiz mode
+Toolbar button (？). Toggles `data-quiz="on"` on `<html>`. In quiz mode, `.pinyin` and `.meaning` fields on unrevealed cards use `visibility:hidden` (not `display:none`) — preserves card height so layout doesn't shift. Tapping a card reveals it (adds `.revealed` class) and speaks the hanzi; tapping again hides and cancels TTS. State is `quizMode` (bool), **not persisted** — intentionally resets on each session. `setQuizMode(on)` clears all `.revealed` cards on toggle. `handleCardClick(card)` is the shared click handler used by both `wireCards()` and the favorites panel — it dispatches on `quizMode`.
+
+### Tab navigation
+`switchToTab(targetId)` is the single function for all tab switches (clicks and swipes). It updates `.active` on tabs + panels, cancels TTS, clears `.speaking` / `.revealed`, resets search input, and scrolls to top.
+
+`wireTabs()` wires tab button clicks to `switchToTab`. `wireSwipe()` adds passive `touchstart`/`touchend` listeners on `#panels`: fires `switchToTab` on horizontal swipe ≥50px where `|dx| > |dy|` (so vertical scroll is never hijacked). `wireSwipe()` attaches once to the persistent `#panels` div and survives `rerenderContent()` — it is NOT called again on language switch.
+
 ### TTS
-One generic click handler on `.card, .phrase-card` reads `.hanzi` or `.phrase-hanzi` and speaks it via `window.speechSynthesis`. Voice selection prefers `zh-CN`, falls back to any `zh-*`. `synth.cancel()` runs on tab switch and before each utterance to prevent overlap. The `.speaking` class is the visual-feedback hook.
+`speak(text, card)` via `window.speechSynthesis`. Voice selection prefers `zh-CN`, falls back to any `zh-*`. Rate 0.85. `synth.cancel()` runs on tab switch and before each utterance to prevent overlap. The `.speaking` class is the visual-feedback hook.
 
 ### Offline / PWA
 - `sw.js` precaches `./`, `./index.html`, `./content.json`, `./style.css`, `./manifest.json`, `./icon.svg` on install and serves cache-first with a network fallback that also populates the cache. Bump the `CACHE` constant when shipping a change you want users to pick up — otherwise the old version stays cached indefinitely.
