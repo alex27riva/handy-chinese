@@ -48,7 +48,7 @@ Top-right fixed toggle (EN / IT). State is module-level (`currentLang` in the sc
 Top-left fixed button (☾ / ☀︎). State is module-level (`currentTheme`), persisted to `localStorage.theme`, initialized from `localStorage` first then `prefers-color-scheme` fallback. Applied synchronously before render via `document.documentElement.dataset.theme = currentTheme` to prevent flash. All colors are CSS custom properties in `:root`; the `[data-theme="dark"]` block in `style.css` overrides them. No JS re-render needed on toggle — CSS handles everything. `setTheme(theme)` is the toggle function.
 
 ### Collapsible sections
-Vocab subsections (App UI / Food / Signs) and phrase sections collapse on tap. State lives in `localStorage.collapsedGroups` as a JSON array of `"{tabId}:{titleInEnglish}"` keys — English title used as stable ID so state survives language switch. `isCollapsed(tabId, titleObj)` and `toggleCollapse(tabId, titleObj)` manage state. The `.is-collapsed` class drives hide/show via CSS (`subsection.is-collapsed > .section { display:none }` and `section.is-collapsed > .grid { display:none }`). Chevron SVG rotates 90° when collapsed. During search, the `.search-active` class on the active panel overrides collapse CSS so matches are always visible.
+Vocab subsections (App UI / Food / Signs) and phrase sections collapse on tap. State lives in `localStorage.collapsedGroups` as a JSON array of `"{tabId}:{titleInEnglish}"` keys — English title used as stable ID so state survives language switch. `isCollapsed(tabId, titleObj)` and `toggleCollapse(tabId, titleObj)` manage state. The `.is-collapsed` class drives hide/show via CSS (`subsection.is-collapsed > .section { display:none }` and `section.is-collapsed > .grid { display:none }`). Chevron SVG rotates 90° when collapsed. During search, the `.search-active` class is applied to panels (all panels in global search mode, active panel only otherwise), overriding collapse CSS so matches are always visible.
 
 ### Favorites
 A star button (top-left of every card, mirroring the top-right speaker) toggles an entry into a dedicated **Favorites** tab (`收藏`, rightmost). State lives in `localStorage.favorites` as a JSON array of `"{tabId}:{hanzi}"` keys — so `菜单` in `vocab` and `菜单` in `phrases` star independently. The Favorites tab and panel are **renderer-injected** (not present in `content.json`): `renderTabs` appends the tab button, `renderPanels` appends the panel via `renderFavoritesPanel()`. The empty-state and tab-label strings live in `CHROME` (`favoritesLabel`, `favoritesEmpty`). Toggling a star calls `refreshFavoritesPanel()` to rebuild just `#tab-favorites` in place, so starring from any tab (including from within Favorites) keeps the view consistent. Star clicks use `stopPropagation()` so TTS doesn't fire.
@@ -56,11 +56,27 @@ A star button (top-left of every card, mirroring the top-right speaker) toggles 
 ### Hide Pinyin
 Toolbar button (拼). Toggles `data-pinyin="hidden"` on `<html>`; CSS hides `.pinyin`, `.phrase-pinyin`, `.app-pinyin` globally with `display:none`. State is `pinyinHidden` (bool), persisted to `localStorage.pinyinHidden`. Applied synchronously before render to prevent flash. `setPinyinMode(hidden)` is the toggle function. Button gets `.active` class when hiding.
 
+### Search
+Toolbar input (`#searchInput`). `filterCards(query)` is the core function. When query is non-empty it enters **global search mode**: adds `global-search` to `#panels`, applies `search-active` to every `.tab-panel` (forcing collapsed sections open via existing CSS), hides non-matching cards, hides sections/subsections with no matches, and sets `no-match` on panels with zero results (CSS hides them entirely). When query is cleared all state resets and the normal single-active-tab view resumes.
+
+A `✕` clear button (`#searchClear`) sits inside the search pill — hidden via `hidden` attribute when input is empty, shown when non-empty. Click clears input and calls `filterCards('')`.
+
+Each panel has a `.panel-search-label` injected as its first child by `renderPanels()`. Hidden normally; `#panels.global-search .panel-search-label { display: block }` reveals it to label each result group with the tab name. Labels re-render automatically on language switch because `rerenderContent()` rebuilds panels fresh.
+
+Cards carry `data-tab="{tabId}"` (set in `renderCard` and `renderAppCard`). In global search mode, `handleCardClick` detects `#panels.global-search`, switches to the clicked card's tab (updates `.active` on tabs/panels), exits global mode, resets non-active panels, and leaves the target panel in single-tab filtered view — user lands on the right tab showing only query matches. TTS fires after navigation as normal.
+
+`switchToTab()` also clears global search when called via tab button click or swipe.
+
+CSS state driven by:
+- `#panels.global-search` — all `.tab-panel` visible; `.tab-panel.no-match` hidden
+- `.search-active` on panel — collapsed sections forced open
+- `.panel-search-label` — hidden by default, shown inside `#panels.global-search`
+
 ### Quiz mode
-Toolbar button (？). Toggles `data-quiz="on"` on `<html>`. In quiz mode, `.pinyin` and `.meaning` fields on unrevealed cards use `visibility:hidden` (not `display:none`) — preserves card height so layout doesn't shift. Tapping a card reveals it (adds `.revealed` class) and speaks the hanzi; tapping again hides and cancels TTS. State is `quizMode` (bool), **not persisted** — intentionally resets on each session. `setQuizMode(on)` clears all `.revealed` cards on toggle. `handleCardClick(card)` is the shared click handler used by both `wireCards()` and the favorites panel — it dispatches on `quizMode`.
+Toolbar button (？). Toggles `data-quiz="on"` on `<html>`. In quiz mode, `.pinyin` and `.meaning` fields on unrevealed cards use `visibility:hidden` (not `display:none`) — preserves card height so layout doesn't shift. Tapping a card reveals it (adds `.revealed` class) and speaks the hanzi; tapping again hides and cancels TTS. State is `quizMode` (bool), **not persisted** — intentionally resets on each session. `setQuizMode(on)` clears all `.revealed` cards on toggle. `handleCardClick(card)` is the shared click handler used by both `wireCards()` and the favorites panel — it dispatches first on global search (navigate to tab), then on `quizMode`.
 
 ### Tab navigation
-`switchToTab(targetId)` is the single function for all tab switches (clicks and swipes). It updates `.active` on tabs + panels, cancels TTS, clears `.speaking` / `.revealed`, resets search input, and scrolls to top.
+`switchToTab(targetId)` is the single function for all tab switches (clicks and swipes). It updates `.active` on tabs + panels, cancels TTS, clears `.speaking` / `.revealed`, clears search input (and resets global search state if active), and scrolls to top.
 
 `wireTabs()` wires tab button clicks to `switchToTab`. `wireSwipe()` adds passive `touchstart`/`touchend` listeners on `#panels`: fires `switchToTab` on horizontal swipe ≥50px where `|dx| > |dy|` (so vertical scroll is never hijacked). `wireSwipe()` attaches once to the persistent `#panels` div and survives `rerenderContent()` — it is NOT called again on language switch.
 
@@ -97,6 +113,7 @@ Rough priority order — high impact items first.
 
 ### Features
 - **Slow TTS** — long-press a card to speak at 0.7× rate; critical for learning unfamiliar tones
+- **Search result highlight** — visually distinguish the clicked card after tab navigation in global search
 
 ### Polish
 - **Maskable icon** — add a PNG or SVG with `"purpose": "maskable"` to manifest for proper adaptive icons on Android

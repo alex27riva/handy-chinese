@@ -59,7 +59,7 @@
 <div id="panels"></div>
 
 
-<div class="app-version" aria-hidden="true">v0.10.0</div>
+<div class="app-version" aria-hidden="true">v0.10.1</div>
 
 <script>
   // Show install hint only on iOS/Android, hide if standalone or dismissed
@@ -200,6 +200,25 @@
   }
 
   function handleCardClick(card) {
+    if (document.getElementById('panels').classList.contains('global-search')) {
+      const tabId = card.dataset.tab;
+      if (tabId) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tabId));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + tabId));
+        document.getElementById('panels').classList.remove('global-search');
+        document.querySelectorAll('.tab-panel:not(.active)').forEach(p => {
+          p.classList.remove('search-active', 'no-match');
+          p.querySelectorAll('.card, .phrase-card, .app-card').forEach(c => c.style.display = '');
+          p.querySelectorAll('.section, .subsection').forEach(s => s.style.display = '');
+        });
+        const activePanel = document.querySelector('.tab-panel.active');
+        if (activePanel) activePanel.classList.remove('no-match');
+        if (synth) synth.cancel();
+        document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
+        document.querySelectorAll('.card.revealed, .phrase-card.revealed').forEach(c => c.classList.remove('revealed'));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
     if (quizMode) {
       const wasRevealed = card.classList.contains('revealed');
       card.classList.toggle('revealed');
@@ -288,6 +307,7 @@
     card.appendChild(icon);
 
     card.dataset.search = [entry.hanzi, entry.pinyin, t(entry.meaning)].join(' ').toLowerCase();
+    card.dataset.tab = tabId;
 
     const star = document.createElement('button');
     star.type = 'button';
@@ -386,6 +406,7 @@
     content.append(nameRow, pinyin, desc);
     card.append(icon, content);
     card.dataset.search = [entry.hanzi, entry.pinyin, entry.name, t(entry.description)].join(' ').toLowerCase();
+    card.dataset.tab = tabId;
     return card;
   }
 
