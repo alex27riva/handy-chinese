@@ -283,6 +283,22 @@
           ]
         },
         {
+          "title": {"en": "Hotel Check-in", "it": "Check-in in hotel"},
+          "entries": [
+            {"hanzi": "我有预订", "pinyin": "wǒ yǒu yù dìng", "meaning": {"en": "I have a reservation", "it": "Ho una prenotazione"}},
+            {"hanzi": "办理入住", "pinyin": "bàn lǐ rù zhù", "meaning": {"en": "Check in", "it": "Fare il check-in"}},
+            {"hanzi": "退房", "pinyin": "tuì fáng", "meaning": {"en": "Check out", "it": "Fare il check-out"}},
+            {"hanzi": "几点退房?", "pinyin": "jǐ diǎn tuì fáng?", "meaning": {"en": "What time is check-out?", "it": "A che ora è il check-out?"}},
+            {"hanzi": "早餐包括吗?", "pinyin": "zǎo cān bāo kuò ma?", "meaning": {"en": "Is breakfast included?", "it": "La colazione è inclusa?"}},
+            {"hanzi": "有wifi吗?", "pinyin": "yǒu wifi ma?", "meaning": {"en": "Is there WiFi?", "it": "C'è il WiFi?"}},
+            {"hanzi": "wifi密码是什么?", "pinyin": "wifi mì mǎ shì shén me?", "meaning": {"en": "What's the WiFi password?", "it": "Qual è la password del WiFi?"}},
+            {"hanzi": "行李寄存", "pinyin": "xíng lǐ jì cún", "meaning": {"en": "Luggage storage", "it": "Deposito bagagli"}},
+            {"hanzi": "我需要更多毛巾", "pinyin": "wǒ xū yào gèng duō máo jīn", "meaning": {"en": "I need more towels", "it": "Ho bisogno di più asciugamani"}},
+            {"hanzi": "空调怎么用?", "pinyin": "kōng tiáo zěn me yòng?", "meaning": {"en": "How does the AC work?", "it": "Come funziona il condizionatore?"}},
+            {"hanzi": "可以叫醒服务吗?", "pinyin": "kě yǐ jiào xǐng fú wù ma?", "meaning": {"en": "Can I have a wake-up call?", "it": "Posso avere la sveglia telefonica?"}}
+          ]
+        },
+        {
           "title": {"en": "Emergencies & Help", "it": "Emergenze e aiuto"},
           "entries": [
             {"hanzi": "救命!", "pinyin": "jiù mìng!", "meaning": {"en": "Help! (emergency)", "it": "Aiuto! (emergenza)"}},

@@ -101,7 +101,6 @@ Rough priority order — high impact items first.
 
 ### Content
 - **Medical / hospital tab** — fever, allergy, pharmacy, emergency phrases; high value for travelers
-- **Hotel check-in phrases** — currently missing from phrases tab
 
 ### Polish
 - **Maskable icon** — add a PNG or SVG with `"purpose": "maskable"` to manifest for proper adaptive icons on Android
