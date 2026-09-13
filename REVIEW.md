@@ -17,21 +17,7 @@ Remaining from the 2026-09-09 visual review. The warm paper / ink / seal-red / g
 
 ## 2. Code structure
 
-Reviewed 2026-09-13. App is healthy and well documented; the script has been split into ES modules under `js/` (v0.16.1); clicks are delegated and search state is class-driven (v0.16.2); the remaining items are within those modules. Ranked, highest impact first.
-
-### 4. Remove the repeated localStorage boilerplate
-
-The same `try { localStorage... } catch (e) {}` block appears five times (favorites, collapsedGroups, theme, pinyin, lang). Extract:
-
-```js
-const store = {
-  get(k, fallback) { try { return localStorage.getItem(k) ?? fallback; } catch { return fallback; } },
-  set(k, v) { try { localStorage.setItem(k, v); } catch {} },
-};
-function persistedSet(key) { /* Set backed by store, with toggle() */ }
-```
-
-Favorites and collapsedGroups become two lines each.
+Reviewed 2026-09-13. App is healthy and well documented; the script has been split into ES modules under `js/` (v0.16.1); clicks are delegated and search state is class-driven (v0.16.2), storage goes through `store` (v0.16.3); the remaining items are within those modules. Ranked, highest impact first.
 
 ### 5. Unify section rendering
 
@@ -64,7 +50,7 @@ There are no tests. A cheap script, `scripts/check-content.py`, should verify: e
 
 ### Suggested order
 
-Items 4 and 5, then 8.
+Item 5, then 8.
 
 ---
 

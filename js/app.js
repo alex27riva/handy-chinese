@@ -1,7 +1,7 @@
 // Entry point: boots the app. Order matters — the install-hint block must run
 // before applyChrome() (it rewrites the hint's data-i18n-html key on Android).
 import {
-  SUPPORTED_LANGS, currentTheme, setTheme, pinyinHidden, setPinyinMode,
+  store, SUPPORTED_LANGS, currentTheme, setTheme, pinyinHidden, setPinyinMode,
   quizMode, setQuizMode, currentLang, setCurrentLang
 } from './settings.js';
 import { CHROME, t, applyChrome } from './i18n.js';
@@ -18,8 +18,7 @@ import {
   const hint = document.getElementById('installHint');
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches
                     || window.navigator.standalone === true;
-  let dismissed = false;
-  try { dismissed = localStorage.getItem('hintDismissed') === '1'; } catch (e) {}
+  const dismissed = store.get('hintDismissed') === '1';
 
   const ua = navigator.userAgent;
   const isIOS = /iphone|ipad|ipod/i.test(ua) ||
@@ -51,13 +50,13 @@ import {
         const { outcome } = await deferredPrompt.userChoice;
         deferredPrompt = null;
         hint.style.display = 'none';
-        try { localStorage.setItem('hintDismissed', '1'); } catch (e) {}
+        store.set('hintDismissed', '1');
       });
     }
 
     window.addEventListener('appinstalled', () => {
       hint.style.display = 'none';
-      try { localStorage.setItem('hintDismissed', '1'); } catch (e) {}
+      store.set('hintDismissed', '1');
     });
   }
 })();

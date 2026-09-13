@@ -11,7 +11,7 @@ Core files:
 - `index.html` — app shell (markup only, plus a tiny inline pre-paint script for theme/pinyin). Contains no vocabulary data and no app logic.
 - `js/` — app logic as ES modules, loaded via `<script type="module" src="./js/app.js">`. No bundler; the browser resolves the imports. Adding a module means adding it to `ASSETS` in `sw.js`.
   - `app.js` — entry point: install hint, button wiring, content fetch, service-worker registration.
-  - `settings.js` — persisted user state (theme, lang, pinyin, quiz, favorites, collapsed groups) and its `localStorage` I/O.
+  - `settings.js` — persisted user state (theme, lang, pinyin, quiz, favorites, collapsed groups). Exports `store` (`get(key, fallback)` / `set(key, value)`, swallows `localStorage` exceptions); `persistedSet(key)` backs the two Set-shaped keys. **All `localStorage` access goes through `store`** — the only exceptions are the pre-paint script in `index.html` `<head>` (runs before modules) and the inline close-hint handler.
   - `i18n.js` — `CHROME` string map, `t()`, `applyChrome()`.
   - `render.js` — builds tabs, panels, cards and the favorites overlay from `content.json`; owns `contentData` and `rerenderContent()`.
   - `search.js` — `foldSearch()`, `filterCards()`.
