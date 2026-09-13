@@ -17,22 +17,7 @@ Remaining from the 2026-09-09 visual review. The warm paper / ink / seal-red / g
 
 ## 2. Code structure
 
-Reviewed 2026-09-13. App is healthy and well documented; the problems below are mostly in the `index.html` script (~700 lines inline). Ranked, highest impact first.
-
-### 1. Split the inline script into ES modules
-
-`index.html` holds ~700 lines of JS. ES modules need no build step. Suggested split:
-
-| File | Owns |
-|---|---|
-| `js/prefs.js` | localStorage wrappers, theme, lang, pinyin, favorites, collapsed |
-| `js/i18n.js` | `CHROME`, `t()`, `applyChrome()` |
-| `js/render.js` | `renderCard`, `renderSection`, `renderPanels`, favorites overlay |
-| `js/search.js` | `foldSearch`, `filterCards` |
-| `js/tts.js` | `pickVoice`, `speak` |
-| `js/app.js` | boot, wiring, SW registration |
-
-Keep one tiny inline `<script>` in `<head>` that sets the theme and pinyin `dataset` before first paint. Module scripts are deferred, so moving that code would reintroduce the theme flash. Add every new file to `ASSETS` in `sw.js` and bump `CACHE`.
+Reviewed 2026-09-13. App is healthy and well documented; the script has been split into ES modules under `js/` (v0.16.1); the remaining items are within those modules. Ranked, highest impact first.
 
 ### 2. Delegate all card events on `#panels`
 
@@ -92,16 +77,14 @@ There are no tests. A cheap script, `scripts/check-content.py`, should verify: e
 
 ### Minor
 
-- Load-error strings are hardcoded EN/IT inside the fetch `catch`. Move them to `CHROME`.
 - The install hint uses inline `style=` and `onclick=` in the HTML. Move that to JS.
 - `[data-theme="dark"]` sits at line 850 of `style.css`. Move it next to `:root`.
 - Two `@media (max-width: 699px)` blocks (lines 398 and 1106). Merge them.
-- `sw.js` returns `index.html` for any failed fetch, including `content.json`, which produces a JSON parse error instead of the load-error message. Only fall back to `index.html` for navigation requests (`req.mode === 'navigate'`).
 - Favorites are keyed `tabId:hanzi`. No duplicates exist today; the validator in item 8 guards it.
 
 ### Suggested order
 
-Items 2, 3 and 6 first (small, fix a real bug), then 1, then 4 and 5, then 8.
+Items 2, 3 and 6 first (small, fix a real bug), then 4 and 5, then 8.
 
 ---
 

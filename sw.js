@@ -1,7 +1,9 @@
 // Single source of truth for the app version: index.html reads this name back out
 // of Cache Storage to render .app-version. Bump it on every user-visible change.
-const CACHE = 'handy-v0.16.0';
-const ASSETS = ['./', './index.html', './content.json', './style.css', './manifest.json', './icon.svg', './apple-touch-icon.png'];
+const CACHE = 'handy-v0.16.1';
+const ASSETS = ['./', './index.html', './content.json', './style.css', './manifest.json', './icon.svg', './apple-touch-icon.png',
+  './js/app.js', './js/settings.js', './js/i18n.js', './js/toast.js', './js/tts.js',
+  './js/search.js', './js/tabs.js', './js/cards.js', './js/render.js'];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
@@ -26,6 +28,6 @@ self.addEventListener('fetch', event => {
         caches.open(CACHE).then(c => c.put(req, copy));
       }
       return resp;
-    }).catch(() => caches.match('./index.html')))
+    }).catch(() => req.mode === 'navigate' ? caches.match('./index.html') : undefined))
   );
 });
