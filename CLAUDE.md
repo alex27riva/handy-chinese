@@ -45,11 +45,11 @@ On load, `index.html` fetches `content.json` and renders the entire tabbed card 
 
 ### Content shape (`content.json`)
 ```
-{ "tabs": [ { "id", "label": {en,it}, "hanziLabel", "cardClass",
+{ "tabs": [ { "id", "label": {en,it}, "hanziLabel", "type",
               "sections" OR "subsections": [...] } ] }
 ```
 A tab has **either** `sections` (flat: section → entries) **or** `subsections` (nested: subsection → sections → entries). The renderer dispatches on which key is present. Subsection titles render as large hanzi headers with a red-accent underline; use them to group related sections under a shared theme (e.g. vocab is grouped into `App UI`, `Food`, `Signs` and `Numbers`).
-- `cardClass` is `"card"` (vocabulary style — compact, no accent), `"phrase-card"` (phrase style — wider, gold left border) or `"app-card"` (icon + name + description, no star / TTS). It is the key into `CARD_KIND` in `js/render.js`, which holds the card renderer, the grid class, the field-class prefix and whether flat sections of that kind collapse. `renderSection(sec, tab)` is the single path for every section; to add a card style, add one `CARD_KIND` entry plus its CSS.
+- `type` is `"vocab"` (compact card, no accent), `"phrase"` (wider card, gold left border) or `"app"` (icon + name + description, no star / TTS). Content never names CSS classes: `type` is the key into `CARD_KIND` in `js/render.js`, which holds the card renderer, the card's CSS class (`.card` / `.phrase-card` / `.app-card`), the grid class, the field-class prefix and whether flat sections of that kind collapse. `renderSection(sec, tab)` is the single path for every section; to add a card style, add one `CARD_KIND` entry plus its CSS.
 - `intro` (optional `{en, it}` on any tab) renders a lead paragraph (`.app-intro`) above the sections.
 - Tone marks in `pinyin` must be real diacritics (`nǐ hǎo`), not numbered (`ni3 hao3`).
 - `hanzi` and `pinyin` are language-neutral (plain strings). **Every other translatable field** — `tab.label`, `subsection.title`, `section.title`, `entry.meaning` — is a `{en, it}` object. The `t()` helper in `js/i18n.js` resolves the active language; plain strings are accepted as a legacy fallback.

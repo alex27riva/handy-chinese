@@ -4,7 +4,7 @@
       "id": "vocab",
       "label": {"en": "Vocabulary", "it": "Vocabolario"},
       "hanziLabel": "词汇",
-      "cardClass": "card",
+      "type": "vocab",
       "subsections": [
         {
           "title": {"en": "App UI", "it": "App UI"},
@@ -294,7 +294,7 @@
       "id": "phrases",
       "label": {"en": "Phrases", "it": "Frasi"},
       "hanziLabel": "短语",
-      "cardClass": "phrase-card",
+      "type": "phrase",
       "sections": [
         {
           "title": {"en": "Essentials & Greetings", "it": "Essenziali e saluti"},
@@ -399,7 +399,7 @@
       "id": "medical",
       "label": {"en": "Medical", "it": "Medico"},
       "hanziLabel": "医疗",
-      "cardClass": "phrase-card",
+      "type": "phrase",
       "sections": [
         {
           "title": {"en": "Symptoms", "it": "Sintomi"},
@@ -445,7 +445,7 @@
       "id": "apps",
       "label": {"en": "Apps", "it": "App"},
       "hanziLabel": "推荐",
-      "cardClass": "app-card",
+      "type": "app",
       "intro": {"en": "In China, cash and credit cards are rarely used. WeChat and Alipay are essential for everything: paying at restaurants, shops, metro, bikes, and even splitting bills with friends.", "it": "In Cina contanti e carte di credito sono raramente usati. WeChat e Alipay sono essenziali per tutto: pagare al ristorante, negozi, metro, bici, e anche dividere i conti con gli amici."},
       "sections": [
         {
@@ -496,7 +496,7 @@
       "id": "visa",
       "label": {"en": "Visa Free", "it": "Senza visto"},
       "hanziLabel": "免签",
-      "cardClass": "app-card",
+      "type": "app",
       "intro": {"en": "Chinese passport holders can visit these countries without a visa or with visa on arrival. Requirements may vary—check before traveling.", "it": "I possessori di passaporto cinese possono visitare questi paesi senza visto o con visto all'arrivo. I requisiti possono variare—verifica prima di viaggiare."},
       "sections": [
         {

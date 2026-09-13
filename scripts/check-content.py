@@ -3,11 +3,11 @@
 
 Checks
   - JSON parses; top level is {"tabs": [...]}
-  - tab: unique id, hanziLabel, known cardClass, exactly one of sections/subsections
+  - tab: unique id, hanziLabel, known type, exactly one of sections/subsections
   - every translatable field (tab.label, tab.intro, subsection.title, section.title,
     entry.meaning, entry.description) is {en, it} with non-empty strings
   - entries: hanzi + pinyin non-empty; pinyin uses tone diacritics, never digits
-  - card / phrase-card entries have meaning; app-card entries have name + description
+  - vocab / phrase entries have meaning; app entries have name + description
   - no duplicate hanzi within a tab (favorites are keyed tabId:hanzi)
   - sw.js ASSETS lists every js/*.js file
   - CHROME in js/i18n.js has both en and it for every key
@@ -21,7 +21,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 LANGS = ("en", "it")
-CARD_CLASSES = {"card", "phrase-card", "app-card"}
+TAB_TYPES = {"vocab", "phrase", "app"}
 errors = []
 
 
@@ -62,7 +62,7 @@ def check_pinyin(value, path):
         err(path, f"stray whitespace in {value!r}")
 
 
-def check_entry(entry, card_class, path, seen_hanzi):
+def check_entry(entry, tab_type, path, seen_hanzi):
     if not isinstance(entry, dict):
         err(path, "entry must be an object")
         return
@@ -73,14 +73,14 @@ def check_entry(entry, card_class, path, seen_hanzi):
         else:
             seen_hanzi[h] = path
     check_pinyin(entry.get("pinyin"), f"{path}.pinyin")
-    if card_class == "app-card":
+    if tab_type == "app":
         check_text(entry.get("name"), f"{path}.name")
         check_i18n(entry.get("description"), f"{path}.description")
     else:
         check_i18n(entry.get("meaning"), f"{path}.meaning")
 
 
-def check_section(sec, card_class, path, seen_hanzi):
+def check_section(sec, tab_type, path, seen_hanzi):
     if not isinstance(sec, dict):
         err(path, "section must be an object")
         return
@@ -90,7 +90,7 @@ def check_section(sec, card_class, path, seen_hanzi):
         err(f"{path}.entries", "must be a non-empty array")
         return
     for i, e in enumerate(entries):
-        check_entry(e, card_class, f"{path}.entries[{i}]", seen_hanzi)
+        check_entry(e, tab_type, f"{path}.entries[{i}]", seen_hanzi)
 
 
 def check_tab(tab, i, seen_ids):
@@ -107,9 +107,11 @@ def check_tab(tab, i, seen_ids):
     check_i18n(tab.get("label"), f"{path}.label")
     check_text(tab.get("hanziLabel"), f"{path}.hanziLabel")
     check_i18n(tab.get("intro"), f"{path}.intro", required=False)
-    card_class = tab.get("cardClass")
-    if card_class not in CARD_CLASSES:
-        err(f"{path}.cardClass", f"{card_class!r} not in {sorted(CARD_CLASSES)}")
+    tab_type = tab.get("type")
+    if tab_type not in TAB_TYPES:
+        err(f"{path}.type", f"{tab_type!r} not in {sorted(TAB_TYPES)}")
+    if "cardClass" in tab:
+        err(f"{path}.cardClass", "removed in v0.16.5; use 'type' (vocab | phrase | app)")
     has_sections, has_subs = "sections" in tab, "subsections" in tab
     if has_sections == has_subs:
         err(path, "must have exactly one of 'sections' or 'subsections'")
@@ -131,14 +133,14 @@ def check_tab(tab, i, seen_ids):
                 err(f"{sp}.sections", "must be a non-empty array")
                 continue
             for k, sec in enumerate(secs):
-                check_section(sec, card_class, f"{sp}.sections[{k}]", seen_hanzi)
+                check_section(sec, tab_type, f"{sp}.sections[{k}]", seen_hanzi)
     else:
         secs = tab["sections"]
         if not isinstance(secs, list) or not secs:
             err(f"{path}.sections", "must be a non-empty array")
             return
         for k, sec in enumerate(secs):
-            check_section(sec, card_class, f"{path}.sections[{k}]", seen_hanzi)
+            check_section(sec, tab_type, f"{path}.sections[{k}]", seen_hanzi)
 
 
 def check_content():

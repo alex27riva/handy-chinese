@@ -17,11 +17,7 @@ Remaining from the 2026-09-09 visual review. The warm paper / ink / seal-red / g
 
 ## 2. Code structure
 
-Reviewed 2026-09-13. App is healthy and well documented; the script has been split into ES modules under `js/` (v0.16.1); clicks are delegated and search state is class-driven (v0.16.2), storage goes through `store` (v0.16.3), sections render through one `CARD_KIND`-driven path (v0.16.4), `scripts/check-content.py` validates content; the remaining items are within those modules. Ranked, highest impact first.
-
-### 7. Content schema leaks presentation
-
-`cardClass` stores a CSS classname in data. Rename it to `type: "vocab" | "phrase" | "app"` and let the renderer map types to classes. The visa tab uses `app-card` but is not an app. Low urgency, but the schema is the contract with future content.
+Reviewed 2026-09-13. App is healthy and well documented; the script has been split into ES modules under `js/` (v0.16.1); clicks are delegated and search state is class-driven (v0.16.2), storage goes through `store` (v0.16.3), sections render through one `CARD_KIND`-driven path (v0.16.4), `scripts/check-content.py` validates content, tabs declare `type` instead of a CSS class (v0.16.5); the remaining items are within those modules. Ranked, highest impact first.
 
 ### Minor
 
@@ -31,7 +27,7 @@ Reviewed 2026-09-13. App is healthy and well documented; the script has been spl
 
 ### Suggested order
 
-Item 7, then the minor list.
+Only the minor list remains.
 
 ---
 

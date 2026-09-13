@@ -14,19 +14,21 @@ const CHEVRON_SVG = `<svg class="collapse-chevron" viewBox="0 0 24 24" fill="non
 export let contentData = null;
 export function setContentData(data) { contentData = data; }
 
-// One entry per tab.cardClass: how to render an entry, which grid wraps a
-// section, and whether flat sections of that kind can collapse.
+// One entry per tab.type (content.json): the card renderer, the CSS class
+// of a card, which grid wraps a section, the field-class prefix, and whether
+// flat sections of that kind can collapse. content.json never names CSS
+// classes; this map is the only place a type becomes markup.
 // (App sections hold 1–3 entries; a chevron there would be noise.)
 const CARD_KIND = {
-  'card':        { render: renderCard,    grid: 'grid',        prefix: '',        collapsible: true },
-  'phrase-card': { render: renderCard,    grid: 'phrase-grid', prefix: 'phrase-', collapsible: true },
-  'app-card':    { render: renderAppCard, grid: 'app-grid',                       collapsible: false },
+  vocab:  { render: renderCard,    cardClass: 'card',        grid: 'grid',        prefix: '',        collapsible: true },
+  phrase: { render: renderCard,    cardClass: 'phrase-card', grid: 'phrase-grid', prefix: 'phrase-', collapsible: true },
+  app:    { render: renderAppCard, cardClass: 'app-card',    grid: 'app-grid',                       collapsible: false },
 };
-const kindOf = tab => CARD_KIND[tab.cardClass] || CARD_KIND.card;
+const kindOf = tab => CARD_KIND[tab.type] || CARD_KIND.vocab;
 
 function renderCard(entry, tab) {
-  const cardClass = tab.cardClass, tabId = tab.id;
-  const prefix = kindOf(tab).prefix;
+  const { cardClass, prefix } = kindOf(tab);
+  const tabId = tab.id;
   const card = document.createElement('div');
   card.className = cardClass;
   card.setAttribute('role', 'button');
