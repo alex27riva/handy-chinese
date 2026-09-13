@@ -6,12 +6,7 @@ Open items only. Last updated 2026-09-13, against v0.16.0. Done items are record
 
 ## 1. UI & visual
 
-Remaining from the 2026-09-09 visual review. The warm paper / ink / seal-red / gold identity is settled; these are polish.
-
-- **Card border in dark mode.** Resting shadow shipped in v0.16.0; the border-opacity half is still open. Cards could use a slightly lighter `--line` so edges read without the shadow.
-- **Tab active state (desktop strip).** Solid ink block × 5 tabs is heavy. Try a 2px red underline with ink text in the ≥700px top strip; keep the current style for the bottom bar.
-- **Missing zh voice detection.** With no `zh-*` voice, iOS reads hanzi with the default voice. Show a one-time hint pointing to Settings → Accessibility → Spoken Content.
-- **Maskable icon.** Add a PNG or SVG with `"purpose": "maskable"` to `manifest.json` for Android adaptive icons.
+All items from the 2026-09-09 visual review shipped; the last four (dark card edges, desktop tab underline, missing-voice hint, maskable icon) in v0.17.0. Nothing open.
 
 ---
 
@@ -25,6 +20,6 @@ Reviewed 2026-09-13; all items shipped in v0.16.1 – v0.16.6 (ES modules under 
 
 - Emergency numbers (110 / 120 / 119)
 - Show mode (fullscreen hanzi to hold up to someone)
-- Slow TTS on long-press (0.7× rate)
+- Slow TTS (long-press already copies; needs another gesture, e.g. tap the speaker icon)
 - Quiz shuffle
 - Search-result highlight after navigating to a tab

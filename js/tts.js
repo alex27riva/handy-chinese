@@ -1,4 +1,5 @@
 // Text-to-speech via window.speechSynthesis. Prefers a zh-CN voice.
+import { store } from './settings.js';
 import { CHROME, t } from './i18n.js';
 import { showToast } from './toast.js';
 
@@ -16,12 +17,25 @@ if (synth && speechSynthesis.onvoiceschanged !== undefined) {
   speechSynthesis.onvoiceschanged = pickVoice;
 }
 
+// One-time hint when the device has voices but none for Chinese (iOS reads
+// hanzi with the default voice then). Checked on first tap, when the voice
+// list is guaranteed to be populated.
+const VOICE_HINT_KEY = 'voiceHintShown';
+function maybeVoiceHint() {
+  if (zhVoice || store.get(VOICE_HINT_KEY) === '1') return;
+  pickVoice();
+  if (zhVoice || synth.getVoices().length === 0) return;
+  store.set(VOICE_HINT_KEY, '1');
+  showToast(t(CHROME.noZhVoice), { ms: 6000, long: true });
+}
+
 let currentCard = null;
 export function speak(text, card) {
   if (!synth) {
     showToast(t(CHROME.ttsUnsupported));
     return;
   }
+  maybeVoiceHint();
   synth.cancel();
   if (currentCard) currentCard.classList.remove('speaking');
 

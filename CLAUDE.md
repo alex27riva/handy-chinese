@@ -23,7 +23,8 @@ Core files:
 - `content.json` — all vocabulary and phrase data (tabs → sections → entries).
 - `sw.js` — service worker providing cache-first offline support.
 - `manifest.json` — Web App Manifest for Android PWA install prompt.
-- `icon.svg` — app icon (SVG, referenced by manifest and precached by SW).
+- `icon.svg` — app icon (SVG, `purpose: any`, referenced by manifest and precached by SW).
+- `icon-maskable.svg` — same seal, full-bleed square with the glyph kept inside the central 80% safe zone; `purpose: maskable` in the manifest so Android adaptive icons crop it cleanly.
 - `apple-touch-icon.png` — 180×180 PNG home-screen icon for iOS (Safari ignores SVG `apple-touch-icon`). Square, no rounded corners — iOS applies its own mask. Regenerate from `icon.svg` with `rx="0"` if the icon changes.
 
 ## Running / previewing
@@ -104,16 +105,16 @@ Cards rendered by `renderCard` are `div`s with `role="button"` and `tabIndex = 0
 ### Tab navigation
 `switchToTab(targetId)` is the single function for all tab switches (clicks and swipes). It updates `.active` on tabs + panels, calls `resetTransient()` (cancel TTS, clear `.speaking` / `.revealed` — also used by `setLang` and the global-search branch of `handleCardClick`), clears search input (and resets global search state if active), and scrolls to top.
 
-**Mobile bottom bar.** Under 700px wide, `.tabs` is restyled (CSS only, `@media (max-width: 699px)` in `style.css`) into a fixed bottom tab bar: full width, `--card-bg` background, hairline top border, safe-area bottom padding. Same DOM, same `wireTabs()` / `switchToTab()`; nothing in JS knows about the breakpoint. Active tab = red hanzi + bold ink label, no fill. `body` gets extra bottom padding so content clears the bar, and `.app-version` / `.toast` move up above it. The bar slides off-screen while `#searchInput` is focused (`body:has(...)`) so the iOS keyboard doesn't push it over results. At ≥700px the original top strip is unchanged.
+**Mobile bottom bar.** Under 700px wide, `.tabs` is restyled (CSS only, `@media (max-width: 699px)` in `style.css`) into a fixed bottom tab bar: full width, `--card-bg` background, hairline top border, safe-area bottom padding. Same DOM, same `wireTabs()` / `switchToTab()`; nothing in JS knows about the breakpoint. Active tab = red hanzi + bold ink label, no fill, and the desktop underline (`.tab.active::after`) is hidden. `body` gets extra bottom padding so content clears the bar, and `.app-version` / `.toast` move up above it. The bar slides off-screen while `#searchInput` is focused (`body:has(...)`) so the iOS keyboard doesn't push it over results. At ≥700px the top strip shows the active tab as ink text + red hanzi + a 2px red underline (`.tab.active::after`), no solid fill.
 
 `wireTabs()` delegates tab button clicks on `#tabs` to `switchToTab`. `wireSwipe()` adds passive `touchstart`/`touchend` listeners on `#panels`: fires `switchToTab` on horizontal swipe ≥50px where `|dx| > |dy|` (so vertical scroll is never hijacked). `wireSwipe()` attaches once to the persistent `#panels` div and survives `rerenderContent()` — it is NOT called again on language switch.
 
 ### TTS
-`speak(text, card)` via `window.speechSynthesis`. Voice selection prefers `zh-CN`, falls back to any `zh-*`. Rate 0.85. `synth.cancel()` runs on tab switch and before each utterance to prevent overlap. The `.speaking` class is the visual-feedback hook.
+`speak(text, card)` via `window.speechSynthesis`. Voice selection prefers `zh-CN`, falls back to any `zh-*`. Rate 0.85. **Missing-voice hint:** on the first tap, if the device reports voices but none is `zh-*`, `maybeVoiceHint()` shows a long-form toast (`CHROME.noZhVoice`, 6s, `.toast-long` wraps instead of truncating) pointing at the iOS / Android settings screens, then sets `localStorage.voiceHintShown` so it never repeats. Devices reporting zero voices (desktop Linux, headless) get no hint because nothing can be concluded. `synth.cancel()` runs on tab switch and before each utterance to prevent overlap. The `.speaking` class is the visual-feedback hook.
 
 ### Offline / PWA
 - `sw.js` precaches `./`, `./index.html`, `./content.json`, `./style.css`, `./manifest.json`, `./icon.svg`, `./apple-touch-icon.png` and every `./js/*.js` module on install and serves cache-first with a network fallback that also populates the cache. When both cache and network fail, only navigation requests fall back to `./index.html`; a failed module or JSON request rejects instead of returning HTML. Bump the `CACHE` constant when shipping a change you want users to pick up — otherwise the old version stays cached indefinitely. `CACHE` doubles as the app version string (see Editing conventions); `showAppVersion()` in `js/app.js` reads it via `caches.keys()` at load, on `navigator.serviceWorker.ready`, and on `controllerchange`.
-- iOS install uses `apple-mobile-web-app-*` meta tags and `apple-touch-icon.png` (must be PNG — iOS ignores SVG here and would fall back to a page screenshot). Android install uses `manifest.json` (linked via `<link rel="manifest">`), which provides name, theme color, display mode, and `icon.svg`. The icon is SVG-only (`"purpose": "any"`) — modern Chrome supports it, but older Android may not render it as an adaptive icon.
+- iOS install uses `apple-mobile-web-app-*` meta tags and `apple-touch-icon.png` (must be PNG — iOS ignores SVG here and would fall back to a page screenshot). Android install uses `manifest.json` (linked via `<link rel="manifest">`), which provides name, theme color, display mode, and `icon.svg`. Icons are SVG-only: `icon.svg` (`purpose: any`) plus `icon-maskable.svg` (`purpose: maskable`) for adaptive icons; modern Chrome supports both, very old Android may not render SVG manifest icons.
 - Install hint is platform-aware: iOS shows Safari share instructions; Android shows browser menu / Install button instructions. Detection uses UA sniffing (`/android/i`). Both hints share the same dismissible banner (`localStorage.hintDismissed`). The banner and the Install button start with the `hidden` attribute in the markup; `js/app.js` reveals the banner only on iOS/Android when not standalone/dismissed, and the button only after `beforeinstallprompt`. No inline `style=` / `onclick=` in `index.html`.
 - `@media (display-mode: standalone)` hides the install hint when launched from the home screen.
 - **Update prompt.** `sw.js` calls `skipWaiting()` + `clients.claim()`, so a new worker takes control of open pages as soon as it installs; the page then fires `controllerchange`. `js/app.js` listens for it and shows `#updateToast` ("New version ready · tap to reload", `CHROME.updateReady`) — tapping reloads. A `hadController` flag (true only if a worker already controlled the page at load) suppresses the toast on first install. The registration also calls `reg.update()` on `visibilitychange` → visible, so an installed app that was backgrounded re-checks `sw.js` when reopened. Net effect: bump `CACHE`, deploy, and users get the toast on their next foregrounding instead of silently running the old build.
@@ -127,6 +128,7 @@ Cards rendered by `renderCard` are `div`s with `role="button"` and `tabIndex = 0
 | `collapsedGroups` | JSON array of `"tabId:titleEn"` | Collapsed sections |
 | `hintDismissed` | `'1'` | Install banner dismissed |
 | `pinyinHidden` | `'1'` \| `'0'` | Hide pinyin romanization |
+| `voiceHintShown` | `'1'` | Missing-Chinese-voice toast already shown |
 
 ## Editing conventions
 
@@ -148,5 +150,3 @@ Rough priority order — high impact items first.
 - **Slow TTS** — long-press a card to speak at 0.7× rate; critical for learning unfamiliar tones
 - **Search result highlight** — visually distinguish the clicked card after tab navigation in global search
 
-### Polish
-- **Maskable icon** — add a PNG or SVG with `"purpose": "maskable"` to manifest for proper adaptive icons on Android

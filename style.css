@@ -50,7 +50,7 @@
   --red: #f07060;
   --gold: #d9b544;          /* less neon than #e0b828 */
   --muted: #b8a890;
-  --border: #3a3128;        /* visible hairline */
+  --border: #463b2f;        /* card edges read without the shadow */
   --card-bg: #1e1a15;
 
   --text-2: #b8a890;        /* ≈8.5:1 on card */
@@ -397,13 +397,26 @@ h1 {
   font-weight: 500;
   text-align: center;
   white-space: nowrap;
+  position: relative;
 }
 
 .tab:hover { color: var(--text); }
 
+/* active = ink text + 2px red underline; the mobile bar overrides this */
 .tab.active {
-  background: var(--text);
-  color: var(--surface);
+  color: var(--text);
+  font-weight: 700;
+}
+.tab.active .tab-hanzi { color: var(--accent); }
+.tab.active::after {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0.2rem;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--accent);
 }
 
 .tab .tab-hanzi {
@@ -1029,6 +1042,16 @@ body.fav-open {
   text-overflow: ellipsis;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* longer messages (e.g. the missing-voice hint) wrap instead of truncating */
+.toast.toast-long {
+  white-space: normal;
+  text-align: center;
+  line-height: 1.4;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  border-radius: 12px;
+  max-width: min(26rem, calc(100vw - 2rem));
+}
 
 /* Update prompt: same pill, but interactive and stacked above the copy toast */
 .toast-update {
@@ -1106,6 +1129,7 @@ body.fav-open {
     color: var(--text);
     font-weight: 700;
   }
+  .tab.active::after { display: none; }
   .tab.active .tab-hanzi {
     color: var(--accent);
     transform: translateY(-1px);
