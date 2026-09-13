@@ -39,4 +39,10 @@ No build step. Serve over HTTP (required for service worker and `content.json` f
 python3 -m http.server
 ```
 
+Validate content after editing `content.json`:
+
+```
+python3 scripts/check-content.py
+```
+
 Then open `http://localhost:8000/`.

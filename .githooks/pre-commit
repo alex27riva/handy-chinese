@@ -1,0 +1,7 @@
+#!/bin/sh
+# Runs the content validator when content or its consumers are staged.
+# Enable once per clone:  git config core.hooksPath .githooks
+if git diff --cached --name-only | grep -qE '^(content\.json|sw\.js|js/.*\.js|scripts/check-content\.py)$'; then
+  python3 "$(git rev-parse --show-toplevel)/scripts/check-content.py" || {
+    echo "pre-commit: content check failed (bypass with --no-verify)"; exit 1; }
+fi

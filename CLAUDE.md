@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Offline-capable PWA for Chinese travel vocabulary and phrases. Installable on iOS (Safari → Add to Home Screen) and Android (Chrome install prompt via manifest). No build system, no dependencies, no tests.
+Offline-capable PWA for Chinese travel vocabulary and phrases. Installable on iOS (Safari → Add to Home Screen) and Android (Chrome install prompt via manifest). No build system, no dependencies. The only check is `scripts/check-content.py` (see Running / previewing).
 
 Core files:
 
@@ -34,7 +34,9 @@ There is no build step, but the app **must be served over HTTP(S)** — opening 
 python3 -m http.server
 ```
 
-Then browse to `http://localhost:8000/`. For the install-to-home-screen flow and native `zh-CN` TTS voices, test on real iOS Safari — desktop browsers have different voice availability.
+Then browse to `http://localhost:8000/`.
+
+**Content check.** `python3 scripts/check-content.py` validates `content.json` (schema, `{en, it}` completeness, pinyin diacritics, duplicate hanzi per tab), that `sw.js` `ASSETS` lists every `js/*.js` file, and that every `CHROME` key has both languages. Run it after any content or module change; it is also wired as a pre-commit hook — enable once per clone with `git config core.hooksPath .githooks`. For the install-to-home-screen flow and native `zh-CN` TTS voices, test on real iOS Safari — desktop browsers have different voice availability.
 
 ## Architecture
 
@@ -51,7 +53,7 @@ A tab has **either** `sections` (flat: section → entries) **or** `subsections`
 - `intro` (optional `{en, it}` on any tab) renders a lead paragraph (`.app-intro`) above the sections.
 - Tone marks in `pinyin` must be real diacritics (`nǐ hǎo`), not numbered (`ni3 hao3`).
 - `hanzi` and `pinyin` are language-neutral (plain strings). **Every other translatable field** — `tab.label`, `subsection.title`, `section.title`, `entry.meaning` — is a `{en, it}` object. The `t()` helper in `js/i18n.js` resolves the active language; plain strings are accepted as a legacy fallback.
-- To add a tab, subsection, section, or entry: edit `content.json` with both `en` and `it` translations, and bump `CACHE` in `sw.js` so installed users pick it up.
+- To add a tab, subsection, section, or entry: edit `content.json` with both `en` and `it` translations, run `python3 scripts/check-content.py`, and bump `CACHE` in `sw.js` so installed users pick it up.
 
 ### Language switch
 EN / IT toggle, absolutely positioned at the top-right of `<header>` (scrolls away with it; not fixed). State is module-level (`currentLang` in `js/settings.js`, changed only via `setCurrentLang()`), persisted to `localStorage.lang`, and initialized from `navigator.language` on first visit (Italian browsers default to IT). Flipping the switch calls `rerenderContent()` (wipes and rebuilds tabs + panels using the new language) and `applyChrome()` (updates static UI strings via `data-i18n` / `data-i18n-html` attributes against the `CHROME` map in `js/i18n.js`). To add UI chrome text, add a key to `CHROME` and tag the element with `data-i18n="key"` (textContent) or `data-i18n-html="key"` (innerHTML — use for strings containing inline `<strong>` etc).
