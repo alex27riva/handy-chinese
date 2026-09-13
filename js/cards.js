@@ -1,9 +1,11 @@
 // Card interaction: tap (TTS / quiz reveal / search navigation), keyboard
 // activation, and long-press to copy the hanzi.
-import { quizMode } from './settings.js';
+import { quizMode, isFavorite, toggleFavorite, toggleCollapse } from './settings.js';
 import { CHROME, t } from './i18n.js';
 import { synth, speak } from './tts.js';
-import { setActiveTab } from './tabs.js';
+import { resetSearch } from './search.js';
+import { setActiveTab, resetTransient } from './tabs.js';
+import { refreshFavoritesPanel } from './render.js';
 import { showToast } from './toast.js';
 
 // Shared click handler for cards in the panels and in the favorites overlay.
@@ -18,16 +20,11 @@ export function handleCardClick(card) {
     if (tabId) {
       setActiveTab(tabId);
       document.getElementById('panels').classList.remove('global-search');
-      document.querySelectorAll('.tab-panel:not(.active)').forEach(p => {
-        p.classList.remove('search-active', 'no-match');
-        p.querySelectorAll('.card, .phrase-card, .app-card').forEach(c => c.style.display = '');
-        p.querySelectorAll('.section, .subsection').forEach(s => s.style.display = '');
-      });
+      // other panels drop their search state; the target keeps its filtered view
+      document.querySelectorAll('.tab-panel:not(.active)').forEach(resetSearch);
       const activePanel = document.querySelector('.tab-panel.active');
       if (activePanel) activePanel.classList.remove('no-match');
-      if (synth) synth.cancel();
-      document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
-      document.querySelectorAll('.card.revealed, .phrase-card.revealed').forEach(c => c.classList.remove('revealed'));
+      resetTransient();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
@@ -47,9 +44,37 @@ export function handleCardClick(card) {
   }
 }
 
-export function wireCards() {
-  document.querySelectorAll('.card, .phrase-card').forEach(card => {
-    card.addEventListener('click', () => handleCardClick(card));
+// Every star for the same entry (main panel + favorites overlay) shows one state.
+function syncStars(tabId, hanzi) {
+  const on = isFavorite(tabId, hanzi);
+  document.querySelectorAll('.favorite-btn').forEach(star => {
+    const card = star.closest('[data-tab]');
+    if (card && card.dataset.tab === tabId && card.dataset.hanzi === hanzi) star.classList.toggle('active', on);
+  });
+}
+
+// One delegated click listener on the persistent #panels covers cards, stars
+// and collapsible titles in every panel and in the favorites overlay, and
+// survives rerenderContent().
+export function wirePanelClicks() {
+  document.getElementById('panels').addEventListener('click', e => {
+    const star = e.target.closest('.favorite-btn');
+    if (star) {
+      const card = star.closest('[data-tab]');
+      if (!card) return;
+      toggleFavorite(card.dataset.tab, card.dataset.hanzi);
+      syncStars(card.dataset.tab, card.dataset.hanzi);
+      refreshFavoritesPanel();
+      return; // not a card tap: no TTS
+    }
+    const title = e.target.closest('[data-collapse-key]');
+    if (title) {
+      toggleCollapse(title.dataset.collapseKey);
+      title.parentElement.classList.toggle('is-collapsed');
+      return;
+    }
+    const card = e.target.closest('.card, .phrase-card');
+    if (card) handleCardClick(card);
   });
 }
 

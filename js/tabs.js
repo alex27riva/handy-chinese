@@ -15,19 +15,27 @@ export function setActiveTab(targetId) {
   });
 }
 
-export function switchToTab(targetId) {
-  setActiveTab(targetId);
+// Drop per-session card state that should not survive a navigation:
+// stop speech, clear the speaking highlight, hide quiz reveals.
+export function resetTransient() {
   if (synth) synth.cancel();
   document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
   document.querySelectorAll('.card.revealed, .phrase-card.revealed').forEach(c => c.classList.remove('revealed'));
+}
+
+export function switchToTab(targetId) {
+  setActiveTab(targetId);
+  resetTransient();
   const si = document.getElementById('searchInput');
   if (si && si.value) { si.value = ''; filterCards(''); }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// Delegated on the persistent #tabs, so it survives rerenderContent().
 export function wireTabs() {
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => switchToTab(tab.dataset.tab));
+  document.getElementById('tabs').addEventListener('click', e => {
+    const tab = e.target.closest('.tab');
+    if (tab) switchToTab(tab.dataset.tab);
   });
 }
 

@@ -1023,6 +1023,8 @@ body.fav-open {
 /* ── Global search: show all panels stacked ──────────────── */
 #panels.global-search .tab-panel          { display: block; }
 #panels.global-search .tab-panel.no-match { display: none; }
+/* non-matching cards / sections / subsections (set by filterCards in js/search.js) */
+#panels .search-hidden { display: none; }
 
 /* ── Per-panel tab label (visible in global search only) ─── */
 .panel-search-label {

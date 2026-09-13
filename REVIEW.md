@@ -17,23 +17,7 @@ Remaining from the 2026-09-09 visual review. The warm paper / ink / seal-red / g
 
 ## 2. Code structure
 
-Reviewed 2026-09-13. App is healthy and well documented; the script has been split into ES modules under `js/` (v0.16.1); the remaining items are within those modules. Ranked, highest impact first.
-
-### 2. Delegate all card events on `#panels`
-
-Already delegated: keydown (`wireCardKeys`), long-press (`wireLongPress`). Not delegated: card click (`wireCards`), star click (per card in `renderCard`), collapse titles, tab buttons. Consequences today:
-
-- `wireCards()` and `wireTabs()` must re-run on every `rerenderContent()`.
-- `showFavorites()` and `refreshFavoritesPanel()` each re-attach click listeners with a duplicated loop.
-- **Bug:** starring a card inside the favorites overlay only toggles the overlay's copy of the star. The matching card in the main panel keeps its lit star. Two DOM copies of one entry share no state.
-
-Fix: one click listener on `#panels`. `closest('.favorite-btn')` toggles the favorite and updates every star with the same `data-key`. Otherwise `closest('.card, .phrase-card')` calls `handleCardClick`. This removes `wireCards`, the `wireTabs` re-wiring, and both loops in the favorites functions.
-
-### 3. Drive search visibility with a class, not inline styles
-
-There are fourteen `style.display` writes. Cards and sections are hidden via inline style, panels via class. The reset code is duplicated in `filterCards('')` and in the global-search branch of `handleCardClick`.
-
-Use a `.search-hidden` class on cards, sections and subsections. Reset becomes one `querySelectorAll('.search-hidden')` loop. Extract `resetSearch(panel)` and call it from both places.
+Reviewed 2026-09-13. App is healthy and well documented; the script has been split into ES modules under `js/` (v0.16.1); clicks are delegated and search state is class-driven (v0.16.2); the remaining items are within those modules. Ranked, highest impact first.
 
 ### 4. Remove the repeated localStorage boilerplate
 
@@ -63,10 +47,6 @@ const CARD = {
 
 Then `renderSection(sec, tab)` is the single path and the `fieldPrefix` / `gridClass` helpers go away. The condition `cardClass === 'app-card' && tab.intro` dispatches on the wrong key; `intro` should be an optional field on any tab.
 
-### 6. Extract the transient-state reset
-
-`synth.cancel()` + strip `.speaking` + strip `.revealed` + scroll to top appears in `switchToTab`, `handleCardClick` and `setLang`. Extract `resetTransient()`.
-
 ### 7. Content schema leaks presentation
 
 `cardClass` stores a CSS classname in data. Rename it to `type: "vocab" | "phrase" | "app"` and let the renderer map types to classes. The visa tab uses `app-card` but is not an app. Low urgency, but the schema is the contract with future content.
@@ -84,7 +64,7 @@ There are no tests. A cheap script, `scripts/check-content.py`, should verify: e
 
 ### Suggested order
 
-Items 2, 3 and 6 first (small, fix a real bug), then 4 and 5, then 8.
+Items 4 and 5, then 8.
 
 ---
 

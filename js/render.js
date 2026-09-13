@@ -1,10 +1,9 @@
 // Renders tabs, panels, cards and the favorites overlay from content.json.
 // contentData lives here; app.js sets it after the fetch.
-import { isFavorite, toggleFavorite, isCollapsed, toggleCollapse } from './settings.js';
+import { isFavorite, isCollapsed, collapseKey } from './settings.js';
 import { CHROME, t } from './i18n.js';
 import { foldSearch } from './search.js';
-import { setActiveTab, wireTabs } from './tabs.js';
-import { handleCardClick, wireCards } from './cards.js';
+import { setActiveTab } from './tabs.js';
 
 const SPEAKER_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>`;
 
@@ -40,18 +39,13 @@ function renderCard(entry, cardClass, tabId) {
 
   card.dataset.search = foldSearch([entry.hanzi, entry.pinyin, t(entry.meaning)].join(' '));
   card.dataset.tab = tabId;
+  card.dataset.hanzi = entry.hanzi; // with data-tab, the favorites key (see cards.js)
 
   const star = document.createElement('button');
   star.type = 'button';
   star.className = 'favorite-btn' + (isFavorite(tabId, entry.hanzi) ? ' active' : '');
   star.setAttribute('aria-label', 'Toggle favorite');
-  star.innerHTML = STAR_SVG;
-  star.addEventListener('click', e => {
-    e.stopPropagation();
-    toggleFavorite(tabId, entry.hanzi);
-    star.classList.toggle('active');
-    refreshFavoritesPanel();
-  });
+  star.innerHTML = STAR_SVG; // click handled by the delegated listener in cards.js
   card.appendChild(star);
   return card;
 }
@@ -85,10 +79,7 @@ function renderSection(sec, cardClass, tabId, collapsible = false) {
   if (collapsible && sec.title) {
     if (isCollapsed(tabId, sec.title)) section.classList.add('is-collapsed');
     title.insertAdjacentHTML('beforeend', CHEVRON_SVG);
-    title.addEventListener('click', () => {
-      toggleCollapse(tabId, sec.title);
-      section.classList.toggle('is-collapsed');
-    });
+    title.dataset.collapseKey = collapseKey(tabId, sec.title); // click delegated in cards.js
   }
   const grid = document.createElement('div');
   grid.className = gridClass(cardClass);
@@ -106,10 +97,7 @@ function renderSubsection(sub, cardClass, tabId) {
     title.className = 'subsection-title';
     title.textContent = t(sub.title);
     title.insertAdjacentHTML('beforeend', CHEVRON_SVG);
-    title.addEventListener('click', () => {
-      toggleCollapse(tabId, sub.title);
-      wrap.classList.toggle('is-collapsed');
-    });
+    title.dataset.collapseKey = collapseKey(tabId, sub.title); // click delegated in cards.js
     wrap.appendChild(title);
   }
   sub.sections.forEach(sec => wrap.appendChild(renderSection(sec, cardClass, tabId)));
@@ -230,26 +218,18 @@ function renderFavoritesContent(container) {
   }
 }
 
+// Rebuild #favorites-content in place (cards get their clicks via delegation).
 export function refreshFavoritesPanel() {
   const content = document.getElementById('favorites-content');
   if (!content) return;
   content.innerHTML = '';
   renderFavoritesContent(content);
-  content.querySelectorAll('.card, .phrase-card').forEach(card => {
-    card.addEventListener('click', () => handleCardClick(card));
-  });
 }
 
 export function showFavorites() {
-  const overlay = document.getElementById('favorites-overlay');
-  const content = document.getElementById('favorites-content');
-  content.innerHTML = '';
-  renderFavoritesContent(content);
-  overlay.classList.add('active');
+  refreshFavoritesPanel();
+  document.getElementById('favorites-overlay').classList.add('active');
   document.body.classList.add('fav-open');
-  content.querySelectorAll('.card, .phrase-card').forEach(card => {
-    card.addEventListener('click', () => handleCardClick(card));
-  });
 }
 
 export function hideFavorites() {
@@ -270,6 +250,4 @@ export function rerenderContent() {
   renderTabs(contentData.tabs, tabsContainer);
   renderPanels(contentData.tabs, panelsContainer);
   setActiveTab(activeId);
-  wireTabs();
-  wireCards();
 }

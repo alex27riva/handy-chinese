@@ -32,12 +32,12 @@ try {
   const raw = localStorage.getItem(COLLAPSED_KEY);
   if (raw) { const arr = JSON.parse(raw); if (Array.isArray(arr)) collapsedGroups = new Set(arr); }
 } catch (e) {}
-function collapseKey(tabId, titleObj) {
+// English title is the stable id, so the state survives a language switch.
+export function collapseKey(tabId, titleObj) {
   return tabId + ':' + ((titleObj && titleObj.en) ? titleObj.en : String(titleObj));
 }
 export function isCollapsed(tabId, titleObj) { return collapsedGroups.has(collapseKey(tabId, titleObj)); }
-export function toggleCollapse(tabId, titleObj) {
-  const key = collapseKey(tabId, titleObj);
+export function toggleCollapse(key) {
   if (collapsedGroups.has(key)) collapsedGroups.delete(key); else collapsedGroups.add(key);
   try { localStorage.setItem(COLLAPSED_KEY, JSON.stringify([...collapsedGroups])); } catch (e) {}
 }

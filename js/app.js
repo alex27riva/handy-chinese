@@ -5,10 +5,9 @@ import {
   quizMode, setQuizMode, currentLang, setCurrentLang
 } from './settings.js';
 import { CHROME, t, applyChrome } from './i18n.js';
-import { synth } from './tts.js';
 import { filterCards } from './search.js';
-import { wireTabs, wireSwipe } from './tabs.js';
-import { wireCards, wireCardKeys, wireLongPress } from './cards.js';
+import { wireTabs, wireSwipe, resetTransient } from './tabs.js';
+import { wirePanelClicks, wireCardKeys, wireLongPress } from './cards.js';
 import {
   setContentData, renderTabs, renderPanels, rerenderContent,
   showFavorites, hideFavorites
@@ -83,8 +82,7 @@ showAppVersion();
 function setLang(lang) {
   if (!SUPPORTED_LANGS.includes(lang) || lang === currentLang) return;
   setCurrentLang(lang);
-  if (synth) synth.cancel();
-  document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
+  resetTransient();
   applyChrome();
   rerenderContent();
   const si = document.getElementById('searchInput');
@@ -149,6 +147,14 @@ document.getElementById('searchClear').addEventListener('click', () => {
 });
 
 // ── Content ────────────────────────────────────────────────
+// All listeners are delegated on the persistent #tabs / #panels containers,
+// so they are wired once here and survive every rerenderContent().
+wireTabs();
+wirePanelClicks();
+wireSwipe();
+wireLongPress();
+wireCardKeys();
+
 fetch('./content.json')
   .then(r => {
     if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -158,11 +164,6 @@ fetch('./content.json')
     setContentData(data);
     renderTabs(data.tabs, document.getElementById('tabs'));
     renderPanels(data.tabs, document.getElementById('panels'));
-    wireTabs();
-    wireCards();
-    wireSwipe();
-    wireLongPress();
-    wireCardKeys();
   })
   .catch(err => {
     const panels = document.getElementById('panels');
