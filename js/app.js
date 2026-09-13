@@ -14,8 +14,10 @@ import {
 } from './render.js';
 
 // ── Install hint: only on iOS/Android, hidden if standalone or dismissed ──
+// The banner starts `hidden` in the markup and is only revealed here.
 (function () {
   const hint = document.getElementById('installHint');
+  const installBtn = document.getElementById('installBtn');
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches
                     || window.navigator.standalone === true;
   const dismissed = store.get('hintDismissed') === '1';
@@ -25,40 +27,32 @@ import {
                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   const isAndroid = /android/i.test(ua);
 
-  if (isStandalone || dismissed || (!isIOS && !isAndroid)) {
-    hint.style.display = 'none';
-    return;
-  }
+  if (isStandalone || dismissed || (!isIOS && !isAndroid)) return;
+
+  const dismiss = () => { hint.hidden = true; store.set('hintDismissed', '1'); };
+  document.getElementById('hintClose').addEventListener('click', dismiss);
 
   if (isAndroid) {
     const textEl = hint.querySelector('[data-i18n-html]');
     if (textEl) textEl.dataset.i18nHtml = 'installHintAndroid';
 
     let deferredPrompt = null;
-    const installBtn = document.getElementById('installBtn');
-
     window.addEventListener('beforeinstallprompt', e => {
       e.preventDefault();
       deferredPrompt = e;
-      if (installBtn) installBtn.style.display = '';
+      installBtn.hidden = false;
     });
-
-    if (installBtn) {
-      installBtn.addEventListener('click', async () => {
-        if (!deferredPrompt) return;
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        hint.style.display = 'none';
-        store.set('hintDismissed', '1');
-      });
-    }
-
-    window.addEventListener('appinstalled', () => {
-      hint.style.display = 'none';
-      store.set('hintDismissed', '1');
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      dismiss();
     });
+    window.addEventListener('appinstalled', dismiss);
   }
+
+  hint.hidden = false;
 })();
 
 // ── App version ────────────────────────────────────────────

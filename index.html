@@ -45,11 +45,11 @@
   <p class="subtitle" data-i18n="subtitle">Essential Chinese for apps, food, travel & visa-free destinations</p>
 </header>
 
-<div class="install-hint" id="installHint">
-  <span style="font-size:1.1rem;">📱</span>
+<div class="install-hint" id="installHint" hidden>
+  <span class="install-emoji" aria-hidden="true">📱</span>
   <span data-i18n-html="installHint"><strong>Works offline!</strong> Tap Safari's Share button → <strong>Add to Home Screen</strong> to install as an app. Perfect for your trip.</span>
-  <button id="installBtn" class="install-btn" style="display:none" data-i18n="installBtnLabel">Install</button>
-  <button class="close-hint" onclick="this.parentElement.style.display='none'; try{localStorage.setItem('hintDismissed','1')}catch(e){}">✕</button>
+  <button id="installBtn" class="install-btn" hidden data-i18n="installBtnLabel">Install</button>
+  <button class="close-hint" id="hintClose" type="button" aria-label="Dismiss">✕</button>
 </div>
 
 <div class="tabs" id="tabs" role="tablist"></div>

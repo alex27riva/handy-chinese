@@ -40,6 +40,34 @@
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
 }
 
+/* the hidden attribute must beat any component display rule */
+[hidden] { display: none !important; }
+
+/* ── Dark mode ────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --ink: #f4ece0;           /* warm white */
+  --paper: #12100d;         /* deeper page so cards lift */
+  --red: #f07060;
+  --gold: #d9b544;          /* less neon than #e0b828 */
+  --muted: #b8a890;
+  --border: #3a3128;        /* visible hairline */
+  --card-bg: #1e1a15;
+
+  --text-2: #b8a890;        /* ≈8.5:1 on card */
+  --surface-highlight: rgba(255,255,255,0.035);
+  --accent-soft: rgba(240,112,96,0.3);
+  --accent-2-soft: rgba(217,181,68,0.14);
+
+  --shadow: rgba(0,0,0,0.45);
+  --overlay: rgba(0,0,0,0.88);
+  --speaking-bg: #2c2416;
+  --hint-bg: #261e10;
+  --gradient-red: rgba(240,112,96,0.07);
+  --gradient-gold: rgba(217,181,68,0.05);
+  --intro-gradient: linear-gradient(135deg, rgba(240,112,96,0.1) 0%, rgba(217,181,68,0.08) 100%);
+  --lang-shadow: rgba(0,0,0,0.35);
+}
+
 body {
   background: var(--surface);
   color: var(--text);
@@ -394,72 +422,8 @@ h1 {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Mobile: tabs become a fixed bottom bar ──────────────── */
-@media (max-width: 699px) {
-  body {
-    /* clear the bottom bar (≈3.6rem) plus breathing room */
-    padding-bottom: calc(env(safe-area-inset-bottom) + 5.5rem);
-  }
-
-  .tabs {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 150;
-    max-width: none;
-    margin: 0;
-    gap: 0;
-    padding: 0.3rem 0.25rem calc(env(safe-area-inset-bottom) + 0.3rem);
-    background: var(--surface-2);
-    border: none;
-    border-top: 1px solid var(--line);
-    border-radius: 0;
-    box-shadow: 0 -2px 12px var(--shadow);
-    overflow: visible;
-  }
-
-  .tab {
-    flex: 1 1 0;
-    min-width: 0;
-    padding: 0.3rem 0.15rem 0.2rem;
-    border-radius: 8px;
-    font-size: 0.55rem;
-    letter-spacing: 0.06em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: var(--text-2);
-    transition: color 0.2s;
-  }
-  .tab .tab-hanzi {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin: 0 0 0.1rem;
-    line-height: 1.2;
-    transition: transform 0.2s;
-  }
-  .tab:hover { color: var(--text-2); }
-  .tab.active {
-    background: transparent;
-    color: var(--text);
-    font-weight: 700;
-  }
-  .tab.active .tab-hanzi {
-    color: var(--accent);
-    transform: translateY(-1px);
-  }
-  .tab:active .tab-hanzi { transform: scale(0.92); }
-
-  /* slide the bar away while typing so the iOS keyboard doesn't push it over results */
-  .tabs { transition: transform 0.2s ease; }
-  body:has(#searchInput:focus) .tabs { transform: translateY(110%); }
-
-  /* keep fixed bottom-right / bottom-center chrome above the bar */
-  .app-version { bottom: calc(env(safe-area-inset-bottom) + 4.2rem); }
-  .toast { bottom: calc(env(safe-area-inset-bottom) + 5rem); }
-}
-
 /* Install hint banner (shown on iOS/Android, not when standalone or dismissed) */
+.install-hint .install-emoji { font-size: 1.1rem; }
 .install-hint {
   max-width: 860px;
   margin: 0 auto 1.5rem;
@@ -847,31 +811,6 @@ body.fav-open {
 .search-active .section.is-collapsed > .grid,
 .search-active .section.is-collapsed > .phrase-grid { display: block; }
 
-/* ── Dark mode ────────────────────────────────────────────── */
-[data-theme="dark"] {
-  --ink: #f4ece0;           /* warm white */
-  --paper: #12100d;         /* deeper page so cards lift */
-  --red: #f07060;
-  --gold: #d9b544;          /* less neon than #e0b828 */
-  --muted: #b8a890;
-  --border: #3a3128;        /* visible hairline */
-  --card-bg: #1e1a15;
-
-  --text-2: #b8a890;        /* ≈8.5:1 on card */
-  --surface-highlight: rgba(255,255,255,0.035);
-  --accent-soft: rgba(240,112,96,0.3);
-  --accent-2-soft: rgba(217,181,68,0.14);
-
-  --shadow: rgba(0,0,0,0.45);
-  --overlay: rgba(0,0,0,0.88);
-  --speaking-bg: #2c2416;
-  --hint-bg: #261e10;
-  --gradient-red: rgba(240,112,96,0.07);
-  --gradient-gold: rgba(217,181,68,0.05);
-  --intro-gradient: linear-gradient(135deg, rgba(240,112,96,0.1) 0%, rgba(217,181,68,0.08) 100%);
-  --lang-shadow: rgba(0,0,0,0.35);
-}
-
 /* ── Quiz mode ────────────────────────────────────────────── */
 [data-quiz="on"] .card:not(.revealed) .pinyin,
 [data-quiz="on"] .card:not(.revealed) .meaning,
@@ -1105,9 +1044,6 @@ body.fav-open {
   -webkit-tap-highlight-color: transparent;
 }
 .toast-update:hover { filter: brightness(1.08); }
-@media (max-width: 699px) {
-  .toast-update { bottom: calc(env(safe-area-inset-bottom) + 8rem); }
-}
 
 .card.copy-armed, .phrase-card.copy-armed, .app-card.copy-armed,
 .card.copied, .phrase-card.copied, .app-card.copied {
@@ -1116,4 +1052,72 @@ body.fav-open {
 }
 .card.copy-armed, .phrase-card.copy-armed, .app-card.copy-armed {
   border-color: var(--accent-2);
+}
+
+/* ── Mobile: tabs become a fixed bottom bar ──────────────── */
+/* Kept at the END of the file on purpose: these override .tabs, .toast,
+   .app-version and .toast-update by source order (same specificity). */
+@media (max-width: 699px) {
+  body {
+    /* clear the bottom bar (≈3.6rem) plus breathing room */
+    padding-bottom: calc(env(safe-area-inset-bottom) + 5.5rem);
+  }
+
+  .tabs {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 150;
+    max-width: none;
+    margin: 0;
+    gap: 0;
+    padding: 0.3rem 0.25rem calc(env(safe-area-inset-bottom) + 0.3rem);
+    background: var(--surface-2);
+    border: none;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+    box-shadow: 0 -2px 12px var(--shadow);
+    overflow: visible;
+  }
+
+  .tab {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0.3rem 0.15rem 0.2rem;
+    border-radius: 8px;
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-2);
+    transition: color 0.2s;
+  }
+  .tab .tab-hanzi {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.1rem;
+    line-height: 1.2;
+    transition: transform 0.2s;
+  }
+  .tab:hover { color: var(--text-2); }
+  .tab.active {
+    background: transparent;
+    color: var(--text);
+    font-weight: 700;
+  }
+  .tab.active .tab-hanzi {
+    color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .tab:active .tab-hanzi { transform: scale(0.92); }
+
+  /* slide the bar away while typing so the iOS keyboard doesn't push it over results */
+  .tabs { transition: transform 0.2s ease; }
+  body:has(#searchInput:focus) .tabs { transform: translateY(110%); }
+
+  /* keep fixed bottom-right / bottom-center chrome above the bar */
+  .app-version { bottom: calc(env(safe-area-inset-bottom) + 4.2rem); }
+  .toast { bottom: calc(env(safe-area-inset-bottom) + 5rem); }
+  .toast-update { bottom: calc(env(safe-area-inset-bottom) + 8rem); }
 }

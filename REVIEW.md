@@ -17,17 +17,7 @@ Remaining from the 2026-09-09 visual review. The warm paper / ink / seal-red / g
 
 ## 2. Code structure
 
-Reviewed 2026-09-13. App is healthy and well documented; the script has been split into ES modules under `js/` (v0.16.1); clicks are delegated and search state is class-driven (v0.16.2), storage goes through `store` (v0.16.3), sections render through one `CARD_KIND`-driven path (v0.16.4), `scripts/check-content.py` validates content, tabs declare `type` instead of a CSS class (v0.16.5); the remaining items are within those modules. Ranked, highest impact first.
-
-### Minor
-
-- The install hint uses inline `style=` and `onclick=` in the HTML. Move that to JS.
-- `[data-theme="dark"]` sits at line 850 of `style.css`. Move it next to `:root`.
-- Two `@media (max-width: 699px)` blocks (lines 398 and 1106). Merge them.
-
-### Suggested order
-
-Only the minor list remains.
+Reviewed 2026-09-13; all items shipped in v0.16.1 – v0.16.6 (ES modules under `js/`, delegated events, class-driven search state, `store` wrapper, single `CARD_KIND` render path, `type` in content, `scripts/check-content.py`, no inline handlers, ordered `style.css`). Nothing open.
 
 ---
 
