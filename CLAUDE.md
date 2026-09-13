@@ -47,7 +47,8 @@ On load, `index.html` fetches `content.json` and renders the entire tabbed card 
               "sections" OR "subsections": [...] } ] }
 ```
 A tab has **either** `sections` (flat: section → entries) **or** `subsections` (nested: subsection → sections → entries). The renderer dispatches on which key is present. Subsection titles render as large hanzi headers with a red-accent underline; use them to group related sections under a shared theme (e.g. vocab is grouped into `App UI`, `Food`, `Signs` and `Numbers`).
-- `cardClass` is either `"card"` (vocabulary style — compact, no accent) or `"phrase-card"` (phrase style — wider, gold left border). The renderer derives everything else from this: field classnames get a `phrase-` prefix for phrase cards, and the grid container becomes `.phrase-grid` vs `.grid`.
+- `cardClass` is `"card"` (vocabulary style — compact, no accent), `"phrase-card"` (phrase style — wider, gold left border) or `"app-card"` (icon + name + description, no star / TTS). It is the key into `CARD_KIND` in `js/render.js`, which holds the card renderer, the grid class, the field-class prefix and whether flat sections of that kind collapse. `renderSection(sec, tab)` is the single path for every section; to add a card style, add one `CARD_KIND` entry plus its CSS.
+- `intro` (optional `{en, it}` on any tab) renders a lead paragraph (`.app-intro`) above the sections.
 - Tone marks in `pinyin` must be real diacritics (`nǐ hǎo`), not numbered (`ni3 hao3`).
 - `hanzi` and `pinyin` are language-neutral (plain strings). **Every other translatable field** — `tab.label`, `subsection.title`, `section.title`, `entry.meaning` — is a `{en, it}` object. The `t()` helper in `js/i18n.js` resolves the active language; plain strings are accepted as a legacy fallback.
 - To add a tab, subsection, section, or entry: edit `content.json` with both `en` and `it` translations, and bump `CACHE` in `sw.js` so installed users pick it up.

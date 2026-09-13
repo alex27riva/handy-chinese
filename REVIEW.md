@@ -17,21 +17,7 @@ Remaining from the 2026-09-09 visual review. The warm paper / ink / seal-red / g
 
 ## 2. Code structure
 
-Reviewed 2026-09-13. App is healthy and well documented; the script has been split into ES modules under `js/` (v0.16.1); clicks are delegated and search state is class-driven (v0.16.2), storage goes through `store` (v0.16.3); the remaining items are within those modules. Ranked, highest impact first.
-
-### 5. Unify section rendering
-
-`renderPanels` contains an inline third section renderer for app cards that duplicates `renderSection`. Dispatch on `tab.cardClass` through a map:
-
-```js
-const CARD = {
-  'card':        { render: renderCard,    grid: 'grid' },
-  'phrase-card': { render: renderCard,    grid: 'phrase-grid' },
-  'app-card':    { render: renderAppCard, grid: 'app-grid' },
-};
-```
-
-Then `renderSection(sec, tab)` is the single path and the `fieldPrefix` / `gridClass` helpers go away. The condition `cardClass === 'app-card' && tab.intro` dispatches on the wrong key; `intro` should be an optional field on any tab.
+Reviewed 2026-09-13. App is healthy and well documented; the script has been split into ES modules under `js/` (v0.16.1); clicks are delegated and search state is class-driven (v0.16.2), storage goes through `store` (v0.16.3), sections render through one `CARD_KIND`-driven path (v0.16.4); the remaining items are within those modules. Ranked, highest impact first.
 
 ### 7. Content schema leaks presentation
 
@@ -50,7 +36,7 @@ There are no tests. A cheap script, `scripts/check-content.py`, should verify: e
 
 ### Suggested order
 
-Item 5, then 8.
+Item 8, then 7.
 
 ---
 

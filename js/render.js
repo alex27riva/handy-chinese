@@ -14,11 +14,19 @@ const CHEVRON_SVG = `<svg class="collapse-chevron" viewBox="0 0 24 24" fill="non
 export let contentData = null;
 export function setContentData(data) { contentData = data; }
 
-const fieldPrefix = cls => cls === 'phrase-card' ? 'phrase-' : '';
-const gridClass = cls => cls === 'phrase-card' ? 'phrase-grid' : 'grid';
+// One entry per tab.cardClass: how to render an entry, which grid wraps a
+// section, and whether flat sections of that kind can collapse.
+// (App sections hold 1–3 entries; a chevron there would be noise.)
+const CARD_KIND = {
+  'card':        { render: renderCard,    grid: 'grid',        prefix: '',        collapsible: true },
+  'phrase-card': { render: renderCard,    grid: 'phrase-grid', prefix: 'phrase-', collapsible: true },
+  'app-card':    { render: renderAppCard, grid: 'app-grid',                       collapsible: false },
+};
+const kindOf = tab => CARD_KIND[tab.cardClass] || CARD_KIND.card;
 
-function renderCard(entry, cardClass, tabId) {
-  const prefix = fieldPrefix(cardClass);
+function renderCard(entry, tab) {
+  const cardClass = tab.cardClass, tabId = tab.id;
+  const prefix = kindOf(tab).prefix;
   const card = document.createElement('div');
   card.className = cardClass;
   card.setAttribute('role', 'button');
@@ -70,25 +78,29 @@ export function renderTabs(tabs, container) {
   });
 }
 
-function renderSection(sec, cardClass, tabId, collapsible = false) {
+// Single path for every section, whatever the card kind.
+function renderSection(sec, tab, collapsible = false) {
+  const kind = kindOf(tab);
   const section = document.createElement('div');
   section.className = 'section';
   const title = document.createElement('div');
   title.className = 'section-title';
   title.textContent = t(sec.title);
-  if (collapsible && sec.title) {
-    if (isCollapsed(tabId, sec.title)) section.classList.add('is-collapsed');
+  if (collapsible && kind.collapsible && sec.title) {
+    if (isCollapsed(tab.id, sec.title)) section.classList.add('is-collapsed');
     title.insertAdjacentHTML('beforeend', CHEVRON_SVG);
-    title.dataset.collapseKey = collapseKey(tabId, sec.title); // click delegated in cards.js
+    title.dataset.collapseKey = collapseKey(tab.id, sec.title); // click delegated in cards.js
   }
   const grid = document.createElement('div');
-  grid.className = gridClass(cardClass);
-  sec.entries.forEach(entry => grid.appendChild(renderCard(entry, cardClass, tabId)));
+  grid.className = kind.grid;
+  sec.entries.forEach(entry => grid.appendChild(kind.render(entry, tab)));
   section.append(title, grid);
   return section;
 }
 
-function renderSubsection(sub, cardClass, tabId) {
+// Subsection: a titled, collapsible group of sections (sections inside do not collapse).
+function renderSubsection(sub, tab) {
+  const tabId = tab.id;
   const wrap = document.createElement('div');
   wrap.className = 'subsection';
   if (sub.title) {
@@ -100,11 +112,11 @@ function renderSubsection(sub, cardClass, tabId) {
     title.dataset.collapseKey = collapseKey(tabId, sub.title); // click delegated in cards.js
     wrap.appendChild(title);
   }
-  sub.sections.forEach(sec => wrap.appendChild(renderSection(sec, cardClass, tabId)));
+  sub.sections.forEach(sec => wrap.appendChild(renderSection(sec, tab)));
   return wrap;
 }
 
-function renderAppCard(entry, tabId) {
+function renderAppCard(entry, tab) {
   const card = document.createElement('div');
   card.className = 'app-card';
   const icon = document.createElement('div');
@@ -132,15 +144,16 @@ function renderAppCard(entry, tabId) {
   content.append(nameRow, pinyin, desc);
   card.append(icon, content);
   card.dataset.search = foldSearch([entry.hanzi, entry.pinyin, entry.name, t(entry.description)].join(' '));
-  card.dataset.tab = tabId;
+  card.dataset.tab = tab.id;
   return card;
 }
 
-function renderAppIntro(introText, container) {
+// Optional lead paragraph under the panel label (any tab may set `intro`).
+function renderIntro(introText) {
   const intro = document.createElement('div');
   intro.className = 'app-intro';
   intro.textContent = t(introText);
-  container.appendChild(intro);
+  return intro;
 }
 
 export function renderPanels(tabs, container) {
@@ -154,24 +167,12 @@ export function renderPanels(tabs, container) {
     label.className = 'panel-search-label';
     label.textContent = t(tab.label);
     panel.appendChild(label);
-    if (tab.cardClass === 'app-card' && tab.intro) {
-      renderAppIntro(tab.intro, panel);
-      tab.sections.forEach(sec => {
-        const section = document.createElement('div');
-        section.className = 'section';
-        const title = document.createElement('div');
-        title.className = 'section-title';
-        title.textContent = t(sec.title);
-        const grid = document.createElement('div');
-        grid.className = 'app-grid';
-        sec.entries.forEach(entry => grid.appendChild(renderAppCard(entry, tab.id)));
-        section.append(title, grid);
-        panel.appendChild(section);
-      });
-    } else if (tab.subsections) {
-      tab.subsections.forEach(sub => panel.appendChild(renderSubsection(sub, tab.cardClass, tab.id)));
+    if (tab.intro) panel.appendChild(renderIntro(tab.intro));
+    // nested: subsections collapse; flat: sections collapse (if the card kind allows)
+    if (tab.subsections) {
+      tab.subsections.forEach(sub => panel.appendChild(renderSubsection(sub, tab)));
     } else {
-      tab.sections.forEach(sec => panel.appendChild(renderSection(sec, tab.cardClass, tab.id, true)));
+      tab.sections.forEach(sec => panel.appendChild(renderSection(sec, tab, true)));
     }
     container.appendChild(panel);
   });
@@ -204,8 +205,8 @@ function renderFavoritesContent(container) {
       title.className = 'subsection-title';
       title.textContent = t(tab.label);
       const grid = document.createElement('div');
-      grid.className = gridClass(tab.cardClass);
-      entries.forEach(e => grid.appendChild(renderCard(e, tab.cardClass, tab.id)));
+      grid.className = kindOf(tab).grid;
+      entries.forEach(e => grid.appendChild(renderCard(e, tab)));
       section.append(title, grid);
       container.appendChild(section);
     });
