@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TTS test</title>
+<style>
+  body { font: 15px/1.4 -apple-system, system-ui, sans-serif; margin: 0; padding: 1rem 1rem 3rem; }
+  h1 { font-size: 1.1rem; margin: 0 0 .5rem; }
+  button { display: block; width: 100%; margin: 0 0 .5rem; padding: .9rem; font-size: 1rem;
+           border: 1px solid #888; border-radius: 8px; background: #f4f4f4; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #f0f0f0; padding: .6rem;
+        border-radius: 6px; font-size: 12px; }
+  h2 { font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; color: #666; margin: 1.2rem 0 .4rem; }
+</style>
+</head>
+<body>
+<h1>Hàndy TTS test</h1>
+<pre id="env">…</pre>
+
+<h2>Speech</h2>
+<button data-test="plain">A · speak 你好 (no lang, no voice)</button>
+<button data-test="lang">B · speak 你好 (lang=zh-CN)</button>
+<button data-test="voice">C · speak 你好 (explicit zh voice)</button>
+<button data-test="session">D · audioSession=playback, then speak</button>
+<button data-test="loop">E · silent WAV loop, then speak</button>
+<button data-test="both">F · audioSession + silent loop, then speak</button>
+
+<h2>Plain audio (is it the switch or the speech engine?)</h2>
+<button data-test="beep">G · beep via &lt;audio&gt; element</button>
+<button data-test="webaudio">H · beep via AudioContext</button>
+
+<h2>Log</h2>
+<button data-test="clear">clear log</button>
+<pre id="log"></pre>
+
+<script>
+const logEl = document.getElementById('log');
+const log = (...a) => {
+  logEl.textContent = new Date().toTimeString().slice(0, 8) + '  ' + a.join(' ') + '\n' + logEl.textContent;
+};
+const synth = window.speechSynthesis;
+
+function wavUrl(freq, seconds) {           // freq 0 → silence
+  const rate = 8000, n = Math.round(rate * seconds);
+  const buf = new ArrayBuffer(44 + n), v = new DataView(buf);
+  const tag = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+  tag(0, 'RIFF'); v.setUint32(4, 36 + n, true); tag(8, 'WAVEfmt ');
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, rate, true); v.setUint32(28, rate, true);
+  v.setUint16(32, 1, true); v.setUint16(34, 8, true);
+  tag(36, 'data'); v.setUint32(40, n, true);
+  const d = new Uint8Array(buf, 44);
+  for (let i = 0; i < n; i++) d[i] = freq ? 128 + Math.round(90 * Math.sin(2 * Math.PI * freq * i / rate)) : 128;
+  return URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
+}
+
+function zhVoice() {
+  const vs = synth ? synth.getVoices() : [];
+  return vs.find(v => v.lang === 'zh-CN') || vs.find(v => v.lang.replace('_', '-').startsWith('zh')) || null;
+}
+
+function dumpEnv() {
+  const vs = synth ? synth.getVoices() : [];
+  const zh = vs.filter(v => v.lang.replace('_', '-').toLowerCase().startsWith('zh'));
+  document.getElementById('env').textContent = [
+    'UA: ' + navigator.userAgent,
+    'standalone: ' + (window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true),
+    'speechSynthesis: ' + !!synth,
+    'audioSession: ' + (navigator.audioSession ? ('yes, type=' + navigator.audioSession.type) : 'no'),
+    'voices: ' + vs.length + '   zh voices: ' + (zh.map(v => v.name + ' [' + v.lang + ']').join(', ') || 'NONE'),
+    'state: speaking=' + (synth && synth.speaking) + ' pending=' + (synth && synth.pending) + ' paused=' + (synth && synth.paused)
+  ].join('\n');
+}
+dumpEnv();
+if (synth) synth.onvoiceschanged = dumpEnv;
+
+let loopEl = null;
+function startLoop() {
+  if (loopEl) { log('loop already running'); return; }
+  loopEl = new Audio(wavUrl(0, 0.2));
+  loopEl.loop = true;
+  loopEl.play().then(() => log('silent loop playing')).catch(e => log('silent loop FAILED:', e.name, e.message));
+}
+function setSession() {
+  if (!navigator.audioSession) { log('no navigator.audioSession on this browser'); return; }
+  try { navigator.audioSession.type = 'playback'; log('audioSession.type =', navigator.audioSession.type); }
+  catch (e) { log('audioSession FAILED:', e.name, e.message); }
+}
+
+function doSpeak(label, opts) {
+  if (!synth) { log('no speechSynthesis'); return; }
+  if (synth.speaking || synth.pending) synth.cancel();
+  const u = new SpeechSynthesisUtterance('你好，欢迎');
+  if (opts.lang) u.lang = 'zh-CN';
+  if (opts.voice) { const v = zhVoice(); u.voice = v; log(label, 'voice =', v ? v.name : 'NONE FOUND'); }
+  u.rate = 0.85;
+  u.onstart = () => log(label, 'onstart');
+  u.onend = () => log(label, 'onend');
+  u.onerror = e => log(label, 'ONERROR:', e.error || '(no code)');
+  u.onboundary = null;
+  synth.speak(u);
+  log(label, 'speak() called; speaking=' + synth.speaking + ' pending=' + synth.pending + ' paused=' + synth.paused);
+  setTimeout(() => log(label, '+1.5s: speaking=' + synth.speaking + ' pending=' + synth.pending + ' paused=' + synth.paused), 1500);
+}
+
+const tests = {
+  plain:    () => doSpeak('A', {}),
+  lang:     () => doSpeak('B', { lang: true }),
+  voice:    () => doSpeak('C', { lang: true, voice: true }),
+  session:  () => { setSession(); doSpeak('D', { lang: true, voice: true }); },
+  loop:     () => { startLoop(); doSpeak('E', { lang: true, voice: true }); },
+  both:     () => { setSession(); startLoop(); doSpeak('F', { lang: true, voice: true }); },
+  beep:     () => { const a = new Audio(wavUrl(440, 1)); a.play().then(() => log('G: <audio> beep playing')).catch(e => log('G FAILED:', e.name, e.message)); },
+  webaudio: () => {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) { log('H: no AudioContext'); return; }
+    const ctx = new Ctx();
+    ctx.resume();
+    const osc = ctx.createOscillator(), g = ctx.createGain();
+    osc.frequency.value = 440; g.gain.value = 0.2;
+    osc.connect(g).connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime + 1);
+    log('H: AudioContext beep, state =', ctx.state);
+  },
+  clear:    () => { logEl.textContent = ''; dumpEnv(); }
+};
+
+document.querySelectorAll('button[data-test]').forEach(b => {
+  b.addEventListener('click', () => { tests[b.dataset.test](); setTimeout(dumpEnv, 300); });
+});
+</script>
+</body>
+</html>

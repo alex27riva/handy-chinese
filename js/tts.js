@@ -50,8 +50,10 @@ function silentWavUrl() {
 function unlockAudio() {
   if (audioUnlocked || !platform.ios) return;
   audioUnlocked = true;
+  // Both routes, not one or the other: the AudioSession API alone did not lift
+  // the silent switch on iOS 26/27, where speech is routed as system speech.
   if (navigator.audioSession) {
-    try { navigator.audioSession.type = 'playback'; return; } catch (e) {}
+    try { navigator.audioSession.type = 'playback'; } catch (e) {}
   }
   try {
     silentLoop = new Audio(silentWavUrl()); // kept referenced so it stays alive
@@ -97,6 +99,7 @@ export function speak(text, card) {
   if (synth.speaking || synth.pending) cancelSpeech();
   if (currentCard) currentCard.classList.remove('speaking');
 
+  if (!zhVoice) pickVoice(); // voice lists arrive late on Android
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = 'zh-CN';
   if (zhVoice) utter.voice = zhVoice;
@@ -107,9 +110,19 @@ export function speak(text, card) {
     card.classList.add('speaking');
     currentCard = card;
   };
-  utter.onend = utter.onerror = () => {
+  const done = () => {
     card.classList.remove('speaking');
     if (currentCard === card) currentCard = null;
+  };
+  utter.onend = done;
+  // A failed utterance is otherwise completely silent — say why, except for the
+  // two codes we cause ourselves by cancelling.
+  utter.onerror = e => {
+    done();
+    const code = e && e.error;
+    if (code && code !== 'interrupted' && code !== 'canceled') {
+      showToast(t(CHROME.ttsFailed) + ' (' + code + ')', { ms: 4000, long: true });
+    }
   };
 
   currentUtter = utter;

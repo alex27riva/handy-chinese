@@ -29,6 +29,10 @@ export const CHROME = {
     en: 'Speech is not supported in this browser',
     it: 'La sintesi vocale non è supportata in questo browser'
   },
+  ttsFailed: {
+    en: 'Speech failed on this device',
+    it: 'Sintesi vocale fallita su questo dispositivo'
+  },
   noZhVoice: {
     en: 'No Chinese voice installed, so hanzi may be read wrong. iOS: Settings → Accessibility → Spoken Content → Voices → Chinese. Android: Settings → Text-to-speech.',
     it: 'Nessuna voce cinese installata: gli hanzi potrebbero essere letti male. iOS: Impostazioni → Accessibilità → Contenuto letto → Voci → Cinese. Android: Impostazioni → Sintesi vocale.'
