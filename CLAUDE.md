@@ -123,7 +123,7 @@ Cards rendered by `renderCard` are `div`s with `role="button"` and `tabIndex = 0
 `wireTabs()` delegates tab button clicks on `#tabs` to `switchToTab`. `wireSwipe()` adds passive `touchstart`/`touchend` listeners on `#panels`: fires `switchToTab` on horizontal swipe ≥50px where `|dx| > |dy|` (so vertical scroll is never hijacked). `wireSwipe()` attaches once to the persistent `#panels` div and survives `rerenderContent()` — it is NOT called again on language switch.
 
 ### TTS
-`speak(text, card)` via `window.speechSynthesis`. Voice selection prefers `zh-CN`, falls back to any `zh-*`. Rate 0.85. **Missing-voice hint:** on the first tap, if the device reports voices but none is `zh-*`, `maybeVoiceHint()` shows a long-form toast (`CHROME.noZhVoice`, 6s, `.toast-long` wraps instead of truncating) pointing at the iOS / Android settings screens, then sets `localStorage.voiceHintShown` so it never repeats. Devices reporting zero voices (desktop Linux, headless) get no hint because nothing can be concluded. `synth.cancel()` runs on tab switch and before each utterance to prevent overlap. The `.speaking` class is the visual-feedback hook.
+`speak(text, card)` via `window.speechSynthesis`. Voice selection prefers `zh-CN`, falls back to any `zh-*`. Rate 0.85. **Missing-voice hint:** on the first tap, if the device reports voices but none is `zh-*`, `maybeVoiceHint()` shows a long-form toast (`CHROME.noZhVoice`, 6s, `.toast-long` wraps instead of truncating) pointing at the iOS / Android settings screens, then sets `localStorage.voiceHintShown` so it never repeats. Devices reporting zero voices (desktop Linux, headless) get no hint because nothing can be concluded. **Cancelling.** `cancelSpeech()` in `js/tts.js` is the single cancel path (tab switch in `tabs.js`, re-tap in quiz mode in `cards.js`, and inside `speak()` when something is still speaking); `synth` itself is module-private. It stamps the cancel time, because Firefox (bug 1522074) silently drops a `speak()` issued right after a `cancel()` — so on `platform.firefox` `speak()` defers the utterance until 300ms after the last cancel, while every other engine speaks synchronously (iOS requires the call to stay inside the tap). The utterance is also held in `currentUtter` so GC cannot collect it mid-sentence. **iOS silent switch.** iOS puts the page in the `ambient` audio session, which the ring/silent switch mutes — speech included, so cards were silent unless the switch was flipped. `unlockAudio()` runs on the first `speak()` (still inside the user gesture) and promotes the session to `playback` via `navigator.audioSession` (Safari 16.4+), falling back on older iOS to a silent looping `<audio>` built at runtime by `silentWavUrl()` — no asset, nothing to precache. iOS only; desktop and Android are untouched. The `.speaking` class is the visual-feedback hook.
 
 ### Offline / PWA
 - `sw.js` precaches `./`, `./index.html`, `./content.json`, `./style.css`, `./manifest.json`, `./icon.svg`, `./apple-touch-icon.png` and every `./js/*.js` module on install (with `cache: 'reload'` requests, so the browser's HTTP cache can never hand a new worker a stale module next to fresh ones) and serves cache-first with a network fallback that also populates the cache. When both cache and network fail, only navigation requests fall back to `./index.html`; a failed module or JSON request rejects instead of returning HTML. Bump the `CACHE` constant when shipping a change you want users to pick up — otherwise the old version stays cached indefinitely. `CACHE` doubles as the app version string (see Editing conventions); `showAppVersion()` in `js/app.js` reads it via `caches.keys()` at load, on `navigator.serviceWorker.ready`, and on `controllerchange`.
@@ -131,20 +131,6 @@ Cards rendered by `renderCard` are `div`s with `role="button"` and `tabIndex = 0
 - Install hint is platform-aware: iOS shows Safari share instructions; Android shows browser menu / Install button instructions. Detection uses UA sniffing (`/android/i`). Both hints share the same dismissible banner (`localStorage.hintDismissed`). The banner and the Install button start with the `hidden` attribute in the markup; `js/app.js` reveals the banner only on iOS/Android when not standalone/dismissed, and the button only after `beforeinstallprompt`. No inline `style=` / `onclick=` in `index.html`.
 - `@media (display-mode: standalone)` hides the install hint when launched from the home screen.
 - **Update prompt.** `sw.js` calls `skipWaiting()` + `clients.claim()`, so a new worker takes control of open pages as soon as it installs; the page then fires `controllerchange`. `js/app.js` listens for it and shows `#updateToast` ("New version ready · tap to reload", `CHROME.updateReady`) — tapping reloads. A `hadController` flag (true only if a worker already controlled the page at load) suppresses the toast on first install. The registration also calls `reg.update()` on `visibilitychange` → visible, so an installed app that was backgrounded re-checks `sw.js` when reopened. Net effect: bump `CACHE`, deploy, and users get the toast on their next foregrounding instead of silently running the old build.
-
-### Domain migration banner
-The app is served from `handyhanzi.app` (repo-root `CNAME`, GitHub Pages). The
-old `alex27riva.github.io/handy-chinese/` address still serves whatever was last
-built there. `localStorage` is per origin, so favorites, collapsed groups and
-**custom phrases do not follow the user across the move**. `#migrateHint` (static
-markup in `index.html`, logic in the second IIFE of `js/app.js`) is revealed only
-when `location.hostname === OLD_HOST`, and unlike the install hint it stays
-visible in standalone — installed users are precisely the ones at risk. With
-entries in `customEntries` it swaps the text to `CHROME.migrateHintData` and
-shows an Export button wired to `exportEntries()`; otherwise it shows
-`CHROME.migrateHint`. Dismissal persists in `localStorage.migrateDismissed`.
-Delete the banner (markup, the app.js block, the two CHROME keys and the
-`.migrate-hint` CSS) once the old address is retired.
 
 ### localStorage keys
 | Key | Format | Purpose |
@@ -156,7 +142,6 @@ Delete the banner (markup, the app.js block, the two CHROME keys and the
 | `hintDismissed` | `'1'` | Install banner dismissed |
 | `pinyinHidden` | `'1'` \| `'0'` | Hide pinyin romanization |
 | `voiceHintShown` | `'1'` | Missing-Chinese-voice toast already shown |
-| `migrateDismissed` | `'1'` | Domain-migration banner dismissed |
 | `customEntries` | JSON array of `{hanzi, pinyin, meaning, note}` | User's own phrases (我的 tab) |
 
 ## Editing conventions

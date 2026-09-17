@@ -9,7 +9,7 @@ import { filterCards } from './search.js';
 import { wireTabs, wireSwipe, resetTransient } from './tabs.js';
 import { wirePanelClicks, wireCardKeys, wireLongPress } from './cards.js';
 import { setContentData, rerenderContent, showFavorites, hideFavorites } from './render.js';
-import { wireCustom, customEntries, exportEntries } from './custom.js';
+import { wireCustom } from './custom.js';
 
 // ── Install hint: only on iOS/Android, hidden if standalone or dismissed ──
 // The banner starts `hidden` in the markup and is only revealed here.
@@ -43,33 +43,6 @@ import { wireCustom, customEntries, exportEntries } from './custom.js';
       dismiss();
     });
     window.addEventListener('appinstalled', dismiss);
-  }
-
-  hint.hidden = false;
-})();
-
-// ── Migration notice: only on the retired github.io address ───────────────
-// localStorage is per origin, so custom phrases and favourites do NOT follow
-// the user to the new domain. Shown in standalone too (installed users are
-// exactly the ones at risk), so it does not reuse .install-hint.
-const OLD_HOST = 'alex27riva.github.io';
-(function () {
-  if (location.hostname !== OLD_HOST) return;
-  const hint = document.getElementById('migrateHint');
-  if (!hint || store.get('migrateDismissed') === '1') return;
-
-  document.getElementById('migrateClose').addEventListener('click', () => {
-    hint.hidden = true;
-    store.set('migrateDismissed', '1');
-  });
-
-  // With phrases to lose, point at Export and offer the button.
-  if (customEntries().length) {
-    const textEl = hint.querySelector('[data-i18n-html]');
-    if (textEl) textEl.dataset.i18nHtml = 'migrateHintData';
-    const btn = document.getElementById('migrateExport');
-    btn.hidden = false;
-    btn.addEventListener('click', () => exportEntries());
   }
 
   hint.hidden = false;

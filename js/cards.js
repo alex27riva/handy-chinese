@@ -2,7 +2,7 @@
 // activation, and long-press to copy the hanzi.
 import { quizMode, isFavorite, toggleFavorite, toggleCollapse } from './settings.js';
 import { CHROME, t } from './i18n.js';
-import { synth, speak } from './tts.js';
+import { cancelSpeech, speak } from './tts.js';
 import { resetSearch } from './search.js';
 import { setActiveTab, resetTransient } from './tabs.js';
 import { refreshFavoritesPanel } from './render.js';
@@ -35,7 +35,7 @@ export function handleCardClick(card) {
       const hanziEl = card.querySelector('.hanzi, .phrase-hanzi');
       speak(hanziEl.textContent.trim(), card);
     } else {
-      if (synth) synth.cancel();
+      cancelSpeech();
       card.classList.remove('speaking');
     }
   } else {

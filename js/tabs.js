@@ -1,5 +1,5 @@
 // Tab navigation: single owner of active-tab DOM state, clicks and swipes.
-import { synth } from './tts.js';
+import { cancelSpeech } from './tts.js';
 import { filterCards } from './search.js';
 
 // Single owner of the active-tab DOM state (classes + aria), so the tab strip
@@ -18,7 +18,7 @@ export function setActiveTab(targetId) {
 // Drop per-session card state that should not survive a navigation:
 // stop speech, clear the speaking highlight, hide quiz reveals.
 export function resetTransient() {
-  if (synth) synth.cancel();
+  cancelSpeech();
   document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
   document.querySelectorAll('.card.revealed, .phrase-card.revealed').forEach(c => c.classList.remove('revealed'));
 }
