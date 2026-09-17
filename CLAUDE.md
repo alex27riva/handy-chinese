@@ -24,6 +24,7 @@ Core files:
 - `content.json` — all vocabulary and phrase data (tabs → sections → entries).
 - `sw.js` — service worker providing cache-first offline support.
 - `manifest.json` — Web App Manifest for Android PWA install prompt.
+- `CNAME` — custom domain for GitHub Pages (`handyhanzi.app`). Repo root, one line, no scheme. Not a runtime asset: keep it out of `ASSETS` in `sw.js`.
 - `icon.svg` — app icon (SVG, `purpose: any`, referenced by manifest and precached by SW).
 - `icon-maskable.svg` — same seal, full-bleed square with the glyph kept inside the central 80% safe zone; `purpose: maskable` in the manifest so Android adaptive icons crop it cleanly.
 - `apple-touch-icon.png` — 180×180 PNG home-screen icon for iOS (Safari ignores SVG `apple-touch-icon`). Square, no rounded corners — iOS applies its own mask. Regenerate from `icon.svg` with `rx="0"` if the icon changes.
@@ -131,6 +132,20 @@ Cards rendered by `renderCard` are `div`s with `role="button"` and `tabIndex = 0
 - `@media (display-mode: standalone)` hides the install hint when launched from the home screen.
 - **Update prompt.** `sw.js` calls `skipWaiting()` + `clients.claim()`, so a new worker takes control of open pages as soon as it installs; the page then fires `controllerchange`. `js/app.js` listens for it and shows `#updateToast` ("New version ready · tap to reload", `CHROME.updateReady`) — tapping reloads. A `hadController` flag (true only if a worker already controlled the page at load) suppresses the toast on first install. The registration also calls `reg.update()` on `visibilitychange` → visible, so an installed app that was backgrounded re-checks `sw.js` when reopened. Net effect: bump `CACHE`, deploy, and users get the toast on their next foregrounding instead of silently running the old build.
 
+### Domain migration banner
+The app is served from `handyhanzi.app` (repo-root `CNAME`, GitHub Pages). The
+old `alex27riva.github.io/handy-chinese/` address still serves whatever was last
+built there. `localStorage` is per origin, so favorites, collapsed groups and
+**custom phrases do not follow the user across the move**. `#migrateHint` (static
+markup in `index.html`, logic in the second IIFE of `js/app.js`) is revealed only
+when `location.hostname === OLD_HOST`, and unlike the install hint it stays
+visible in standalone — installed users are precisely the ones at risk. With
+entries in `customEntries` it swaps the text to `CHROME.migrateHintData` and
+shows an Export button wired to `exportEntries()`; otherwise it shows
+`CHROME.migrateHint`. Dismissal persists in `localStorage.migrateDismissed`.
+Delete the banner (markup, the app.js block, the two CHROME keys and the
+`.migrate-hint` CSS) once the old address is retired.
+
 ### localStorage keys
 | Key | Format | Purpose |
 |-----|--------|---------|
@@ -141,6 +156,7 @@ Cards rendered by `renderCard` are `div`s with `role="button"` and `tabIndex = 0
 | `hintDismissed` | `'1'` | Install banner dismissed |
 | `pinyinHidden` | `'1'` \| `'0'` | Hide pinyin romanization |
 | `voiceHintShown` | `'1'` | Missing-Chinese-voice toast already shown |
+| `migrateDismissed` | `'1'` | Domain-migration banner dismissed |
 | `customEntries` | JSON array of `{hanzi, pinyin, meaning, note}` | User's own phrases (我的 tab) |
 
 ## Editing conventions

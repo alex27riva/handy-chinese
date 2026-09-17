@@ -57,6 +57,14 @@ export const CHROME = {
     en: '<strong>Works offline!</strong> Tap <strong>Install</strong> or use your browser menu → <strong>Add to Home Screen</strong>.',
     it: '<strong>Funziona offline!</strong> Tocca <strong>Installa</strong> o usa il menu del browser → <strong>Aggiungi alla schermata Home</strong>.'
   },
+  migrateHint: {
+    en: '<strong>Hàndy has moved to <a href="https://handyhanzi.app">handyhanzi.app</a>.</strong> This address is no longer updated — open the new one and install it from there.',
+    it: '<strong>Hàndy si è spostata su <a href="https://handyhanzi.app">handyhanzi.app</a>.</strong> Questo indirizzo non viene più aggiornato — apri il nuovo e installalo da lì.'
+  },
+  migrateHintData: {
+    en: '<strong>Hàndy has moved to <a href="https://handyhanzi.app">handyhanzi.app</a>.</strong> Your own phrases are stored per address and will not follow you — tap <strong>Export</strong> here, then <strong>Import</strong> the file there.',
+    it: '<strong>Hàndy si è spostata su <a href="https://handyhanzi.app">handyhanzi.app</a>.</strong> Le tue frasi sono salvate per indirizzo e non ti seguiranno — tocca <strong>Esporta</strong> qui, poi <strong>Importa</strong> il file lì.'
+  },
   installBtnLabel: {
     en: 'Install',
     it: 'Installa'
