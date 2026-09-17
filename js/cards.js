@@ -67,6 +67,7 @@ export function wirePanelClicks() {
       refreshFavoritesPanel();
       return; // not a card tap: no TTS
     }
+    if (e.target.closest('button, a')) return; // other buttons / links (custom actions, Pleco) have their own handlers
     const title = e.target.closest('[data-collapse-key]');
     if (title) {
       toggleCollapse(title.dataset.collapseKey);
@@ -84,7 +85,7 @@ export function wireCardKeys() {
   document.getElementById('panels').addEventListener('keydown', e => {
     if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
     const card = e.target.closest('.card, .phrase-card');
-    if (!card || e.target.closest('button')) return;
+    if (!card || e.target.closest('button, a')) return;
     e.preventDefault(); // Space would otherwise scroll the page
     handleCardClick(card);
   });
@@ -140,7 +141,7 @@ export function wireLongPress() {
   panels.addEventListener('pointerdown', e => {
     if (e.button !== 0) return;
     const target = e.target.closest('.card, .phrase-card, .app-card');
-    if (!target || e.target.closest('button')) return;
+    if (!target || e.target.closest('button, a')) return;
     reset();
     card = target; x0 = e.clientX; y0 = e.clientY;
     timer = setTimeout(() => {

@@ -287,6 +287,53 @@
               ]
             }
           ]
+        },
+        {
+          "title": {"en": "Countries", "it": "Paesi"},
+          "sections": [
+            {
+              "title": {"en": "Countries", "it": "Paesi"},
+              "entries": [
+                {"hanzi": "中国", "pinyin": "zhōng guó", "meaning": {"en": "China", "it": "Cina"}},
+                {"hanzi": "意大利", "pinyin": "yì dà lì", "meaning": {"en": "Italy", "it": "Italia"}},
+                {"hanzi": "英国", "pinyin": "yīng guó", "meaning": {"en": "United Kingdom", "it": "Regno Unito"}},
+                {"hanzi": "法国", "pinyin": "fǎ guó", "meaning": {"en": "France", "it": "Francia"}},
+                {"hanzi": "德国", "pinyin": "dé guó", "meaning": {"en": "Germany", "it": "Germania"}},
+                {"hanzi": "西班牙", "pinyin": "xī bān yá", "meaning": {"en": "Spain", "it": "Spagna"}},
+                {"hanzi": "瑞士", "pinyin": "ruì shì", "meaning": {"en": "Switzerland", "it": "Svizzera"}},
+                {"hanzi": "挪威", "pinyin": "nuó wēi", "meaning": {"en": "Norway", "it": "Norvegia"}},
+                {"hanzi": "冰岛", "pinyin": "bīng dǎo", "meaning": {"en": "Iceland", "it": "Islanda"}},
+                {"hanzi": "美国", "pinyin": "měi guó", "meaning": {"en": "USA", "it": "Stati Uniti"}},
+                {"hanzi": "加拿大", "pinyin": "jiā ná dà", "meaning": {"en": "Canada", "it": "Canada"}},
+                {"hanzi": "阿根廷", "pinyin": "ā gēn tíng", "meaning": {"en": "Argentina", "it": "Argentina"}},
+                {"hanzi": "日本", "pinyin": "rì běn", "meaning": {"en": "Japan", "it": "Giappone"}},
+                {"hanzi": "韩国", "pinyin": "hán guó", "meaning": {"en": "South Korea", "it": "Corea del Sud"}},
+                {"hanzi": "香港", "pinyin": "xiāng gǎng", "meaning": {"en": "Hong Kong", "it": "Hong Kong"}},
+                {"hanzi": "澳门", "pinyin": "ào mén", "meaning": {"en": "Macau", "it": "Macao"}},
+                {"hanzi": "泰国", "pinyin": "tài guó", "meaning": {"en": "Thailand", "it": "Thailandia"}},
+                {"hanzi": "新加坡", "pinyin": "xīn jiā pō", "meaning": {"en": "Singapore", "it": "Singapore"}},
+                {"hanzi": "马来西亚", "pinyin": "mǎ lái xī yà", "meaning": {"en": "Malaysia", "it": "Malesia"}},
+                {"hanzi": "印度尼西亚", "pinyin": "yìn dù ní xī yà", "meaning": {"en": "Indonesia", "it": "Indonesia"}},
+                {"hanzi": "阿联酋", "pinyin": "ā lián qiú", "meaning": {"en": "UAE", "it": "Emirati Arabi Uniti"}},
+                {"hanzi": "澳大利亚", "pinyin": "ào dà lì yà", "meaning": {"en": "Australia", "it": "Australia"}},
+                {"hanzi": "新西兰", "pinyin": "xīn xī lán", "meaning": {"en": "New Zealand", "it": "Nuova Zelanda"}},
+                {"hanzi": "摩洛哥", "pinyin": "mó luò gē", "meaning": {"en": "Morocco", "it": "Marocco"}},
+                {"hanzi": "埃及", "pinyin": "āi jí", "meaning": {"en": "Egypt", "it": "Egitto"}},
+                {"hanzi": "南非", "pinyin": "nán fēi", "meaning": {"en": "South Africa", "it": "Sudafrica"}}
+              ]
+            },
+            {
+              "title": {"en": "Nationality & travel", "it": "Nazionalità e viaggio"},
+              "entries": [
+                {"hanzi": "人", "pinyin": "rén", "meaning": {"en": "Person; nationality suffix: 意大利人 = Italian", "it": "Persona; suffisso di nazionalità: 意大利人 = italiano"}},
+                {"hanzi": "我是意大利人", "pinyin": "wǒ shì yì dà lì rén", "meaning": {"en": "I'm Italian", "it": "Sono italiano/a"}},
+                {"hanzi": "外国人", "pinyin": "wài guó rén", "meaning": {"en": "Foreigner", "it": "Straniero"}},
+                {"hanzi": "欧洲", "pinyin": "ōu zhōu", "meaning": {"en": "Europe", "it": "Europa"}},
+                {"hanzi": "亚洲", "pinyin": "yà zhōu", "meaning": {"en": "Asia", "it": "Asia"}},
+                {"hanzi": "护照", "pinyin": "hù zhào", "meaning": {"en": "Passport", "it": "Passaporto"}}
+              ]
+            }
+          ]
         }
       ]
     },
@@ -489,60 +536,12 @@
           "entries": [
             {"icon": "✈️", "hanzi": "携程", "pinyin": "xié chéng", "name": "Trip.com", "description": {"en": "Flights, trains, hotels, travel packages. English interface available. Best for booking high-speed trains (高铁).", "it": "Voli, treni, hotel, pacchetti viaggio. Interfaccia inglese disponibile. Meglio per prenotare treni ad alta velocità (高铁)."}}
           ]
-        }
-      ]
-    },
-    {
-      "id": "visa",
-      "label": {"en": "Visa Free", "it": "Senza visto"},
-      "hanziLabel": "免签",
-      "type": "app",
-      "intro": {"en": "Chinese passport holders can visit these countries without a visa or with visa on arrival. Requirements may vary—check before traveling.", "it": "I possessori di passaporto cinese possono visitare questi paesi senza visto o con visto all'arrivo. I requisiti possono variare—verifica prima di viaggiare."},
-      "sections": [
-        {
-          "title": {"en": "Asia", "it": "Asia"},
-          "entries": [
-            {"icon": "🇹🇭", "hanzi": "泰国", "pinyin": "tài guó", "name": "Thailand", "description": {"en": "Visa-free 30 days (until Nov 2025)", "it": "Senza visto 30 giorni (fino a Nov 2025)"}},
-            {"icon": "🇸🇬", "hanzi": "新加坡", "pinyin": "xīn jiā pō", "name": "Singapore", "description": {"en": "Visa-free 30 days", "it": "Senza visto 30 giorni"}},
-            {"icon": "🇲🇾", "hanzi": "马来西亚", "pinyin": "mǎ lái xī yà", "name": "Malaysia", "description": {"en": "Visa-free 30 days", "it": "Senza visto 30 giorni"}},
-            {"icon": "🇮🇩", "hanzi": "印度尼西亚", "pinyin": "yìn dù ní xī yà", "name": "Indonesia", "description": {"en": "Visa on arrival 30 days", "it": "Visto all'arrivo 30 giorni"}},
-            {"icon": "🇯🇵", "hanzi": "日本", "pinyin": "rì běn", "name": "Japan", "description": {"en": "Visa-free 90 days", "it": "Senza visto 90 giorni"}},
-            {"icon": "🇰🇷", "hanzi": "韩国", "pinyin": "hán guó", "name": "South Korea", "description": {"en": "Visa-free 90 days", "it": "Senza visto 90 giorni"}},
-            {"icon": "🇭🇰", "hanzi": "香港", "pinyin": "xiāng gǎng", "name": "Hong Kong", "description": {"en": "Visa-free 90 days", "it": "Senza visto 90 giorni"}},
-            {"icon": "🇲🇴", "hanzi": "澳门", "pinyin": "ào mén", "name": "Macau", "description": {"en": "Visa-free 30 days", "it": "Senza visto 30 giorni"}},
-            {"icon": "🇦🇪", "hanzi": "阿联酋", "pinyin": "ā lián qiú", "name": "UAE", "description": {"en": "Visa-free 30 days", "it": "Senza visto 30 giorni"}}
-          ]
         },
         {
-          "title": {"en": "Europe", "it": "Europa"},
+          "title": {"en": "Learning", "it": "Imparare"},
           "entries": [
-            {"icon": "🇮🇹", "hanzi": "意大利", "pinyin": "yì dà lì", "name": "Italy", "description": {"en": "Visa-free 30 days", "it": "Senza visto 30 giorni"}},
-            {"icon": "🇨🇭", "hanzi": "瑞士", "pinyin": "ruì shì", "name": "Switzerland", "description": {"en": "Visa-free 90 days", "it": "Senza visto 90 giorni"}},
-            {"icon": "🇳🇴", "hanzi": "挪威", "pinyin": "nuó wēi", "name": "Norway", "description": {"en": "Visa-free 90 days", "it": "Senza visto 90 giorni"}},
-            {"icon": "🇮🇸", "hanzi": "冰岛", "pinyin": "bīng dǎo", "name": "Iceland", "description": {"en": "Visa-free 90 days", "it": "Senza visto 90 giorni"}}
-          ]
-        },
-        {
-          "title": {"en": "Americas", "it": "Americhe"},
-          "entries": [
-            {"icon": "🇨🇦", "hanzi": "加拿大", "pinyin": "jiā ná dà", "name": "Canada", "description": {"en": "Visa-free 6 days (transit via airport)", "it": "Senza visto 6 giorni (transito via aereo)"}},
-            {"icon": "🇺🇸", "hanzi": "美国", "pinyin": "měi guó", "name": "USA", "description": {"en": "Transit visa required", "it": "Visto di transito richiesto"}},
-            {"icon": "🇦🇷", "hanzi": "阿根廷", "pinyin": "ā gēn tíng", "name": "Argentina", "description": {"en": "Visa-free 90 days", "it": "Senza visto 90 giorni"}}
-          ]
-        },
-        {
-          "title": {"en": "Oceania", "it": "Oceania"},
-          "entries": [
-            {"icon": "🇦🇺", "hanzi": "澳大利亚", "pinyin": "ào dà lì yà", "name": "Australia", "description": {"en": "Transit visa may be required", "it": "Visto di transito potrebbe essere richiesto"}},
-            {"icon": "🇳🇿", "hanzi": "新西兰", "pinyin": "xīn xī lán", "name": "New Zealand", "description": {"en": "Visa-free 30 days", "it": "Senza visto 30 giorni"}}
-          ]
-        },
-        {
-          "title": {"en": "Africa & Middle East", "it": "Africa e Medio Oriente"},
-          "entries": [
-            {"icon": "🇲🇦", "hanzi": "摩洛哥", "pinyin": "mó luò gē", "name": "Morocco", "description": {"en": "Visa-free 90 days", "it": "Senza visto 90 giorni"}},
-            {"icon": "🇪🇬", "hanzi": "埃及", "pinyin": "āi jí", "name": "Egypt", "description": {"en": "Visa on arrival 30 days", "it": "Visto all'arrivo 30 giorni"}},
-            {"icon": "🇿🇦", "hanzi": "南非", "pinyin": "nán fēi", "name": "South Africa", "description": {"en": "Visa-free 30 days", "it": "Senza visto 30 giorni"}}
+            {"icon": "📖", "hanzi": "汉英词典", "pinyin": "hàn yīng cí diǎn", "name": "Pleco", "description": {"en": "The best Chinese dictionary app. Look up characters by drawing them or pointing the camera at a menu or sign. Free core dictionary, works offline.", "it": "La migliore app dizionario di cinese. Cerca i caratteri disegnandoli o puntando la fotocamera su un menù o un cartello. Dizionario base gratuito, funziona offline."}},
+            {"iconSrc": "./icon.svg", "hanzi": "汉", "pinyin": "hàn", "name": "Hàndy", "description": {"en": "This app. Travel vocabulary and phrases with audio, favorites, quiz mode and long-press to copy hanzi. Add it to your home screen: it works fully offline.", "it": "Questa app. Vocaboli e frasi di viaggio con audio, preferiti, modalità quiz e pressione lunga per copiare gli hanzi. Aggiungila alla schermata Home: funziona completamente offline."}}
           ]
         }
       ]

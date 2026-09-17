@@ -5,6 +5,12 @@
 
 export const SUPPORTED_LANGS = ['en', 'it'];
 
+// ── Platform (UA sniffing; iPadOS in desktop mode reports MacIntel + touch) ──
+const UA = navigator.userAgent;
+const ios = /iphone|ipad|ipod/i.test(UA) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const android = /android/i.test(UA);
+export const platform = { ios, android, mobile: ios || android };
+
 // ── localStorage wrapper ───────────────────────────────────
 // localStorage can throw (private mode, storage disabled, quota); every access
 // goes through here so callers never need their own try/catch.

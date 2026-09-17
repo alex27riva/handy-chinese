@@ -1,6 +1,6 @@
 # Review
 
-Open items only. Last updated 2026-09-13, against v0.16.0. Done items are recorded in git history and `CLAUDE.md`.
+Open items only. Last updated 2026-09-16, against v0.17.0. Done items are recorded in git history and `CLAUDE.md`.
 
 ---
 

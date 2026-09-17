@@ -1,17 +1,15 @@
 // Entry point: boots the app. Order matters — the install-hint block must run
 // before applyChrome() (it rewrites the hint's data-i18n-html key on Android).
 import {
-  store, SUPPORTED_LANGS, currentTheme, setTheme, pinyinHidden, setPinyinMode,
+  store, SUPPORTED_LANGS, platform, currentTheme, setTheme, pinyinHidden, setPinyinMode,
   quizMode, setQuizMode, currentLang, setCurrentLang
 } from './settings.js';
 import { CHROME, t, applyChrome } from './i18n.js';
 import { filterCards } from './search.js';
 import { wireTabs, wireSwipe, resetTransient } from './tabs.js';
 import { wirePanelClicks, wireCardKeys, wireLongPress } from './cards.js';
-import {
-  setContentData, renderTabs, renderPanels, rerenderContent,
-  showFavorites, hideFavorites
-} from './render.js';
+import { setContentData, rerenderContent, showFavorites, hideFavorites } from './render.js';
+import { wireCustom } from './custom.js';
 
 // ── Install hint: only on iOS/Android, hidden if standalone or dismissed ──
 // The banner starts `hidden` in the markup and is only revealed here.
@@ -22,17 +20,12 @@ import {
                     || window.navigator.standalone === true;
   const dismissed = store.get('hintDismissed') === '1';
 
-  const ua = navigator.userAgent;
-  const isIOS = /iphone|ipad|ipod/i.test(ua) ||
-                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  const isAndroid = /android/i.test(ua);
-
-  if (isStandalone || dismissed || (!isIOS && !isAndroid)) return;
+  if (isStandalone || dismissed || !platform.mobile) return;
 
   const dismiss = () => { hint.hidden = true; store.set('hintDismissed', '1'); };
   document.getElementById('hintClose').addEventListener('click', dismiss);
 
-  if (isAndroid) {
+  if (platform.android) {
     const textEl = hint.querySelector('[data-i18n-html]');
     if (textEl) textEl.dataset.i18nHtml = 'installHintAndroid';
 
@@ -147,6 +140,7 @@ wirePanelClicks();
 wireSwipe();
 wireLongPress();
 wireCardKeys();
+wireCustom();
 
 fetch('./content.json')
   .then(r => {
@@ -155,8 +149,7 @@ fetch('./content.json')
   })
   .then(data => {
     setContentData(data);
-    renderTabs(data.tabs, document.getElementById('tabs'));
-    renderPanels(data.tabs, document.getElementById('panels'));
+    rerenderContent(); // content.json tabs + the 我的 tab
   })
   .catch(err => {
     const panels = document.getElementById('panels');

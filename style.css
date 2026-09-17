@@ -248,6 +248,26 @@ h1 {
 .favorite-btn.active { opacity: 1; color: var(--accent-2); }
 .favorite-btn.active svg { fill: var(--accent-2); stroke: var(--accent-2); }
 
+/* Pleco lookup (rendered on iOS / Android only): mid-right, between speaker and star */
+.pleco-btn {
+  position: absolute;
+  right: 0.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--icon);
+  opacity: 0.55;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.15s, color 0.15s;
+}
+.pleco-btn:hover, .pleco-btn:active { opacity: 1; color: var(--accent); }
+.pleco-btn svg { width: 16px; height: 16px; }
+.pleco-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
 @keyframes speakPulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.18); }
@@ -304,6 +324,7 @@ h1 {
   .card .favorite-btn { width: 32px; height: 32px; right: 0.05rem; }
   .card .speaker { top: 0.15rem; }
   .card .favorite-btn { bottom: 0.15rem; }
+  .card .pleco-btn { width: 32px; height: 28px; right: 0.05rem; }
   [data-quiz="on"] .card:not(.revealed)::after { left: 0.9rem; right: 2.1rem; bottom: 0.8rem; }
   .hanzi { font-size: 1.8rem; }
   .pinyin { font-size: 0.7rem; letter-spacing: 0.05em; }
@@ -770,6 +791,13 @@ body.fav-open {
   justify-content: center;
   background: var(--surface);
   border-radius: 10px;
+  overflow: hidden;
+}
+
+.app-icon img {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .app-content {
@@ -1075,6 +1103,159 @@ body.fav-open {
 }
 .card.copy-armed, .phrase-card.copy-armed, .app-card.copy-armed {
   border-color: var(--accent-2);
+}
+
+/* ── Custom phrases (我的 tab) ─────────────────────────────── */
+/* small pill buttons: action bar + import sheet */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.9rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:hover, .btn.active { border-color: var(--accent); color: var(--accent); }
+.btn-primary { background: var(--text); color: var(--surface); border-color: var(--text); }
+.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.btn-danger { color: var(--accent); border-color: var(--accent); }
+.btn-danger:hover { background: var(--accent-soft); }
+
+.custom-bar {
+  max-width: 860px;
+  margin: 0 auto 1.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+#panels.global-search .custom-bar { display: none; } /* results only while searching */
+
+.custom-empty {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: var(--text-2);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+.custom-empty strong { color: var(--accent); font-weight: 600; }
+
+/* optional note line on custom entries */
+.phrase-note {
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--text-2);
+  border-top: 1px dashed var(--line);
+  padding-top: 0.35rem;
+}
+[data-quiz="on"] .phrase-card:not(.revealed) .phrase-note { visibility: hidden; }
+
+/* per-card remove button: only while the panel is in edit mode */
+.remove-btn { display: none; }
+.tab-panel.editing .phrase-card { padding-left: 2.7rem; }
+.tab-panel.editing .remove-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--accent);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.tab-panel.editing .remove-btn:hover { background: var(--accent-soft); }
+
+/* import sheet (same layering / look as the favorites overlay) */
+.sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 2rem 1rem;
+  animation: fadeIn 0.2s ease-out;
+}
+body.sheet-open { overflow: hidden; }
+.sheet {
+  max-width: 560px;
+  margin: 0 auto;
+  background: var(--surface);
+  border-radius: 12px;
+}
+.sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--line);
+}
+.sheet-header h2 {
+  font-family: var(--font-hanzi);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.sheet-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--icon);
+  padding: 0.3rem;
+}
+.sheet-close:hover { color: var(--text); }
+.sheet-body { padding: 1rem 1.2rem 1.2rem; }
+.field { display: block; margin-bottom: 0.8rem; }
+.field-label {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin-bottom: 0.3rem;
+}
+.field-label [lang="zh-CN"] { font-family: var(--font-hanzi); letter-spacing: 0.05em; }
+.field-opt { text-transform: none; letter-spacing: 0; color: var(--icon); }
+.field-input {
+  display: block;
+  width: 100%;
+  padding: 0.55rem 0.8rem;
+  font-family: var(--font-sans);
+  font-size: 1rem; /* ≥16px so iOS Safari does not zoom on focus */
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  outline: none;
+  -webkit-appearance: none;
+}
+.field-hanzi { font-family: var(--font-hanzi); font-size: 1.3rem; }
+.field-pinyin { font-family: var(--font-mono); letter-spacing: 0.04em; }
+.field-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--focus-ring); }
+.field-input::placeholder { color: var(--icon); opacity: 0.6; }
+.sheet-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
 }
 
 /* ── Mobile: tabs become a fixed bottom bar ──────────────── */

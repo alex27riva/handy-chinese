@@ -13,7 +13,7 @@ Offline-ready PWA for Chinese vocabulary and phrases. No login, no account, no i
 - Travel Phrases — greetings, directions, food, shopping, hotel check-in
 - Medical — symptoms, pharmacy, hospital and emergency phrases
 - Apps — recommended Chinese apps with QR codes
-- Visa Free — countries with visa-free or visa-on-arrival access to China
+- My (我的) — add your own phrases (hanzi, pinyin, meaning, note), export / import them as JSON
 - Favorites — star any card, review them in the ☆ overlay from the toolbar
 
 **UX**

@@ -1,18 +1,37 @@
 // Renders tabs, panels, cards and the favorites overlay from content.json.
 // contentData lives here; app.js sets it after the fetch.
-import { isFavorite, isCollapsed, collapseKey } from './settings.js';
+import { isFavorite, isCollapsed, collapseKey, platform } from './settings.js';
 import { CHROME, t } from './i18n.js';
 import { foldSearch } from './search.js';
 import { setActiveTab } from './tabs.js';
+import { customTab, renderCustomBar, renderCustomEmpty } from './custom.js';
 
 const SPEAKER_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>`;
 
 const STAR_SVG = `<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
 
+// open book: the "look up in Pleco" action
+const BOOK_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg>`;
+
 const CHEVRON_SVG = `<svg class="collapse-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`;
+
+// Pleco's URL scheme opens its search with the text. Android goes through an
+// intent URL so Chrome falls back to the Play Store when Pleco is missing;
+// iOS has no such fallback (Safari shows "cannot open the page").
+const PLECO_PLAY_URL = 'https://play.google.com/store/apps/details?id=com.pleco.chinesesystem';
+export function plecoUrl(hanzi, os = platform.android ? 'android' : 'ios') {
+  const q = encodeURIComponent(hanzi);
+  if (os === 'android') {
+    return `intent://x-callback-url/s?q=${q}#Intent;scheme=plecoapi;package=com.pleco.chinesesystem;S.browser_fallback_url=${encodeURIComponent(PLECO_PLAY_URL)};end`;
+  }
+  return `plecoapi://x-callback-url/s?q=${q}`;
+}
 
 export let contentData = null;
 export function setContentData(data) { contentData = data; }
+
+// content.json tabs plus the synthetic 我的 tab (user entries from localStorage).
+export const allTabs = () => contentData ? [...contentData.tabs, customTab()] : [];
 
 // One entry per tab.type (content.json): the card renderer, the CSS class
 // of a card, which grid wraps a section, the field-class prefix, and whether
@@ -33,7 +52,8 @@ function renderCard(entry, tab) {
   card.className = cardClass;
   card.setAttribute('role', 'button');
   card.tabIndex = 0;
-  for (const field of ['hanzi', 'pinyin', 'meaning']) {
+  for (const field of ['hanzi', 'pinyin', 'meaning', 'note']) {
+    if ((field === 'pinyin' || field === 'note') && !entry[field]) continue; // optional on custom entries
     const el = document.createElement('div');
     el.className = prefix + field;
     // tag hanzi so Android/Chrome picks Simplified Chinese glyph variants,
@@ -47,7 +67,7 @@ function renderCard(entry, tab) {
   icon.innerHTML = SPEAKER_SVG;
   card.appendChild(icon);
 
-  card.dataset.search = foldSearch([entry.hanzi, entry.pinyin, t(entry.meaning)].join(' '));
+  card.dataset.search = foldSearch([entry.hanzi, entry.pinyin, t(entry.meaning), entry.note].join(' '));
   card.dataset.tab = tabId;
   card.dataset.hanzi = entry.hanzi; // with data-tab, the favorites key (see cards.js)
 
@@ -57,6 +77,24 @@ function renderCard(entry, tab) {
   star.setAttribute('aria-label', 'Toggle favorite');
   star.innerHTML = STAR_SVG; // click handled by the delegated listener in cards.js
   card.appendChild(star);
+  if (platform.mobile) { // Pleco exists only on iOS / Android
+    const pleco = document.createElement('a');
+    pleco.className = 'pleco-btn';
+    pleco.href = plecoUrl(entry.hanzi);
+    pleco.setAttribute('aria-label', t(CHROME.plecoLabel));
+    pleco.title = t(CHROME.plecoLabel);
+    pleco.innerHTML = BOOK_SVG; // clicks are ignored by cards.js (no TTS)
+    card.appendChild(pleco);
+  }
+  if (tab.custom) { // shown only while the 我的 panel is in edit mode (CSS)
+    const rm = document.createElement('button');
+    rm.type = 'button';
+    rm.className = 'remove-btn';
+    rm.dataset.customAction = 'remove'; // handled in custom.js
+    rm.setAttribute('aria-label', t(CHROME.removeLabel));
+    rm.textContent = '✕';
+    card.appendChild(rm);
+  }
   return card;
 }
 
@@ -123,7 +161,14 @@ function renderAppCard(entry, tab) {
   card.className = 'app-card';
   const icon = document.createElement('div');
   icon.className = 'app-icon';
-  icon.textContent = entry.icon || '📱';
+  if (entry.iconSrc) {
+    const img = document.createElement('img');
+    img.src = entry.iconSrc;
+    img.alt = '';
+    icon.appendChild(img);
+  } else {
+    icon.textContent = entry.icon || '📱';
+  }
   const content = document.createElement('div');
   content.className = 'app-content';
   const nameRow = document.createElement('div');
@@ -170,6 +215,10 @@ export function renderPanels(tabs, container) {
     label.textContent = t(tab.label);
     panel.appendChild(label);
     if (tab.intro) panel.appendChild(renderIntro(tab.intro));
+    if (tab.custom) {
+      panel.appendChild(renderCustomBar(tab.sections.length > 0));
+      if (!tab.sections.length) panel.appendChild(renderCustomEmpty());
+    }
     // nested: subsections collapse; flat: sections collapse (if the card kind allows)
     if (tab.subsections) {
       tab.subsections.forEach(sub => panel.appendChild(renderSubsection(sub, tab)));
@@ -193,7 +242,7 @@ function renderFavoritesOverlay() {
 function renderFavoritesContent(container) {
   let total = 0;
   if (contentData) {
-    contentData.tabs.forEach(tab => {
+    allTabs().forEach(tab => {
       const groups = tab.subsections || [{ sections: tab.sections }];
       const entries = [];
       groups.forEach(g => g.sections.forEach(s => s.entries.forEach(e => {
@@ -241,16 +290,18 @@ export function hideFavorites() {
   document.body.classList.remove('fav-open');
 }
 
-// Wipe and rebuild tabs + panels (used on language switch). Keeps the active tab.
+// Wipe and rebuild tabs + panels (first render, language switch, custom-entry
+// changes). Keeps the active tab.
 export function rerenderContent() {
   if (!contentData) return;
+  const tabs = allTabs();
   const tabsContainer = document.getElementById('tabs');
   const panelsContainer = document.getElementById('panels');
   const activeTab = document.querySelector('.tab.active');
-  const activeId = activeTab ? activeTab.dataset.tab : contentData.tabs[0].id;
+  const activeId = activeTab ? activeTab.dataset.tab : tabs[0].id;
   tabsContainer.innerHTML = '';
   panelsContainer.innerHTML = '';
-  renderTabs(contentData.tabs, tabsContainer);
-  renderPanels(contentData.tabs, panelsContainer);
+  renderTabs(tabs, tabsContainer);
+  renderPanels(tabs, panelsContainer);
   setActiveTab(activeId);
 }

@@ -48,7 +48,7 @@ export function wireSwipe() {
     startY = e.touches[0].clientY;
   }, { passive: true });
   panels.addEventListener('touchend', e => {
-    if (document.body.classList.contains('fav-open')) return;
+    if (document.body.classList.contains('fav-open') || document.body.classList.contains('sheet-open')) return;
     const dx = e.changedTouches[0].clientX - startX;
     const dy = e.changedTouches[0].clientY - startY;
     if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;

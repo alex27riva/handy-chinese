@@ -42,7 +42,7 @@
   </div>
   <div class="header-rule"></div>
   <h1>Hàndy</h1>
-  <p class="subtitle" data-i18n="subtitle">Essential Chinese for apps, food, travel & visa-free destinations</p>
+  <p class="subtitle" data-i18n="subtitle">Essential Chinese for apps, food, travel & signs</p>
 </header>
 
 <div class="install-hint" id="installHint" hidden>
@@ -73,6 +73,39 @@
   </div>
 </div>
 <div id="panels"></div>
+
+<!-- Add-phrase sheet for the 我的 (custom phrases) tab; wired in js/custom.js -->
+<div class="sheet-overlay" id="addSheet" hidden>
+  <form class="sheet" id="addForm" role="dialog" aria-labelledby="addTitle" autocomplete="off">
+    <div class="sheet-header">
+      <h2 id="addTitle" lang="zh-CN">添加</h2>
+      <button class="sheet-close" id="addClose" type="button" aria-label="Close">✕</button>
+    </div>
+    <div class="sheet-body">
+      <label class="field">
+        <span class="field-label"><span lang="zh-CN">汉字</span> · <span data-i18n="fieldHanzi">Hanzi</span></span>
+        <input id="addHanzi" class="field-input field-hanzi" lang="zh-CN" required autocorrect="off" spellcheck="false" placeholder="你好">
+      </label>
+      <label class="field">
+        <span class="field-label"><span data-i18n="fieldPinyin">Pinyin</span> <span class="field-opt" data-i18n="fieldOptional">optional</span></span>
+        <input id="addPinyin" class="field-input field-pinyin" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="nǐ hǎo">
+      </label>
+      <label class="field">
+        <span class="field-label"><span data-i18n="fieldMeaning">Meaning</span></span>
+        <input id="addMeaning" class="field-input" required data-i18n-placeholder="fieldMeaningPlaceholder">
+      </label>
+      <label class="field">
+        <span class="field-label"><span data-i18n="fieldNote">Note</span> <span class="field-opt" data-i18n="fieldOptional">optional</span></span>
+        <input id="addNote" class="field-input" data-i18n-placeholder="fieldNotePlaceholder">
+      </label>
+      <div class="sheet-actions">
+        <button class="btn btn-primary" id="addSubmit" type="submit" data-i18n="addSubmit">Add</button>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- JSON backup import (triggered by the 我的 action bar) -->
+<input type="file" id="importFile" accept=".json,application/json" hidden>
 
 
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
