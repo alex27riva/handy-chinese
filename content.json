@@ -345,6 +345,7 @@
       "sections": [
         {
           "title": {"en": "Essentials & Greetings", "it": "Essenziali e saluti"},
+          "short": {"en": "Essentials", "it": "Essenziali"},
           "entries": [
             {"hanzi": "你好", "pinyin": "nǐ hǎo", "meaning": {"en": "Hello", "it": "Ciao"}},
             {"hanzi": "谢谢", "pinyin": "xiè xie", "meaning": {"en": "Thank you", "it": "Grazie"}},
@@ -362,6 +363,7 @@
         },
         {
           "title": {"en": "Directions & Transport", "it": "Direzioni e trasporti"},
+          "short": {"en": "Directions", "it": "Direzioni"},
           "entries": [
             {"hanzi": "厕所在哪里?", "pinyin": "cè suǒ zài nǎ lǐ?", "meaning": {"en": "Where is the toilet?", "it": "Dov'è il bagno?"}},
             {"hanzi": "地铁站在哪里?", "pinyin": "dì tiě zhàn zài nǎ lǐ?", "meaning": {"en": "Where is the subway station?", "it": "Dov'è la stazione della metro?"}},
@@ -377,6 +379,7 @@
         },
         {
           "title": {"en": "Food & Restaurants", "it": "Cibo e ristoranti"},
+          "short": {"en": "Food", "it": "Cibo"},
           "entries": [
             {"hanzi": "菜单", "pinyin": "cài dān", "meaning": {"en": "Menu", "it": "Menu"}},
             {"hanzi": "我要这个", "pinyin": "wǒ yào zhè ge", "meaning": {"en": "I want this (point at menu)", "it": "Voglio questo (indica sul menu)"}},
@@ -398,6 +401,7 @@
         },
         {
           "title": {"en": "Shopping & Money", "it": "Shopping e denaro"},
+          "short": {"en": "Shopping", "it": "Shopping"},
           "entries": [
             {"hanzi": "多少钱?", "pinyin": "duō shǎo qián?", "meaning": {"en": "How much does it cost?", "it": "Quanto costa?"}},
             {"hanzi": "太贵了", "pinyin": "tài guì le", "meaning": {"en": "Too expensive", "it": "Troppo caro"}},
@@ -413,6 +417,7 @@
         },
         {
           "title": {"en": "Hotel Check-in", "it": "Check-in in hotel"},
+          "short": {"en": "Hotel", "it": "Hotel"},
           "entries": [
             {"hanzi": "我有预订", "pinyin": "wǒ yǒu yù dìng", "meaning": {"en": "I have a reservation", "it": "Ho una prenotazione"}},
             {"hanzi": "办理入住", "pinyin": "bàn lǐ rù zhù", "meaning": {"en": "Check in", "it": "Fare il check-in"}},
@@ -429,6 +434,7 @@
         },
         {
           "title": {"en": "Emergencies & Help", "it": "Emergenze e aiuto"},
+          "short": {"en": "Emergency", "it": "Emergenze"},
           "entries": [
             {"hanzi": "救命!", "pinyin": "jiù mìng!", "meaning": {"en": "Help! (emergency)", "it": "Aiuto! (emergenza)"}},
             {"hanzi": "请帮我", "pinyin": "qǐng bāng wǒ", "meaning": {"en": "Please help me", "it": "Aiutami, per favore"}},

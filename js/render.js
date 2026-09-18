@@ -45,6 +45,7 @@ const CARD_KIND = {
   app:    { render: renderAppCard, cardClass: 'app-card',    grid: 'app-grid',                       collapsible: false },
 };
 const kindOf = tab => CARD_KIND[tab.type] || CARD_KIND.vocab;
+const JUMP_MIN_SECTIONS = 4; // flat tabs with fewer sections get no jump bar
 
 function renderCard(entry, tab) {
   const { cardClass, prefix } = kindOf(tab);
@@ -220,9 +221,13 @@ export function renderPanels(tabs, container) {
       panel.appendChild(renderCustomBar(tab.sections.length > 0));
       if (!tab.sections.length) panel.appendChild(renderCustomEmpty());
     }
+    // sticky chips: every nested tab, and flat tabs long enough to need them
+    // (app sections are tiny; the 我的 tab has a single section)
+    if (tab.subsections || (kindOf(tab).collapsible && tab.sections.length >= JUMP_MIN_SECTIONS)) {
+      panel.appendChild(renderJumpBar(tab));
+    }
     // nested: subsections collapse; flat: sections collapse (if the card kind allows)
     if (tab.subsections) {
-      panel.appendChild(renderJumpBar(tab)); // sticky chips, one per subsection
       tab.subsections.forEach(sub => panel.appendChild(renderSubsection(sub, tab)));
     } else {
       tab.sections.forEach(sec => panel.appendChild(renderSection(sec, tab, true)));

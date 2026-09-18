@@ -1,25 +1,33 @@
-// Jump bar: a sticky row of chips under the toolbar, one per subsection, so a
-// long nested tab (vocab) can be navigated without scrolling through it.
-// Rendered by render.js for tabs that have `subsections`; wired once here on
-// the persistent #panels (click + scroll-spy), so it survives rerenderContent().
+// Jump bar: a sticky row of chips under the toolbar, one per subsection (vocab)
+// or per section (phrases), so a long tab can be navigated without scrolling
+// through it. render.js decides which tabs get one; wired once here on the
+// persistent #panels (click + scroll-spy), so it survives rerenderContent().
 import { toggleCollapse } from './settings.js';
 import { CHROME, t } from './i18n.js';
 
+// Nested tabs jump between subsections, flat tabs between their top-level
+// sections. `data-groups` is the selector (scoped to the panel) that lists
+// the targets, in chip order.
 export function renderJumpBar(tab) {
+  const nested = !!tab.subsections;
+  const groups = nested ? tab.subsections : tab.sections;
   const bar = document.createElement('nav');
   bar.className = 'jump-bar';
+  bar.dataset.groups = nested ? '.subsection' : ':scope > .section';
   bar.setAttribute('aria-label', t(CHROME.jumpLabel));
-  tab.subsections.forEach((sub, i) => {
-    if (!sub.title) return;
+  groups.forEach((g, i) => {
+    if (!g.title) return;
     const chip = document.createElement('button');
     chip.type = 'button';
     chip.className = 'jump-chip';
-    chip.dataset.jump = String(i); // index into the panel's .subsection list
-    chip.textContent = t(sub.title);
+    chip.dataset.jump = String(i);
+    chip.textContent = t(g.short || g.title); // optional short label keeps the row compact
     bar.appendChild(chip);
   });
   return bar;
 }
+
+const groupsOf = bar => bar.closest('.tab-panel').querySelectorAll(bar.dataset.groups);
 
 // Bottom edge of the sticky chrome (toolbar + jump bar) once both are stuck.
 function stuckBottom(bar) {
@@ -28,11 +36,10 @@ function stuckBottom(bar) {
 }
 
 function jumpTo(bar, index) {
-  const panel = bar.closest('.tab-panel');
-  const sub = panel && panel.querySelectorAll('.subsection')[index];
+  const sub = groupsOf(bar)[index];
   if (!sub) return;
-  const title = sub.querySelector('.subsection-title');
-  if (sub.classList.contains('is-collapsed') && title && title.dataset.collapseKey) {
+  const title = sub.querySelector(':scope > [data-collapse-key]');
+  if (sub.classList.contains('is-collapsed') && title) {
     toggleCollapse(title.dataset.collapseKey); // landing on a collapsed group would show nothing
     sub.classList.remove('is-collapsed');
   }
@@ -44,7 +51,7 @@ function jumpTo(bar, index) {
 function updateActive() {
   const bar = document.querySelector('.tab-panel.active .jump-bar');
   if (!bar) return;
-  const subs = bar.closest('.tab-panel').querySelectorAll('.subsection');
+  const subs = groupsOf(bar);
   const edge = stuckBottom(bar) + 8;
   let current = 0;
   subs.forEach((sub, i) => { if (sub.getBoundingClientRect().top <= edge + 1) current = i; });
