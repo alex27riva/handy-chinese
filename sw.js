@@ -1,9 +1,9 @@
 // Single source of truth for the app version: index.html reads this name back out
 // of Cache Storage to render .app-version. Bump it on every user-visible change.
-const CACHE = 'handy-v0.23.1';
+const CACHE = 'handy-v0.24.1';
 const ASSETS = ['./', './index.html', './content.json', './style.css', './manifest.json', './icon.svg', './icon-maskable.svg', './apple-touch-icon.png',
   './js/app.js', './js/settings.js', './js/i18n.js', './js/toast.js', './js/tts.js',
-  './js/search.js', './js/tabs.js', './js/cards.js', './js/render.js', './js/custom.js', './js/jump.js'];
+  './js/search.js', './js/tabs.js', './js/cards.js', './js/render.js', './js/custom.js', './js/jump.js', './js/show.js'];
 
 self.addEventListener('install', event => {
   // cache: 'reload' bypasses the HTTP cache, so a new version never precaches a

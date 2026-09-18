@@ -7,82 +7,6 @@
       "type": "vocab",
       "subsections": [
         {
-          "title": {"en": "App UI", "it": "App UI"},
-          "sections": [
-            {
-              "title": {"en": "Navigation & Structure", "it": "Navigazione e struttura"},
-              "entries": [
-                {"hanzi": "主页", "pinyin": "zhǔ yè", "meaning": {"en": "Home / Homepage", "it": "Home / Pagina iniziale"}},
-                {"hanzi": "首页", "pinyin": "shǒu yè", "meaning": {"en": "Home (main page)", "it": "Home (pagina principale)"}},
-                {"hanzi": "返回", "pinyin": "fǎn huí", "meaning": {"en": "Back / Return", "it": "Indietro / Torna"}},
-                {"hanzi": "菜单", "pinyin": "cài dān", "meaning": {"en": "Menu", "it": "Menu"}},
-                {"hanzi": "设置", "pinyin": "shè zhì", "meaning": {"en": "Settings", "it": "Impostazioni"}},
-                {"hanzi": "搜索", "pinyin": "sōu suǒ", "meaning": {"en": "Search", "it": "Cerca"}},
-                {"hanzi": "更多", "pinyin": "gèng duō", "meaning": {"en": "More", "it": "Altro"}},
-                {"hanzi": "关闭", "pinyin": "guān bì", "meaning": {"en": "Close", "it": "Chiudi"}}
-              ]
-            },
-            {
-              "title": {"en": "Actions & Buttons", "it": "Azioni e pulsanti"},
-              "entries": [
-                {"hanzi": "确认", "pinyin": "què rèn", "meaning": {"en": "Confirm / OK", "it": "Conferma / OK"}},
-                {"hanzi": "取消", "pinyin": "qǔ xiāo", "meaning": {"en": "Cancel", "it": "Annulla"}},
-                {"hanzi": "提交", "pinyin": "tí jiāo", "meaning": {"en": "Submit", "it": "Invia"}},
-                {"hanzi": "下载", "pinyin": "xià zài", "meaning": {"en": "Download", "it": "Scarica"}},
-                {"hanzi": "上传", "pinyin": "shàng chuán", "meaning": {"en": "Upload", "it": "Carica"}},
-                {"hanzi": "分享", "pinyin": "fēn xiǎng", "meaning": {"en": "Share", "it": "Condividi"}},
-                {"hanzi": "删除", "pinyin": "shān chú", "meaning": {"en": "Delete", "it": "Elimina"}},
-                {"hanzi": "编辑", "pinyin": "biān jí", "meaning": {"en": "Edit", "it": "Modifica"}},
-                {"hanzi": "保存", "pinyin": "bǎo cún", "meaning": {"en": "Save", "it": "Salva"}},
-                {"hanzi": "刷新", "pinyin": "shuā xīn", "meaning": {"en": "Refresh / Reload", "it": "Aggiorna / Ricarica"}},
-                {"hanzi": "复制", "pinyin": "fù zhì", "meaning": {"en": "Copy", "it": "Copia"}},
-                {"hanzi": "粘贴", "pinyin": "zhān tiē", "meaning": {"en": "Paste", "it": "Incolla"}}
-              ]
-            },
-            {
-              "title": {"en": "Account & Payments", "it": "Account e pagamenti"},
-              "entries": [
-                {"hanzi": "登录", "pinyin": "dēng lù", "meaning": {"en": "Log in", "it": "Accedi"}},
-                {"hanzi": "注册", "pinyin": "zhù cè", "meaning": {"en": "Register / Sign up", "it": "Registrati / Iscriviti"}},
-                {"hanzi": "退出", "pinyin": "tuì chū", "meaning": {"en": "Log out / Exit", "it": "Esci"}},
-                {"hanzi": "密码", "pinyin": "mì mǎ", "meaning": {"en": "Password", "it": "Password"}},
-                {"hanzi": "账号", "pinyin": "zhàng hào", "meaning": {"en": "Account", "it": "Account"}},
-                {"hanzi": "支付", "pinyin": "zhī fù", "meaning": {"en": "Pay / Payment", "it": "Paga / Pagamento"}},
-                {"hanzi": "付款", "pinyin": "fù kuǎn", "meaning": {"en": "Make a payment", "it": "Effettua un pagamento"}},
-                {"hanzi": "余额", "pinyin": "yú é", "meaning": {"en": "Balance", "it": "Saldo"}},
-                {"hanzi": "订单", "pinyin": "dìng dān", "meaning": {"en": "Order", "it": "Ordine"}},
-                {"hanzi": "优惠券", "pinyin": "yōu huì quàn", "meaning": {"en": "Coupon / Voucher", "it": "Coupon / Buono sconto"}}
-              ]
-            },
-            {
-              "title": {"en": "Notifications & Status", "it": "Notifiche e stato"},
-              "entries": [
-                {"hanzi": "通知", "pinyin": "tōng zhī", "meaning": {"en": "Notification", "it": "Notifica"}},
-                {"hanzi": "消息", "pinyin": "xiāo xi", "meaning": {"en": "Message", "it": "Messaggio"}},
-                {"hanzi": "成功", "pinyin": "chéng gōng", "meaning": {"en": "Success", "it": "Successo"}},
-                {"hanzi": "失败", "pinyin": "shī bài", "meaning": {"en": "Failed / Error", "it": "Fallito / Errore"}},
-                {"hanzi": "加载中", "pinyin": "jiā zài zhōng", "meaning": {"en": "Loading…", "it": "Caricamento…"}},
-                {"hanzi": "错误", "pinyin": "cuò wù", "meaning": {"en": "Error", "it": "Errore"}},
-                {"hanzi": "已完成", "pinyin": "yǐ wán chéng", "meaning": {"en": "Completed", "it": "Completato"}},
-                {"hanzi": "待处理", "pinyin": "dài chǔ lǐ", "meaning": {"en": "Pending", "it": "In attesa"}}
-              ]
-            },
-            {
-              "title": {"en": "Maps, Transport & Daily Life", "it": "Mappe, trasporti e vita quotidiana"},
-              "entries": [
-                {"hanzi": "地图", "pinyin": "dì tú", "meaning": {"en": "Map", "it": "Mappa"}},
-                {"hanzi": "导航", "pinyin": "dǎo háng", "meaning": {"en": "Navigation / GPS", "it": "Navigazione / GPS"}},
-                {"hanzi": "出发", "pinyin": "chū fā", "meaning": {"en": "Depart / Start", "it": "Parti / Inizia"}},
-                {"hanzi": "到达", "pinyin": "dào dá", "meaning": {"en": "Arrive / Destination", "it": "Arrivo / Destinazione"}},
-                {"hanzi": "附近", "pinyin": "fù jìn", "meaning": {"en": "Nearby", "it": "Nelle vicinanze"}},
-                {"hanzi": "扫码", "pinyin": "sǎo mǎ", "meaning": {"en": "Scan QR code", "it": "Scansiona QR code"}},
-                {"hanzi": "外卖", "pinyin": "wài mài", "meaning": {"en": "Food delivery", "it": "Consegna a domicilio"}},
-                {"hanzi": "评价", "pinyin": "píng jià", "meaning": {"en": "Review / Rating", "it": "Recensione / Valutazione"}}
-              ]
-            }
-          ]
-        },
-        {
           "title": {"en": "Food", "it": "Cibo"},
           "sections": [
             {
@@ -334,6 +258,82 @@
               ]
             }
           ]
+        },
+        {
+          "title": {"en": "App UI", "it": "App UI"},
+          "sections": [
+            {
+              "title": {"en": "Navigation & Structure", "it": "Navigazione e struttura"},
+              "entries": [
+                {"hanzi": "主页", "pinyin": "zhǔ yè", "meaning": {"en": "Home / Homepage", "it": "Home / Pagina iniziale"}},
+                {"hanzi": "首页", "pinyin": "shǒu yè", "meaning": {"en": "Home (main page)", "it": "Home (pagina principale)"}},
+                {"hanzi": "返回", "pinyin": "fǎn huí", "meaning": {"en": "Back / Return", "it": "Indietro / Torna"}},
+                {"hanzi": "菜单", "pinyin": "cài dān", "meaning": {"en": "Menu", "it": "Menu"}},
+                {"hanzi": "设置", "pinyin": "shè zhì", "meaning": {"en": "Settings", "it": "Impostazioni"}},
+                {"hanzi": "搜索", "pinyin": "sōu suǒ", "meaning": {"en": "Search", "it": "Cerca"}},
+                {"hanzi": "更多", "pinyin": "gèng duō", "meaning": {"en": "More", "it": "Altro"}},
+                {"hanzi": "关闭", "pinyin": "guān bì", "meaning": {"en": "Close", "it": "Chiudi"}}
+              ]
+            },
+            {
+              "title": {"en": "Actions & Buttons", "it": "Azioni e pulsanti"},
+              "entries": [
+                {"hanzi": "确认", "pinyin": "què rèn", "meaning": {"en": "Confirm / OK", "it": "Conferma / OK"}},
+                {"hanzi": "取消", "pinyin": "qǔ xiāo", "meaning": {"en": "Cancel", "it": "Annulla"}},
+                {"hanzi": "提交", "pinyin": "tí jiāo", "meaning": {"en": "Submit", "it": "Invia"}},
+                {"hanzi": "下载", "pinyin": "xià zài", "meaning": {"en": "Download", "it": "Scarica"}},
+                {"hanzi": "上传", "pinyin": "shàng chuán", "meaning": {"en": "Upload", "it": "Carica"}},
+                {"hanzi": "分享", "pinyin": "fēn xiǎng", "meaning": {"en": "Share", "it": "Condividi"}},
+                {"hanzi": "删除", "pinyin": "shān chú", "meaning": {"en": "Delete", "it": "Elimina"}},
+                {"hanzi": "编辑", "pinyin": "biān jí", "meaning": {"en": "Edit", "it": "Modifica"}},
+                {"hanzi": "保存", "pinyin": "bǎo cún", "meaning": {"en": "Save", "it": "Salva"}},
+                {"hanzi": "刷新", "pinyin": "shuā xīn", "meaning": {"en": "Refresh / Reload", "it": "Aggiorna / Ricarica"}},
+                {"hanzi": "复制", "pinyin": "fù zhì", "meaning": {"en": "Copy", "it": "Copia"}},
+                {"hanzi": "粘贴", "pinyin": "zhān tiē", "meaning": {"en": "Paste", "it": "Incolla"}}
+              ]
+            },
+            {
+              "title": {"en": "Account & Payments", "it": "Account e pagamenti"},
+              "entries": [
+                {"hanzi": "登录", "pinyin": "dēng lù", "meaning": {"en": "Log in", "it": "Accedi"}},
+                {"hanzi": "注册", "pinyin": "zhù cè", "meaning": {"en": "Register / Sign up", "it": "Registrati / Iscriviti"}},
+                {"hanzi": "退出", "pinyin": "tuì chū", "meaning": {"en": "Log out / Exit", "it": "Esci"}},
+                {"hanzi": "密码", "pinyin": "mì mǎ", "meaning": {"en": "Password", "it": "Password"}},
+                {"hanzi": "账号", "pinyin": "zhàng hào", "meaning": {"en": "Account", "it": "Account"}},
+                {"hanzi": "支付", "pinyin": "zhī fù", "meaning": {"en": "Pay / Payment", "it": "Paga / Pagamento"}},
+                {"hanzi": "付款", "pinyin": "fù kuǎn", "meaning": {"en": "Make a payment", "it": "Effettua un pagamento"}},
+                {"hanzi": "余额", "pinyin": "yú é", "meaning": {"en": "Balance", "it": "Saldo"}},
+                {"hanzi": "订单", "pinyin": "dìng dān", "meaning": {"en": "Order", "it": "Ordine"}},
+                {"hanzi": "优惠券", "pinyin": "yōu huì quàn", "meaning": {"en": "Coupon / Voucher", "it": "Coupon / Buono sconto"}}
+              ]
+            },
+            {
+              "title": {"en": "Notifications & Status", "it": "Notifiche e stato"},
+              "entries": [
+                {"hanzi": "通知", "pinyin": "tōng zhī", "meaning": {"en": "Notification", "it": "Notifica"}},
+                {"hanzi": "消息", "pinyin": "xiāo xi", "meaning": {"en": "Message", "it": "Messaggio"}},
+                {"hanzi": "成功", "pinyin": "chéng gōng", "meaning": {"en": "Success", "it": "Successo"}},
+                {"hanzi": "失败", "pinyin": "shī bài", "meaning": {"en": "Failed / Error", "it": "Fallito / Errore"}},
+                {"hanzi": "加载中", "pinyin": "jiā zài zhōng", "meaning": {"en": "Loading…", "it": "Caricamento…"}},
+                {"hanzi": "错误", "pinyin": "cuò wù", "meaning": {"en": "Error", "it": "Errore"}},
+                {"hanzi": "已完成", "pinyin": "yǐ wán chéng", "meaning": {"en": "Completed", "it": "Completato"}},
+                {"hanzi": "待处理", "pinyin": "dài chǔ lǐ", "meaning": {"en": "Pending", "it": "In attesa"}}
+              ]
+            },
+            {
+              "title": {"en": "Maps, Transport & Daily Life", "it": "Mappe, trasporti e vita quotidiana"},
+              "entries": [
+                {"hanzi": "地图", "pinyin": "dì tú", "meaning": {"en": "Map", "it": "Mappa"}},
+                {"hanzi": "导航", "pinyin": "dǎo háng", "meaning": {"en": "Navigation / GPS", "it": "Navigazione / GPS"}},
+                {"hanzi": "出发", "pinyin": "chū fā", "meaning": {"en": "Depart / Start", "it": "Parti / Inizia"}},
+                {"hanzi": "到达", "pinyin": "dào dá", "meaning": {"en": "Arrive / Destination", "it": "Arrivo / Destinazione"}},
+                {"hanzi": "附近", "pinyin": "fù jìn", "meaning": {"en": "Nearby", "it": "Nelle vicinanze"}},
+                {"hanzi": "扫码", "pinyin": "sǎo mǎ", "meaning": {"en": "Scan QR code", "it": "Scansiona QR code"}},
+                {"hanzi": "外卖", "pinyin": "wài mài", "meaning": {"en": "Food delivery", "it": "Consegna a domicilio"}},
+                {"hanzi": "评价", "pinyin": "píng jià", "meaning": {"en": "Review / Rating", "it": "Recensione / Valutazione"}}
+              ]
+            }
+          ]
         }
       ]
     },
@@ -358,7 +358,15 @@
             {"hanzi": "我不懂", "pinyin": "wǒ bù dǒng", "meaning": {"en": "I don't understand", "it": "Non capisco"}},
             {"hanzi": "你会说英语吗?", "pinyin": "nǐ huì shuō yīng yǔ ma?", "meaning": {"en": "Do you speak English?", "it": "Parli inglese?"}},
             {"hanzi": "请再说一遍", "pinyin": "qǐng zài shuō yí biàn", "meaning": {"en": "Please say it again", "it": "Puoi ripetere, per favore?"}},
-            {"hanzi": "请等一下", "pinyin": "qǐng děng yí xià", "meaning": {"en": "Please wait a moment", "it": "Un momento, per favore"}}
+            {"hanzi": "请等一下", "pinyin": "qǐng děng yí xià", "meaning": {"en": "Please wait a moment", "it": "Un momento, per favore"}},
+            {"hanzi": "请问", "pinyin": "qǐng wèn", "meaning": {"en": "Excuse me (to ask something)", "it": "Scusi (per chiedere)"}},
+            {"hanzi": "好的", "pinyin": "hǎo de", "meaning": {"en": "OK / Alright", "it": "Va bene / OK"}},
+            {"hanzi": "没有", "pinyin": "méi yǒu", "meaning": {"en": "There isn't / We don't have (common reply)", "it": "Non c'è / Non ne abbiamo (risposta comune)"}},
+            {"hanzi": "不要", "pinyin": "bú yào", "meaning": {"en": "I don't want it / No thanks (to sellers)", "it": "Non lo voglio / No grazie (ai venditori)"}},
+            {"hanzi": "听不懂", "pinyin": "tīng bu dǒng", "meaning": {"en": "I don't understand (what you're saying)", "it": "Non capisco (quello che dici)"}},
+            {"hanzi": "我不会说中文", "pinyin": "wǒ bú huì shuō zhōng wén", "meaning": {"en": "I don't speak Chinese", "it": "Non parlo cinese"}},
+            {"hanzi": "请说慢一点", "pinyin": "qǐng shuō màn yì diǎn", "meaning": {"en": "Please speak more slowly", "it": "Parla più lentamente, per favore"}},
+            {"hanzi": "请写下来", "pinyin": "qǐng xiě xià lái", "meaning": {"en": "Please write it down", "it": "Scrivilo, per favore"}}
           ]
         },
         {
@@ -374,7 +382,11 @@
             {"hanzi": "火车站", "pinyin": "huǒ chē zhàn", "meaning": {"en": "Train station", "it": "Stazione ferroviaria"}},
             {"hanzi": "机场", "pinyin": "jī chǎng", "meaning": {"en": "Airport", "it": "Aeroporto"}},
             {"hanzi": "出租车", "pinyin": "chū zū chē", "meaning": {"en": "Taxi", "it": "Taxi"}},
-            {"hanzi": "高铁", "pinyin": "gāo tiě", "meaning": {"en": "High-speed rail", "it": "Treno ad alta velocità"}}
+            {"hanzi": "高铁", "pinyin": "gāo tiě", "meaning": {"en": "High-speed rail", "it": "Treno ad alta velocità"}},
+            {"hanzi": "请帮我叫出租车", "pinyin": "qǐng bāng wǒ jiào chū zū chē", "meaning": {"en": "Please call a taxi for me", "it": "Mi chiami un taxi, per favore"}},
+            {"hanzi": "我要下车", "pinyin": "wǒ yào xià chē", "meaning": {"en": "I want to get off (bus / taxi)", "it": "Voglio scendere (bus / taxi)"}},
+            {"hanzi": "到了叫我", "pinyin": "dào le jiào wǒ", "meaning": {"en": "Tell me when we arrive", "it": "Avvisami quando arriviamo"}},
+            {"hanzi": "我迷路了", "pinyin": "wǒ mí lù le", "meaning": {"en": "I'm lost", "it": "Mi sono perso/a"}}
           ]
         },
         {
@@ -396,7 +408,15 @@
             {"hanzi": "我要喝茶", "pinyin": "wǒ yào hē chá", "meaning": {"en": "I want tea", "it": "Voglio un tè"}},
             {"hanzi": "我要喝咖啡", "pinyin": "wǒ yào hē kā fēi", "meaning": {"en": "I want coffee", "it": "Voglio un caffè"}},
             {"hanzi": "我吃饱了", "pinyin": "wǒ chī bǎo le", "meaning": {"en": "I'm full (after eating)", "it": "Sono pieno/a"}},
-            {"hanzi": "好吃", "pinyin": "hǎo chī", "meaning": {"en": "Delicious", "it": "Buono"}}
+            {"hanzi": "好吃", "pinyin": "hǎo chī", "meaning": {"en": "Delicious", "it": "Buono"}},
+            {"hanzi": "有英文菜单吗?", "pinyin": "yǒu yīng wén cài dān ma?", "meaning": {"en": "Is there an English menu?", "it": "C'è un menu in inglese?"}},
+            {"hanzi": "这个是什么?", "pinyin": "zhè ge shì shén me?", "meaning": {"en": "What is this?", "it": "Cos'è questo?"}},
+            {"hanzi": "不要香菜", "pinyin": "bú yào xiāng cài", "meaning": {"en": "No cilantro / coriander", "it": "Senza coriandolo"}},
+            {"hanzi": "我对花生过敏", "pinyin": "wǒ duì huā shēng guò mǐn", "meaning": {"en": "I'm allergic to peanuts", "it": "Sono allergico/a alle arachidi"}},
+            {"hanzi": "我对海鲜过敏", "pinyin": "wǒ duì hǎi xiān guò mǐn", "meaning": {"en": "I'm allergic to seafood", "it": "Sono allergico/a ai frutti di mare"}},
+            {"hanzi": "我对麸质过敏", "pinyin": "wǒ duì fū zhì guò mǐn", "meaning": {"en": "I'm allergic to gluten (celiac)", "it": "Sono allergico/a al glutine (celiaco/a)"}},
+            {"hanzi": "有叉子吗?", "pinyin": "yǒu chā zi ma?", "meaning": {"en": "Do you have a fork?", "it": "Avete una forchetta?"}},
+            {"hanzi": "要冰的", "pinyin": "yào bīng de", "meaning": {"en": "I want it cold (drinks are often served warm)", "it": "La voglio fredda (le bevande spesso arrivano a temperatura ambiente)"}}
           ]
         },
         {
@@ -412,7 +432,13 @@
             {"hanzi": "现金", "pinyin": "xiàn jīn", "meaning": {"en": "Cash", "it": "Contanti"}},
             {"hanzi": "发票", "pinyin": "fā piào", "meaning": {"en": "Receipt / Invoice", "it": "Ricevuta / Fattura"}},
             {"hanzi": "可以分开付款吗?", "pinyin": "kě yǐ fēn kāi fù kuǎn ma?", "meaning": {"en": "Can we split the payment?", "it": "Possiamo dividere il pagamento?"}},
-            {"hanzi": "我分几次转给你", "pinyin": "wǒ fēn jǐ cì zhuǎn gěi nǐ", "meaning": {"en": "I'll send it in multiple transfers", "it": "Te lo mando in più pagamenti"}}
+            {"hanzi": "我分几次转给你", "pinyin": "wǒ fēn jǐ cì zhuǎn gěi nǐ", "meaning": {"en": "I'll send it in multiple transfers", "it": "Te lo mando in più pagamenti"}},
+            {"hanzi": "可以用微信支付吗?", "pinyin": "kě yǐ yòng wēi xìn zhī fù ma?", "meaning": {"en": "Can I pay with WeChat Pay?", "it": "Posso pagare con WeChat Pay?"}},
+            {"hanzi": "可以付现金吗?", "pinyin": "kě yǐ fù xiàn jīn ma?", "meaning": {"en": "Can I pay in cash?", "it": "Posso pagare in contanti?"}},
+            {"hanzi": "我只是看看", "pinyin": "wǒ zhǐ shì kàn kan", "meaning": {"en": "I'm just looking", "it": "Sto solo guardando"}},
+            {"hanzi": "有大一点的吗?", "pinyin": "yǒu dà yì diǎn de ma?", "meaning": {"en": "Do you have a bigger one?", "it": "Ne avete uno più grande?"}},
+            {"hanzi": "有小一点的吗?", "pinyin": "yǒu xiǎo yì diǎn de ma?", "meaning": {"en": "Do you have a smaller one?", "it": "Ne avete uno più piccolo?"}},
+            {"hanzi": "不要袋子", "pinyin": "bú yào dài zi", "meaning": {"en": "No bag, thanks", "it": "Senza sacchetto, grazie"}}
           ]
         },
         {
@@ -429,7 +455,12 @@
             {"hanzi": "行李寄存", "pinyin": "xíng lǐ jì cún", "meaning": {"en": "Luggage storage", "it": "Deposito bagagli"}},
             {"hanzi": "我需要更多毛巾", "pinyin": "wǒ xū yào gèng duō máo jīn", "meaning": {"en": "I need more towels", "it": "Ho bisogno di più asciugamani"}},
             {"hanzi": "空调怎么用?", "pinyin": "kōng tiáo zěn me yòng?", "meaning": {"en": "How does the AC work?", "it": "Come funziona il condizionatore?"}},
-            {"hanzi": "可以叫醒服务吗?", "pinyin": "kě yǐ jiào xǐng fú wù ma?", "meaning": {"en": "Can I have a wake-up call?", "it": "Posso avere la sveglia telefonica?"}}
+            {"hanzi": "可以叫醒服务吗?", "pinyin": "kě yǐ jiào xǐng fú wù ma?", "meaning": {"en": "Can I have a wake-up call?", "it": "Posso avere la sveglia telefonica?"}},
+            {"hanzi": "房卡", "pinyin": "fáng kǎ", "meaning": {"en": "Room key card", "it": "Tessera della camera"}},
+            {"hanzi": "请打扫房间", "pinyin": "qǐng dǎ sǎo fáng jiān", "meaning": {"en": "Please clean the room", "it": "Per favore pulite la camera"}},
+            {"hanzi": "空调坏了", "pinyin": "kōng tiáo huài le", "meaning": {"en": "The AC is broken", "it": "L'aria condizionata è rotta"}},
+            {"hanzi": "有转换插头吗?", "pinyin": "yǒu zhuǎn huàn chā tóu ma?", "meaning": {"en": "Do you have a plug adapter?", "it": "Avete un adattatore per la presa?"}},
+            {"hanzi": "可以晚点退房吗?", "pinyin": "kě yǐ wǎn diǎn tuì fáng ma?", "meaning": {"en": "Can I check out late?", "it": "Posso fare il check-out più tardi?"}}
           ]
         },
         {
@@ -443,7 +474,13 @@
             {"hanzi": "叫救护车", "pinyin": "jiào jiù hù chē", "meaning": {"en": "Call an ambulance", "it": "Chiama un'ambulanza"}},
             {"hanzi": "叫警察", "pinyin": "jiào jǐng chá", "meaning": {"en": "Call the police", "it": "Chiama la polizia"}},
             {"hanzi": "我的护照丢了", "pinyin": "wǒ de hù zhào diū le", "meaning": {"en": "I lost my passport", "it": "Ho perso il passaporto"}},
-            {"hanzi": "意大利大使馆", "pinyin": "yì dà lì dà shǐ guǎn", "meaning": {"en": "Italian embassy", "it": "Ambasciata italiana"}}
+            {"hanzi": "意大利大使馆", "pinyin": "yì dà lì dà shǐ guǎn", "meaning": {"en": "Italian embassy", "it": "Ambasciata italiana"}},
+            {"hanzi": "报警电话 110", "pinyin": "bào jǐng diàn huà yāo yāo líng", "meaning": {"en": "Police: 110", "it": "Polizia: 110"}},
+            {"hanzi": "急救电话 120", "pinyin": "jí jiù diàn huà yāo èr líng", "meaning": {"en": "Ambulance: 120", "it": "Ambulanza: 120"}},
+            {"hanzi": "火警电话 119", "pinyin": "huǒ jǐng diàn huà yāo yāo jiǔ", "meaning": {"en": "Fire brigade: 119", "it": "Vigili del fuoco: 119"}},
+            {"hanzi": "这里有人会说英语吗?", "pinyin": "zhè lǐ yǒu rén huì shuō yīng yǔ ma?", "meaning": {"en": "Does anyone here speak English?", "it": "Qualcuno qui parla inglese?"}},
+            {"hanzi": "我的钱包被偷了", "pinyin": "wǒ de qián bāo bèi tōu le", "meaning": {"en": "My wallet was stolen", "it": "Mi hanno rubato il portafoglio"}},
+            {"hanzi": "我的手机丢了", "pinyin": "wǒ de shǒu jī diū le", "meaning": {"en": "I lost my phone", "it": "Ho perso il telefono"}}
           ]
         }
       ]
