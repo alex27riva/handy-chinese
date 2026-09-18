@@ -108,6 +108,33 @@
 <input type="file" id="importFile" accept=".json,application/json" hidden>
 
 
+<div class="show-mode" id="showMode" role="dialog" aria-modal="true" aria-labelledby="showHanzi" hidden>
+  <button class="show-close" id="showClose" type="button" aria-label="Close">✕</button>
+  <div class="show-body">
+    <div class="show-hanzi" id="showHanzi" lang="zh-CN"></div>
+    <div class="show-pinyin" id="showPinyin"></div>
+    <div class="show-meaning" id="showMeaning"></div>
+  </div>
+  <div class="show-actions">
+    <button class="show-btn" id="showSpeak" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+      <span data-i18n="showSpeak">Speak</span>
+    </button>
+    <button class="show-btn" id="showCopy" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      <span data-i18n="showCopy">Copy</span>
+    </button>
+    <button class="show-btn" id="showStar" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span data-i18n="showStar">Save</span>
+    </button>
+    <a class="show-btn" id="showPleco" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg>
+      <span>Pleco</span>
+    </a>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <button class="toast toast-update" id="updateToast" type="button" hidden>
   <span aria-hidden="true">↻</span> <span data-i18n="updateReady">New version ready · tap to reload</span>

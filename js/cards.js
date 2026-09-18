@@ -7,6 +7,7 @@ import { resetSearch } from './search.js';
 import { setActiveTab, resetTransient } from './tabs.js';
 import { refreshFavoritesPanel } from './render.js';
 import { showToast } from './toast.js';
+import { openShow } from './show.js';
 
 // Shared click handler for cards in the panels and in the favorites overlay.
 // Dispatches first on global search (navigate to the card's tab), then on quiz mode.
@@ -45,7 +46,7 @@ export function handleCardClick(card) {
 }
 
 // Every star for the same entry (main panel + favorites overlay) shows one state.
-function syncStars(tabId, hanzi) {
+export function syncStars(tabId, hanzi) {
   const on = isFavorite(tabId, hanzi);
   document.querySelectorAll('.favorite-btn').forEach(star => {
     const card = star.closest('[data-tab]');
@@ -91,10 +92,11 @@ export function wireCardKeys() {
   });
 }
 
-// ── Copy hanzi: long-press any card ────────────────────────
+// ── Copy hanzi ─────────────────────────────────────────────
 // iOS Safari only honours clipboard writes made synchronously inside a
-// user-activation handler (pointerup / touchend), never from a timer. So the
-// long-press timer only ARMS the card; the actual write happens on release.
+// user-activation handler (click / pointerup), never from a timer or a
+// promise callback. copyText() must therefore be called straight from the
+// event handler (the Copy button in show mode does).
 function execCommandCopy(text) {
   try {
     const ta = document.createElement('textarea');
@@ -112,7 +114,7 @@ function execCommandCopy(text) {
 }
 
 // Must be called synchronously from a user-gesture event handler.
-function copyText(text) {
+export function copyText(text) {
   const done = ok => showToast(ok ? t(CHROME.copied) + ' · ' + text : t(CHROME.copyFailed));
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text)
@@ -123,11 +125,16 @@ function copyText(text) {
   }
 }
 
-function cardHanzi(card) {
+export function cardHanzi(card) {
   const el = card.querySelector('.hanzi, .phrase-hanzi, .app-hanzi');
   return el ? el.textContent.trim() : '';
 }
 
+// ── Long-press: hold any card to open show mode ────────────
+// The timer only ARMS the card (.press-armed, vibrate); show mode opens on
+// release, so a press that turns into a scroll (>10px) or is cancelled never
+// fires. On release card.dataset.longPressed is set, which handleCardClick
+// consumes to swallow the click that follows (no TTS after a hold).
 const LONG_PRESS_MS = 500;
 const LONG_PRESS_MOVE_PX = 10;
 export function wireLongPress() {
@@ -135,7 +142,7 @@ export function wireLongPress() {
   let timer = null, card = null, armed = null, x0 = 0, y0 = 0;
   const reset = () => {
     clearTimeout(timer); timer = null; card = null;
-    if (armed) armed.classList.remove('copy-armed');
+    if (armed) armed.classList.remove('press-armed');
     armed = null;
   };
   panels.addEventListener('pointerdown', e => {
@@ -147,7 +154,7 @@ export function wireLongPress() {
     timer = setTimeout(() => {
       timer = null;
       armed = card;
-      armed.classList.add('copy-armed');
+      armed.classList.add('press-armed');
       if (navigator.vibrate) navigator.vibrate(30);
     }, LONG_PRESS_MS);
   });
@@ -158,12 +165,9 @@ export function wireLongPress() {
   panels.addEventListener('pointerup', () => {
     if (armed) {
       const c = armed;
-      const text = cardHanzi(c);
       c.dataset.longPressed = '1';
-      c.classList.add('copied');
-      setTimeout(() => c.classList.remove('copied'), 400);
       reset();
-      if (text) copyText(text); // synchronous: still inside the user gesture
+      openShow(c);
       return;
     }
     reset();

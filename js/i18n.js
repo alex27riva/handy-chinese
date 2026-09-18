@@ -13,13 +13,13 @@ export const CHROME = {
   },
   aboutTips: {
     en: '<li><strong>Tap</strong> a card to hear it spoken</li>'
-      + '<li><strong>Hold</strong> a card to copy the hanzi</li>'
+      + '<li><strong>Hold</strong> a card to show it fullscreen (speak · copy · save)</li>'
       + '<li><strong>Swipe</strong> left / right to change tab</li>'
       + '<li><strong>☆</strong> saves a card to Favorites · <strong>📖</strong> opens it in Pleco</li>'
       + '<li><strong>拼</strong> hides pinyin · <strong>?</strong> starts quiz mode</li>'
       + '<li>Works fully <strong>offline</strong> once installed</li>',
     it: '<li><strong>Tocca</strong> una carta per ascoltarla</li>'
-      + '<li><strong>Tieni premuto</strong> per copiare gli hanzi</li>'
+      + '<li><strong>Tieni premuto</strong> una carta per mostrarla a schermo intero (ascolta · copia · salva)</li>'
       + '<li><strong>Scorri</strong> a sinistra / destra per cambiare scheda</li>'
       + '<li><strong>☆</strong> salva una carta nei Preferiti · <strong>📖</strong> la apre in Pleco</li>'
       + '<li><strong>拼</strong> nasconde il pinyin · <strong>?</strong> avvia la modalità quiz</li>'
@@ -85,6 +85,9 @@ export const CHROME = {
   // ── Custom phrases (我的 tab) ──
   customTabLabel: { en: 'My', it: 'Le mie' },
   jumpLabel: { en: 'Jump to section', it: 'Vai alla sezione' },
+  showSpeak: { en: 'Speak', it: 'Ascolta' },
+  showCopy: { en: 'Copy', it: 'Copia' },
+  showStar: { en: 'Save', it: 'Salva' },
   customSectionTitle: { en: 'My phrases', it: 'Le mie frasi' },
   customEmpty: {
     en: 'Your own phrases live here.<br>Tap <strong>Add</strong> to write one, or <strong>Import</strong> a JSON file exported from Hàndy.',

@@ -950,7 +950,8 @@ body.fav-open {
 /* ── Hide pinyin mode ─────────────────────────────────────── */
 [data-pinyin="hidden"] .pinyin,
 [data-pinyin="hidden"] .phrase-pinyin,
-[data-pinyin="hidden"] .app-pinyin { display: none; }
+[data-pinyin="hidden"] .app-pinyin,
+[data-pinyin="hidden"] .show-pinyin { display: none; }
 
 .pinyin-btn {
   flex-shrink: 0;
@@ -1140,14 +1141,98 @@ body.fav-open {
 }
 .toast-update:hover { filter: brightness(1.08); }
 
-.card.copy-armed, .phrase-card.copy-armed, .app-card.copy-armed,
-.card.copied, .phrase-card.copied, .app-card.copied {
+/* long-press armed (js/cards.js): show mode opens on release */
+.card.press-armed, .phrase-card.press-armed, .app-card.press-armed {
   transform: scale(0.97);
   transition: transform 0.15s ease;
-}
-.card.copy-armed, .phrase-card.copy-armed, .app-card.copy-armed {
   border-color: var(--accent-2);
 }
+
+/* ── Show mode: fullscreen hanzi to hold up to someone (js/show.js) ── */
+.show-mode {
+  position: fixed;
+  inset: 0;
+  z-index: 1100; /* above the favorites overlay (1000): a hold there opens it too */
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  padding: calc(env(safe-area-inset-top) + 0.75rem) 1rem calc(env(safe-area-inset-bottom) + 1.25rem);
+  animation: fadeIn 0.2s ease-out;
+}
+.show-close {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 0.5rem);
+  right: 0.5rem;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: none;
+  font-size: 1.4rem;
+  color: var(--icon);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.show-close:hover { color: var(--text); }
+.show-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.75rem;
+}
+.show-hanzi {
+  font-family: var(--font-hanzi);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--text);
+  overflow-wrap: anywhere;
+  transition: color 0.2s;
+}
+.show-hanzi.speaking { color: var(--accent); }
+.show-pinyin {
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 4.5vw, 1.6rem);
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+.show-meaning {
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 4vw, 1.35rem);
+  color: var(--text-2);
+  max-width: 32rem;
+}
+.show-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.show-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.show-btn:hover { border-color: var(--text-2); }
+.show-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.show-btn.active { color: var(--accent-2); border-color: var(--accent-2); }
+.show-btn.active svg { fill: var(--accent-2); }
+.show-btn:focus-visible, .show-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+body.show-open { overflow: hidden; }
 
 /* ── Custom phrases (我的 tab) ─────────────────────────────── */
 /* small pill buttons: action bar + import sheet */
