@@ -84,6 +84,7 @@ export const CHROME = {
   },
   // ── Custom phrases (我的 tab) ──
   customTabLabel: { en: 'My', it: 'Le mie' },
+  jumpLabel: { en: 'Jump to section', it: 'Vai alla sezione' },
   customSectionTitle: { en: 'My phrases', it: 'Le mie frasi' },
   customEmpty: {
     en: 'Your own phrases live here.<br>Tap <strong>Add</strong> to write one, or <strong>Import</strong> a JSON file exported from Hàndy.',

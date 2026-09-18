@@ -156,6 +156,43 @@ h1 {
   margin-bottom: 1rem;
 }
 
+/* ── Jump bar: sticky subsection chips under the toolbar (js/jump.js) ── */
+.jump-bar {
+  position: sticky;
+  top: var(--toolbar-h, 0px);
+  z-index: 110; /* under the toolbar (120), over cards */
+  max-width: 860px;
+  margin: -1.2rem auto 1.6rem; /* close the toolbar's bottom margin so the two read as one strip */
+  padding: 0.5rem 0 0.55rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.jump-chip {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-2);
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.jump-chip:hover { color: var(--text); border-color: var(--text-2); }
+.jump-chip.active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.jump-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -599,6 +636,13 @@ h1 {
   .toolbar {
     margin-left: -1rem;
     margin-right: -1rem;
+    max-width: none;
+  }
+  .jump-bar {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     max-width: none;
   }
 }
@@ -1139,6 +1183,7 @@ body.fav-open {
   gap: 0.5rem;
 }
 #panels.global-search .custom-bar { display: none; } /* results only while searching */
+#panels.global-search .jump-bar   { display: none; }
 
 .custom-empty {
   max-width: 860px;

@@ -10,6 +10,7 @@ import { wireTabs, wireSwipe, resetTransient } from './tabs.js';
 import { wirePanelClicks, wireCardKeys, wireLongPress } from './cards.js';
 import { setContentData, rerenderContent, showFavorites, hideFavorites } from './render.js';
 import { wireCustom } from './custom.js';
+import { wireJumpBar } from './jump.js';
 
 // ── Install hint: only on iOS/Android, hidden if standalone or dismissed ──
 // The banner starts `hidden` in the markup and is only revealed here.
@@ -141,6 +142,7 @@ wireSwipe();
 wireLongPress();
 wireCardKeys();
 wireCustom();
+wireJumpBar();
 
 fetch('./content.json')
   .then(r => {
