@@ -29,6 +29,10 @@ export const CHROME = {
     en: 'Speech is not supported in this browser',
     it: 'La sintesi vocale non è supportata in questo browser'
   },
+  silentSwitch: {
+    en: 'No sound? iOS 27 mutes in-page speech while the ring/silent switch is on — flip the switch on the side of the phone.',
+    it: 'Nessun suono? iOS 27 silenzia la voce nelle pagine web quando il tasto silenzioso è attivo — sposta il tasto sul lato del telefono.'
+  },
   ttsFailed: {
     en: 'Speech failed on this device',
     it: 'Sintesi vocale fallita su questo dispositivo'

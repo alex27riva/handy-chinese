@@ -10,7 +10,8 @@ const UA = navigator.userAgent;
 const ios = /iphone|ipad|ipod/i.test(UA) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 const android = /android/i.test(UA);
 const firefox = /firefox\//i.test(UA);
-export const platform = { ios, android, firefox, mobile: ios || android };
+const safariMajor = parseInt((UA.match(/Version\/(\d+)/) || [])[1] || '0', 10);
+export const platform = { ios, android, firefox, safariMajor, mobile: ios || android };
 
 // ── localStorage wrapper ───────────────────────────────────
 // localStorage can throw (private mode, storage disabled, quota); every access
