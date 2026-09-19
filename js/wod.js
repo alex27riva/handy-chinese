@@ -65,7 +65,7 @@ export function renderWordOfDay() {
 
   const eyebrow = document.createElement('div');
   eyebrow.className = 'wod-eyebrow';
-  eyebrow.textContent = t(CHROME.wordOfDay) + ' · ' + t(e.tabLabel);
+  eyebrow.textContent = t(CHROME.wordOfDay);
   card.appendChild(eyebrow);
 
   const hanzi = document.createElement('div');

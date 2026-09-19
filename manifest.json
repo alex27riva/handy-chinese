@@ -4,8 +4,8 @@
   "description": "Essential Chinese vocabulary and phrases for travel",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#f5efe3",
-  "theme_color": "#1a1208",
+  "background_color": "#FBFBF8",
+  "theme_color": "#17150F",
   "icons": [
     {
       "src": "./icon.svg",
