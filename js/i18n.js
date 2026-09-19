@@ -74,6 +74,7 @@ export const CHROME = {
     en: 'Tap the ☆ on any card to save it here.',
     it: 'Tocca la ☆ su una carta per salvarla qui.'
   },
+  wordOfDay: { en: 'Word of the day', it: 'Parola del giorno' },
   searchPlaceholder: {
     en: 'Search…',
     it: 'Cerca…'

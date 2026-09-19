@@ -9,6 +9,7 @@ import { filterCards } from './search.js';
 import { wireTabs, wireSwipe, resetTransient } from './tabs.js';
 import { wirePanelClicks, wireCardKeys, wireLongPress } from './cards.js';
 import { setContentData, rerenderContent, showFavorites, hideFavorites } from './render.js';
+import { renderWordOfDay } from './wod.js';
 import { wireCustom } from './custom.js';
 import { wireJumpBar } from './jump.js';
 import { wireShow } from './show.js';
@@ -73,6 +74,7 @@ function setLang(lang) {
   resetTransient();
   applyChrome();
   rerenderContent();
+  renderWordOfDay();
   const si = document.getElementById('searchInput');
   if (si && si.value) filterCards(si.value);
 }
@@ -154,6 +156,7 @@ fetch('./content.json')
   .then(data => {
     setContentData(data);
     rerenderContent(); // content.json tabs + the 我的 tab
+    renderWordOfDay();
   })
   .catch(err => {
     const panels = document.getElementById('panels');

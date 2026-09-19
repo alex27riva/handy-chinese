@@ -21,6 +21,7 @@ export function resetSearch(panel) {
 
 export function filterCards(query) {
   const q = foldSearch(query);
+  document.body.classList.toggle('search-on', !!q); // hide the word-of-the-day hero while searching
   const panelsEl = document.getElementById('panels');
   const clearBtn = document.getElementById('searchClear');
   if (clearBtn) clearBtn.hidden = !q;
