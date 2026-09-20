@@ -4,7 +4,7 @@ import { isFavorite, isCollapsed, collapseKey, platform } from './settings.js';
 import { CHROME, t } from './i18n.js';
 import { foldSearch } from './search.js';
 import { setActiveTab } from './tabs.js';
-import { customTab, renderCustomBar, renderCustomEmpty } from './custom.js';
+import { customTab, renderCustomBar, renderCustomEmpty, renderHeroRestore } from './custom.js';
 import { renderJumpBar } from './jump.js';
 
 const SPEAKER_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>`;
@@ -219,6 +219,8 @@ export function renderPanels(tabs, container) {
     if (tab.intro) panel.appendChild(renderIntro(tab.intro));
     if (tab.custom) {
       panel.appendChild(renderCustomBar(tab.sections.length > 0));
+      const restore = renderHeroRestore(); // null unless a hero slide is dismissed
+      if (restore) panel.appendChild(restore);
       if (!tab.sections.length) panel.appendChild(renderCustomEmpty());
     }
     // sticky chips: every nested tab, and flat tabs long enough to need them

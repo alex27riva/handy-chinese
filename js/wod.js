@@ -6,23 +6,19 @@
 // keep working for free.
 import { contentData, refreshFavoritesPanel } from './render.js';
 import { CHROME, t } from './i18n.js';
-import { store, isFavorite, toggleFavorite } from './settings.js';
+import { store, isFavorite, toggleFavorite, dateKey, HERO_KEYS } from './settings.js';
 import { speak } from './tts.js';
 import { syncStars } from './cards.js';
 import { openShow } from './show.js';
 
 const STAR_SVG = `<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
-const DISMISS_KEY = 'wodDismissed';
+const DISMISS_KEY = HERO_KEYS.wod;
 const LONG_PRESS_MS = 500;
 const LONG_PRESS_MOVE_PX = 10;
 
-// Local YYYY-MM-DD; the same key drives both the rotation and the dismiss, so
-// dismissing hides only today's entry and the next day surfaces a new one.
-// Shared with js/tips.js, whose card is dismissed the same way.
-export function dateKey() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
+// dateKey() (local YYYY-MM-DD) lives in settings.js: the same string drives
+// both the rotation and the dismiss, and the 我的 tab's restore action has to
+// read the very same keys. js/tips.js dismisses its card the same way.
 
 // Every vocab + phrase entry with a hanzi and a meaning. contentData.tabs is
 // the content.json tabs only — the synthetic 我的 tab is not in there, so user

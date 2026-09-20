@@ -1485,8 +1485,27 @@ body.show-open { overflow: hidden; }
   flex-wrap: wrap;
   gap: 0.5rem;
 }
-#panels.global-search .custom-bar { display: none; } /* results only while searching */
-#panels.global-search .jump-bar   { display: none; }
+#panels.global-search .custom-bar     { display: none; } /* results only while searching */
+#panels.global-search .jump-bar       { display: none; }
+#panels.global-search .hero-restore   { display: none; }
+
+/* Undo for a hero slide dismissed with its ✕ — rendered in the 我的 panel only
+   while one is hidden, since the dismiss otherwise has no way back. */
+.hero-restore {
+  max-width: 860px;
+  margin: 0 auto 1.4rem;
+  padding: 0.7rem 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  background: var(--surface-2);
+  border: 1px dashed var(--line);
+  border-radius: 6px;
+  color: var(--text-2);
+  font-size: 0.85rem;
+}
 
 .custom-empty {
   max-width: 860px;

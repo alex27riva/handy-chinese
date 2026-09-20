@@ -9,7 +9,7 @@ import { filterCards } from './search.js';
 import { wireTabs, wireSwipe, resetTransient } from './tabs.js';
 import { wirePanelClicks, wireCardKeys, wireLongPress } from './cards.js';
 import { setContentData, rerenderContent, showFavorites, hideFavorites } from './render.js';
-import { renderHero } from './hero.js';
+import { renderHero, restoreHeroView } from './hero.js';
 import { wireCustom } from './custom.js';
 import { wireJumpBar } from './jump.js';
 import { wireShow } from './show.js';
@@ -155,7 +155,7 @@ wirePanelClicks();
 wireSwipe();
 wireLongPress();
 wireCardKeys();
-wireCustom();
+wireCustom(restoreHeroView); // the 我的 tab's "show the daily card again"
 wireJumpBar();
 wireShow();
 

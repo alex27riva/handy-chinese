@@ -8,11 +8,10 @@
 // instead of restarting the list.
 import { contentData } from './render.js';
 import { CHROME, t } from './i18n.js';
-import { store } from './settings.js';
-import { dateKey } from './wod.js';
+import { store, dateKey, HERO_KEYS } from './settings.js';
 
 const INDEX_KEY = 'tipIndex';
-const DISMISS_KEY = 'tipDismissed';
+const DISMISS_KEY = HERO_KEYS.tip;
 // The pose follows the tip, so a tap visibly does something.
 const POSES = ['mascot-idle.svg', 'mascot-think.svg', 'mascot-hi.svg', 'mascot-celebrate.svg'];
 const PAW_SVG = `<svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="9.5" rx="2.7" ry="3.2"/><ellipse cx="12" cy="7.5" rx="2.7" ry="3.4"/><ellipse cx="17" cy="9.5" rx="2.7" ry="3.2"/><ellipse cx="20.5" cy="14" rx="2.4" ry="2.8"/><path d="M12 12c3.4 0 6 2.3 6 5.1 0 2.2-1.9 3.6-4.2 3.6h-3.6C7.9 20.7 6 19.3 6 17.1 6 14.3 8.6 12 12 12Z"/></svg>`;

@@ -24,7 +24,29 @@ export const store = {
   set(key, value) {
     try { localStorage.setItem(key, value); } catch (e) {}
   },
+  remove(key) {
+    try { localStorage.removeItem(key); } catch (e) {}
+  },
 };
+
+// ── Daily hero slot (word of the day + 帮手's tip) ──────────
+// Local YYYY-MM-DD. Both hero slides stamp it under their own key when
+// dismissed, so a dismiss lasts the rest of the day and the next day brings
+// the card back. Kept here, in the module nothing else imports from, so the
+// slides and the 我的 tab's restore action agree on one spelling of the keys.
+export function dateKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+export const HERO_KEYS = { wod: 'wodDismissed', tip: 'tipDismissed' };
+
+// Is either slide dismissed for today? The 我的 tab offers to undo it.
+export const heroDismissed = () =>
+  Object.values(HERO_KEYS).some(k => store.get(k) === dateKey());
+
+export const restoreHero = () =>
+  Object.values(HERO_KEYS).forEach(k => store.remove(k));
 
 // A Set of strings mirrored to localStorage as a JSON array.
 function persistedSet(key) {

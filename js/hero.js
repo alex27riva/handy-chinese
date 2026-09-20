@@ -14,6 +14,7 @@
 // anchor.
 import { renderWordOfDay } from './wod.js';
 import { renderTip } from './tips.js';
+import { refreshHeroRestore } from './custom.js';
 import { CHROME, t } from './i18n.js';
 
 const SLIDES = ['wod', 'tip'];
@@ -43,6 +44,9 @@ export function renderHero() {
   });
 
   root.hidden = alive.length === 0;
+  // A ✕ hides a slide for the rest of the day; the 我的 tab is where that is
+  // undone, so keep its notice in step with whatever is left on screen.
+  refreshHeroRestore();
   if (!alive.length) return;
 
   // A dismissed slide leaves the carousel showing whichever one is left.
@@ -51,9 +55,22 @@ export function renderHero() {
   wire(root);
 }
 
+// The 我的 tab's undo. `index` still points at whatever slide was in view when
+// the other one was dismissed, so a plain renderHero() would bring the carousel
+// back parked on the tip with the just-restored word of the day a swipe away.
+export function restoreHeroView() {
+  index = 0; // the word of the day is the daily anchor
+  renderHero();
+}
+
 function apply(root, alive) {
   const track = root.querySelector('.hero-track');
-  track.style.transform = `translateX(${-100 * index}%)`;
+  // Offset by the slide's position among the VISIBLE ones, not by its absolute
+  // index: a dismissed slide is `hidden`, so it leaves the flex flow entirely.
+  // Shifting by the absolute index after the first slide is dismissed would
+  // push the only surviving card out of the clipped box and leave an empty
+  // band where the carousel used to be.
+  track.style.transform = `translateX(${-100 * Math.max(0, alive.indexOf(index))}%)`;
 
   // The off-screen slide is inert, so it stays out of the tab order and out of
   // the accessibility tree instead of being read as part of the visible card.

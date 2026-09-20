@@ -2,7 +2,7 @@
 // content.json) and rendered as the 我的 tab through the normal phrase-card
 // path. This module owns the data (load / add / remove / export), the import
 // sheet, and the per-tab action bar; render.js only asks for customTab().
-import { store, platform } from './settings.js';
+import { store, platform, heroDismissed, restoreHero } from './settings.js';
 import { CHROME, t } from './i18n.js';
 import { showToast } from './toast.js';
 import { rerenderContent } from './render.js';
@@ -162,7 +162,10 @@ function setEditing(panel, on) {
   if (del) { del.hidden = !on; resetDeleteAll(del); }
 }
 
-export function wireCustom() {
+// `onHeroRestore` is renderHero, handed in by app.js — the same trick the hero
+// slides use for `notify`, so custom.js never imports hero.js (which would
+// close the custom -> hero -> wod -> render -> custom import cycle).
+export function wireCustom(onHeroRestore) {
   const panels = document.getElementById('panels');
   // Action bar and per-card remove buttons are rebuilt by rerenderContent(), so delegate.
   panels.addEventListener('click', e => {
@@ -181,6 +184,10 @@ export function wireCustom() {
       btn.dataset.confirm = '1';
       btn.textContent = t(CHROME.deleteAllConfirm);
       confirmTimer = setTimeout(() => resetDeleteAll(btn), 3000);
+    } else if (action === 'restore-hero') {
+      restoreHero();
+      onHeroRestore?.();   // renderHero repaints the carousel AND drops this row
+      showToast(t(CHROME.heroRestored));
     } else if (action === 'remove') {
       const card = btn.closest('[data-hanzi]');
       if (card) {
@@ -228,6 +235,42 @@ export function renderCustomBar(hasEntries) {
     bar.appendChild(del);
   }
   return bar;
+}
+
+// The ✕ on a hero slide hides it for the rest of the day, which is otherwise
+// a one-way door: the carousel is gone and nothing on screen explains why.
+// Returns null when there is nothing to undo.
+export function renderHeroRestore() {
+  if (!heroDismissed()) return null;
+  const row = document.createElement('div');
+  row.className = 'hero-restore';
+  const note = document.createElement('span');
+  note.textContent = t(CHROME.heroRestoreNote);
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'btn';
+  btn.dataset.customAction = 'restore-hero';
+  btn.textContent = t(CHROME.heroRestoreBtn);
+  row.append(note, btn);
+  return row;
+}
+
+// Add or remove the row in place, without rebuilding every panel: a dismiss
+// happens outside #panels (hero.js calls this from renderHero), and rebuilding
+// 340 cards to toggle one notice would be absurd. Mirrors refreshFavoritesPanel.
+export function refreshHeroRestore() {
+  const panel = document.getElementById('tab-' + CUSTOM_TAB_ID);
+  if (!panel) return;
+  const existing = panel.querySelector('.hero-restore');
+  const wanted = heroDismissed();
+  if (wanted && !existing) {
+    const bar = panel.querySelector('.custom-bar');
+    const row = renderHeroRestore();
+    if (bar) bar.after(row);
+    else panel.prepend(row);
+  } else if (!wanted && existing) {
+    existing.remove();
+  }
 }
 
 export function renderCustomEmpty() {

@@ -100,6 +100,13 @@ export const CHROME = {
   },
   // ── Custom phrases (我的 tab) ──
   customTabLabel: { en: 'My', it: 'Le mie' },
+  // Undo for a dismissed hero slide; only rendered while one is hidden.
+  heroRestoreNote: {
+    en: 'The daily card is hidden for today.',
+    it: 'La carta del giorno è nascosta per oggi.'
+  },
+  heroRestoreBtn: { en: 'Show it', it: 'Mostra' },
+  heroRestored: { en: 'Daily card is back', it: 'Carta del giorno ripristinata' },
   jumpLabel: { en: 'Jump to section', it: 'Vai alla sezione' },
   showSpeak: { en: 'Speak', it: 'Ascolta' },
   showCopy: { en: 'Copy', it: 'Copia' },
