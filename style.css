@@ -70,6 +70,24 @@ body {
   -webkit-touch-callout: none;
 }
 
+/* iOS zooms the page on a double tap unless the tap target opts out, so two
+   quick taps on a card (speak, speak again) zoomed the whole app instead.
+   `manipulation` drops only the double-tap-zoom gesture — panning and
+   pinch-zoom still work, so this is not `user-scalable=no` by the back door
+   and the viewport meta stays zoomable. Covers every tap target: all buttons
+   and links (tabs, toolbar, stars, Pleco, jump chips, show mode, dismissals),
+   the three card kinds, both hero cards and the collapsible titles. */
+button,
+a,
+.card,
+.phrase-card,
+.app-card,
+.wod-card,
+.tip-bubble,
+[data-collapse-key] {
+  touch-action: manipulation;
+}
+
 header {
   text-align: center;
   margin-bottom: 1.5rem;
