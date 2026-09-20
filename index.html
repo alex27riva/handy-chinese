@@ -45,13 +45,28 @@
   <p class="subtitle" data-i18n="subtitle">Essential Chinese for apps, food, travel & signs</p>
 </header>
 
-<section class="wod" id="wod" hidden></section>
+<!-- Hero slot: the word of the day and 帮手's tips are two slides of one
+     carousel (js/hero.js). js/wod.js fills #wod, js/tips.js fills #tip; either
+     can be gone for the day, so the carousel falls back to the remaining one. -->
+<section class="hero" id="hero" hidden>
+  <div class="hero-track">
+    <div class="hero-slide" id="wod" hidden></div>
+    <div class="hero-slide" id="tip" hidden></div>
+  </div>
+  <button class="hero-nav" id="heroNav" type="button" hidden></button>
+</section>
 
 <div class="install-hint" id="installHint" hidden>
-  <span class="install-emoji" aria-hidden="true">📱</span>
+  <img class="install-mascot" src="./assets/mascot-help.svg" alt="" aria-hidden="true">
   <span data-i18n-html="installHint"><strong>Works offline!</strong> Tap Safari's Share button → <strong>Add to Home Screen</strong> to install as an app. Perfect for your trip.</span>
   <button id="installBtn" class="install-btn" hidden data-i18n="installBtnLabel">Install</button>
   <button class="close-hint" id="hintClose" type="button" aria-label="Dismiss">✕</button>
+</div>
+
+<div class="install-hint onboarding" id="onboarding" hidden>
+  <img class="install-mascot" src="./assets/mascot-hi.svg" alt="" aria-hidden="true">
+  <span data-i18n-html="onboardingTips"></span>
+  <button class="close-hint" id="onboardingClose" type="button" aria-label="Dismiss">✕</button>
 </div>
 
 <div class="tabs" id="tabs" role="tablist"></div>
@@ -75,6 +90,11 @@
   </div>
 </div>
 <div id="panels"></div>
+
+<div class="search-empty" id="searchEmpty" hidden>
+  <img class="empty-mascot" src="./assets/mascot-think.svg" alt="" aria-hidden="true">
+  <p data-i18n="searchEmpty"></p>
+</div>
 
 <!-- Add-phrase sheet for the 我的 (custom phrases) tab; wired in js/custom.js -->
 <div class="sheet-overlay" id="addSheet" hidden>

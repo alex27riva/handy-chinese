@@ -150,6 +150,8 @@ def check_content():
     except (OSError, ValueError) as e:
         err("content.json", f"cannot parse: {e}")
         return
+    if isinstance(data, dict):
+        check_tips(data)
     tabs = data.get("tabs") if isinstance(data, dict) else None
     if not isinstance(tabs, list) or not tabs:
         err("content.json", "top level must be {\"tabs\": [...]} with at least one tab")
@@ -157,6 +159,16 @@ def check_content():
     seen_ids = set()
     for i, tab in enumerate(tabs):
         check_tab(tab, i, seen_ids)
+
+
+def check_tips(data):
+    """Top-level 'tips': the mascot's rotating advice list (js/tips.js)."""
+    tips = data.get("tips")
+    if not isinstance(tips, list) or not tips:
+        err("content.json", "'tips' must be a non-empty array")
+        return
+    for i, tip in enumerate(tips):
+        check_i18n(tip, f"tips[{i}]")
 
 
 def check_sw_assets():

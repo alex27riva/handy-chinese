@@ -25,15 +25,18 @@ export function filterCards(query) {
   const panelsEl = document.getElementById('panels');
   const clearBtn = document.getElementById('searchClear');
   if (clearBtn) clearBtn.hidden = !q;
+  const emptyEl = document.getElementById('searchEmpty');
   const panels = document.querySelectorAll('.tab-panel');
 
   if (!q) {
     panelsEl.classList.remove('global-search');
     panels.forEach(resetSearch);
+    if (emptyEl) emptyEl.hidden = true;
     return;
   }
 
   panelsEl.classList.add('global-search');
+  let anyMatch = false;
   panels.forEach(panel => {
     panel.classList.add('search-active');
     let panelHasMatch = false;
@@ -48,6 +51,8 @@ export function filterCards(query) {
     panel.querySelectorAll('.subsection').forEach(sub => {
       sub.classList.toggle('search-hidden', !sub.querySelector('.section:not(.search-hidden)'));
     });
+    anyMatch = anyMatch || panelHasMatch;
     panel.classList.toggle('no-match', !panelHasMatch);
   });
+  if (emptyEl) emptyEl.hidden = anyMatch;
 }

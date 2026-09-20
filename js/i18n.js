@@ -75,6 +75,21 @@ export const CHROME = {
     it: 'Tocca la ☆ su una carta per salvarla qui.'
   },
   wordOfDay: { en: 'Word of the day', it: 'Parola del giorno' },
+  // ── 帮手's tips card (js/tips.js) ──
+  tipHeading: { en: '帮手\'s tip', it: '帮手 consiglia' },
+  tipMore: { en: 'Tap the mascot for another tip', it: 'Toccami per un altro consiglio' },
+  // Carousel chevron: names the slide it flips to, not the current one.
+  heroShowTip: { en: 'Show a tip from 帮手', it: 'Mostra un consiglio di 帮手' },
+  heroShowWord: { en: 'Show the word of the day', it: 'Mostra la parola del giorno' },
+  dismissLabel: { en: 'Dismiss', it: 'Chiudi' },
+  onboardingTips: {
+    en: '<strong>Tap</strong> a card to hear it, <strong>hold</strong> to show it fullscreen, <strong>swipe</strong> to change tab.',
+    it: '<strong>Tocca</strong> una carta per ascoltarla, <strong>tieni premuto</strong> per mostrarla a schermo intero, <strong>scorri</strong> per cambiare scheda.'
+  },
+  searchEmpty: {
+    en: 'No matches. Try a different word — or add it to your phrases.',
+    it: 'Nessun risultato. Prova un\'altra parola, oppure aggiungila alle tue frasi.'
+  },
   searchPlaceholder: {
     en: 'Search…',
     it: 'Cerca…'

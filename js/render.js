@@ -272,7 +272,14 @@ function renderFavoritesContent(container) {
   if (!total) {
     const empty = document.createElement('div');
     empty.className = 'favorites-empty';
-    empty.textContent = t(CHROME.favoritesEmpty);
+    const img = document.createElement('img');
+    img.className = 'empty-mascot';
+    img.src = './assets/mascot-love.svg';
+    img.alt = '';
+    empty.appendChild(img);
+    const span = document.createElement('span');
+    span.textContent = t(CHROME.favoritesEmpty);
+    empty.appendChild(span);
     container.appendChild(empty);
   }
 }

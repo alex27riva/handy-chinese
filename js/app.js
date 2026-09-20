@@ -9,7 +9,7 @@ import { filterCards } from './search.js';
 import { wireTabs, wireSwipe, resetTransient } from './tabs.js';
 import { wirePanelClicks, wireCardKeys, wireLongPress } from './cards.js';
 import { setContentData, rerenderContent, showFavorites, hideFavorites } from './render.js';
-import { renderWordOfDay } from './wod.js';
+import { renderHero } from './hero.js';
 import { wireCustom } from './custom.js';
 import { wireJumpBar } from './jump.js';
 import { wireShow } from './show.js';
@@ -51,6 +51,17 @@ import { wireShow } from './show.js';
   hint.hidden = false;
 })();
 
+// ── First-run onboarding (mascot + gesture tips), shown once ──
+(function () {
+  const banner = document.getElementById('onboarding');
+  if (!banner || store.get('onboardingShown') === '1') return;
+  document.getElementById('onboardingClose').addEventListener('click', () => {
+    banner.hidden = true;
+    store.set('onboardingShown', '1');
+  });
+  banner.hidden = false;
+})();
+
 // ── App version ────────────────────────────────────────────
 // Version lives in exactly one place: the CACHE constant in sw.js (the service
 // worker only reinstalls when its own bytes change, so the literal has to live
@@ -74,7 +85,7 @@ function setLang(lang) {
   resetTransient();
   applyChrome();
   rerenderContent();
-  renderWordOfDay();
+  renderHero();
   const si = document.getElementById('searchInput');
   if (si && si.value) filterCards(si.value);
 }
@@ -156,7 +167,7 @@ fetch('./content.json')
   .then(data => {
     setContentData(data);
     rerenderContent(); // content.json tabs + the 我的 tab
-    renderWordOfDay();
+    renderHero();
   })
   .catch(err => {
     const panels = document.getElementById('panels');

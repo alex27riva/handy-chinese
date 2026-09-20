@@ -22,8 +22,12 @@ Core files:
   - `jump.js` — sticky subsection jump bar (`renderJumpBar()`, `wireJumpBar()`), see Jump bar.
   - `show.js` — show mode (fullscreen hanzi opened by holding a card): `openShow()`, `closeShow()`, `wireShow()`.
   - `custom.js` — user's own phrases (我的 tab): `localStorage.customEntries` load/add/remove/export, the add-phrase form sheet, JSON import, the per-tab action bar, and `customTab()` (the synthetic tab `render.js` appends).
+  - `wod.js` — word / phrase of the day (`#wod` slide of the hero carousel), plus `dateKey()` shared with `tips.js`.
+  - `tips.js` — 帮手's rotating travel-tip card (`#tip` slide of the hero carousel), see Tips card.
+  - `hero.js` — the carousel that owns both slides: which ones exist, which one is in view, swipe + chevron, see Hero carousel.
+- `assets/` — `mascot-*.svg`: the 帮手 mascot in six animated poses (`idle`, `hi`, `help`, `think`, `love`, `celebrate`), all precached. They share one base geometry (sitting monkey, red 帮 collar tag); a pose file swaps the eyes / arms / props only, so a change to the body must be applied to all six.
 - `style.css` — all styles. CSS custom properties in `:root` drive theming.
-- `content.json` — all vocabulary and phrase data (tabs → sections → entries).
+- `content.json` — all vocabulary and phrase data (tabs → sections → entries) plus the top-level `tips` list.
 - `sw.js` — service worker providing cache-first offline support.
 - `manifest.json` — Web App Manifest for Android PWA install prompt.
 - `CNAME` — custom domain for GitHub Pages (`handyhanzi.app`). Repo root, one line, no scheme. Not a runtime asset: keep it out of `ASSETS` in `sw.js`.
@@ -41,7 +45,7 @@ python3 -m http.server
 
 Then browse to `http://localhost:8000/`.
 
-**Content check.** `python3 scripts/check-content.py` validates `content.json` (schema, `{en, it}` completeness, pinyin diacritics, duplicate hanzi per tab), that `sw.js` `ASSETS` lists every `js/*.js` file, and that every `CHROME` key has both languages. Run it after any content or module change; it is also wired as a pre-commit hook — enable once per clone with `git config core.hooksPath .githooks`. For the install-to-home-screen flow and native `zh-CN` TTS voices, test on real iOS Safari — desktop browsers have different voice availability.
+**Content check.** `python3 scripts/check-content.py` validates `content.json` (schema, `{en, it}` completeness, pinyin diacritics, duplicate hanzi per tab, the top-level `tips` list), that `sw.js` `ASSETS` lists every `js/*.js` file, and that every `CHROME` key has both languages. Run it after any content or module change; it is also wired as a pre-commit hook — enable once per clone with `git config core.hooksPath .githooks`. For the install-to-home-screen flow and native `zh-CN` TTS voices, test on real iOS Safari — desktop browsers have different voice availability.
 
 ## Architecture
 
@@ -61,6 +65,7 @@ A tab has **either** `sections` (flat: section → entries) **or** `subsections`
 - Tone marks in `pinyin` must be real diacritics (`nǐ hǎo`), not numbered (`ni3 hao3`).
 - `hanzi` and `pinyin` are language-neutral (plain strings). **Every other translatable field** — `tab.label`, `subsection.title`, `section.title`, `entry.meaning` — is a `{en, it}` object. The `t()` helper in `js/i18n.js` resolves the active language; plain strings are accepted as a legacy fallback.
 - To add a tab, subsection, section, or entry: edit `content.json` with both `en` and `it` translations, run `python3 scripts/check-content.py`, and bump `CACHE` in `sw.js` so installed users pick it up.
+- **Top-level `tips`** is the second content collection: `"tips": [{en, it}, …]`, the mascot's practical travel advice, rendered by `js/tips.js`. Same rule as every translatable field — both languages, non-empty; `check-content.py` validates it.
 
 ### Language switch
 EN / IT toggle, absolutely positioned at the top-right of `<header>` (scrolls away with it; not fixed). State is module-level (`currentLang` in `js/settings.js`, changed only via `setCurrentLang()`), persisted to `localStorage.lang`, and initialized from `navigator.language` on first visit (Italian browsers default to IT). Flipping the switch calls `rerenderContent()` (wipes and rebuilds tabs + panels using the new language) and `applyChrome()` (updates static UI strings via `data-i18n` / `data-i18n-html` attributes against the `CHROME` map in `js/i18n.js`). To add UI chrome text, add a key to `CHROME` and tag the element with `data-i18n="key"` (textContent) or `data-i18n-html="key"` (innerHTML — use for strings containing inline `<strong>` etc).
@@ -72,6 +77,22 @@ EN / IT toggle, absolutely positioned at the top-right of `<header>` (scrolls aw
 
 ### Header, sticky toolbar, about popover
 Header is deliberately minimal: red rule, `h1`, one subtitle. The `.toolbar` (search + ☆ 拼 ? i buttons) is `position: sticky; top: 0` with a solid `--paper` background and hairline bottom border, so it stays reachable while scrolling; under 900px it bleeds edge-to-edge via negative side margins. The search pill fills the remaining width. The **i** button (`#aboutBtn`) toggles `#aboutPanel`, an absolutely-positioned popover inside the toolbar holding the name explanation (`CHROME.aboutTagline`) and gesture tips (`CHROME.aboutTips`, HTML list via `data-i18n-html`). `setAbout(open)` manages `hidden`, `.active`, `aria-expanded`; outside click and Escape close it. z-order: jump bar 110 < toolbar 120 < bottom tab bar 150 < toast 200 < favorites overlay / add sheet 1000 < show mode 1100.
+
+### Hero carousel (word of the day, 帮手's tips)
+One shell sits **outside `#panels`**, directly under `</header>` in `index.html`: `<section id="hero">` holding a `.hero-track` with two `.hero-slide` divs — `#wod` and `#tip` — plus the `.hero-nav` chevron. It is hidden while global search is active (`body.search-on .hero`). The slides are not rebuilt by `rerenderContent()`, so `app.js` calls `renderHero()` on boot and on language switch only.
+
+The two used to be stacked blocks, which on a phone pushed every vocabulary card below the fold. They are now the two slides of one carousel — one card's worth of height — flipped by swiping sideways on the slot or tapping the chevron. The chevron sits in the right gutter both cards already keep clear for their own buttons (✕ at the top, star at the bottom); an indicator dot row would eat back the height the merge saves. `translateX(-100%)` on the track slides it, and `.hero` does the clipping — which is why it carries 4px of vertical padding, since overflow clips at the padding edge and the cards' shadows need that room. Slides stretch to the taller one so the height is stable across a flip.
+
+Both render functions **return whether their slide has content**, and take a `notify` callback: `js/hero.js` hides the empty slide, and when only one is left the chevron disappears and swiping does nothing. `notify` is `renderHero` itself, passed down at render time, so a ✕ that dismisses today's card makes the carousel fall back to the slide that is still there — no import back from the slides into `hero.js`. The off-screen slide is `inert` + `aria-hidden`, keeping it out of the tab order and the accessibility tree.
+
+In a real browser a swipe ends with a click on the card underneath — which would speak the word or advance the tip on every swipe. The carousel swallows that click in the capture phase, inside a 400ms window that any new gesture clears, so a quick tap right after a swipe is never eaten. Nothing about the carousel is persisted: reopening the app lands on the word of the day, the daily anchor.
+- **Word of the day** (`js/wod.js`, `renderWordOfDay()`): one `vocab` / `phrase` entry picked deterministically from the date (hash of local `YYYY-MM-DD`), so every device shows the same word and it changes at midnight. The pool is `contentData.tabs` only, so 我的 entries never appear. The card reuses the standard `.hanzi` / `.pinyin` / `.meaning` classes, which is what makes `show.js` (hold → show mode), the 拼 toggle and TTS work on it for free; hold and star are wired locally in `wire()` because the card lives outside the delegated `#panels` listeners. `dateKey()` is exported for `tips.js`.
+- **Tips card** (`js/tips.js`, `renderTip()`): 帮手 in a speech bubble (`.tip-bubble`, tail drawn with two CSS triangles) showing one tip from `content.json` → `tips`. Tapping the mascot or the bubble advances (`(i + 1) % tips.length`, persisted as `tipIndex`, so a reload resumes rather than restarts); on a fresh install the first tip is the date hash. The mascot pose rotates with the tip (`POSES`), and `.tip-swap` re-triggers a short fade so a tap is visibly acknowledged. The bubble is the `role="button"` element (the ✕ is a real `<button>` beside it — never nest them), the tip text is `aria-live="polite"` so screen readers announce the new tip, and the ✕ stores today's date in `tipDismissed`, hiding the card for the rest of the day like the word of the day. The card is built once and only repainted afterwards, so the language switch keeps its listeners single-wired. There is **no frame around the mascot** — the bubble is the only surface (`.tip-card` is a bare flex row, the ✕ sits on the bubble's top-right corner). Nesting a card inside a card cost a padding ring on all four sides and squeezed the text column to 60% of the width, wrapping a two-line tip to five.
+
+**Phone budget.** The header and hero used to fill a whole phone viewport, so no vocabulary was visible on load. The `@media (max-width: 699px)` block therefore compacts them: the `.subtitle` is desktop-only, `h1` and `.wod-hanzi` step down a size, and the bottom margins shrink. Measured at 390×844 the stack went from 448px (header + two stacked cards) to 135px (header + one carousel). Keep new hero content inside that budget — anything added there pushes the first card below the fold again.
+
+### Mascot (帮手)
+`assets/mascot-*.svg` — one flat-vector sitting monkey in six poses, chosen by context: `idle` (word-of-the-day card, default tip pose), `hi` (first-run onboarding banner), `help` (install hint, 我的 empty state), `think` (search empty state, tip pose), `love` (favorites empty state), `celebrate` (tip pose). Inline SMIL animations only (bob / blink / wave / float), no JS and no external assets, so the files stay self-contained `<img>` sources. All six share the same base geometry — body, belly, ears, head, face mask, eyes, nose, mouth, `帮` collar tag, tail — and differ only in eyes, arms and props: **edit the base in every file**, since there is no shared include. Colours are the raw palette (`#E0AE73` fur, `#FBF3E2` cream, `#17150F` ink, `#C8402A` red, `#E8A93A` eyes) written literally, since an SVG loaded through `<img>` cannot read CSS custom properties. Adding a pose means adding the file to `ASSETS` in `sw.js`.
 
 ### Collapsible sections
 Vocab subsections (Food / Signs / Numbers / Countries / App UI) and phrase sections collapse on tap. State lives in `localStorage.collapsedGroups` as a JSON array of `"{tabId}:{titleInEnglish}"` keys — English title used as stable ID so state survives language switch. `collapseKey(tabId, titleObj)`, `isCollapsed(tabId, titleObj)` and `toggleCollapse(key)` manage state. The renderer stamps `data-collapse-key` on collapsible titles; the delegated click handler in `cards.js` reads it, toggles the key and flips `.is-collapsed` on the title's parent. The `.is-collapsed` class drives hide/show via CSS (`subsection.is-collapsed > .section { display:none }` and `section.is-collapsed > .grid { display:none }`). Chevron SVG rotates 90° when collapsed. During search, the `.search-active` class is applied to panels (all panels in global search mode, active panel only otherwise), overriding collapse CSS so matches are always visible.
@@ -153,6 +174,10 @@ Cards rendered by `renderCard` are `div`s with `role="button"` and `tabIndex = 0
 | `pinyinHidden` | `'1'` \| `'0'` | Hide pinyin romanization |
 | `voiceHintShown` | `'1'` | Missing-Chinese-voice toast already shown |
 | `silentHintShown` | `'1'` | iOS silent-switch toast already shown |
+| `onboardingShown` | `'1'` | First-run onboarding banner dismissed |
+| `wodDismissed` | `YYYY-MM-DD` | Word-of-the-day card hidden for that day |
+| `tipIndex` | integer as string | Tip currently shown in the tips card |
+| `tipDismissed` | `YYYY-MM-DD` | Tips card hidden for that day |
 | `customEntries` | JSON array of `{hanzi, pinyin, meaning, note}` | User's own phrases (我的 tab) |
 
 ## Editing conventions

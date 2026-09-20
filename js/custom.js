@@ -233,6 +233,13 @@ export function renderCustomBar(hasEntries) {
 export function renderCustomEmpty() {
   const empty = document.createElement('div');
   empty.className = 'custom-empty';
-  empty.innerHTML = t(CHROME.customEmpty);
+  const img = document.createElement('img');
+  img.className = 'empty-mascot';
+  img.src = './assets/mascot-help.svg';
+  img.alt = '';
+  empty.appendChild(img);
+  const p = document.createElement('p');
+  p.innerHTML = t(CHROME.customEmpty);
+  empty.appendChild(p);
   return empty;
 }

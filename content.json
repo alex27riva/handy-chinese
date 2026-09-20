@@ -1,4 +1,22 @@
 {
+  "tips": [
+    {"en": "Before you fly: install WeChat and Alipay and add your card. Alipay takes foreign cards, but only after you verify your passport in the app.", "it": "Prima di partire: installa WeChat e Alipay e aggiungi la carta. Alipay accetta carte straniere, ma solo dopo la verifica del passaporto nell'app."},
+    {"en": "Install a VPN before you land. Google, Instagram and WhatsApp are blocked, and VPN apps disappear from Chinese app stores once you are there.", "it": "Installa una VPN prima di atterrare. Google, Instagram e WhatsApp sono bloccati, e una volta là le app VPN spariscono dagli store cinesi."},
+    {"en": "Everyone pays by QR code. Cash is still legal tender, but small shops may refuse it — keep a few ¥100 notes just in case.", "it": "Tutti pagano con il QR code. I contanti sono ancora legali, ma i negozi piccoli possono rifiutarli: tieni qualche banconota da ¥100 per sicurezza."},
+    {"en": "Save your hotel's address in Chinese in the 我的 tab, then hold the card to show it fullscreen to a taxi driver.", "it": "Salva l'indirizzo dell'hotel in cinese nella scheda 我的, poi tieni premuta la carta per mostrarla a schermo intero al tassista."},
+    {"en": "DiDi, inside the Alipay or WeChat mini-programs, has an English interface and a fixed price. Never take the drivers who approach you at stations.", "it": "DiDi, nei mini-program di Alipay o WeChat, ha l'interfaccia in inglese e prezzo fisso. Non prendere mai i tassisti che ti avvicinano in stazione."},
+    {"en": "On the metro, scan the QR code in Alipay or WeChat — no ticket needed. Bags go through a scanner, so leave a little extra time.", "it": "In metropolitana scansiona il QR code di Alipay o WeChat: nessun biglietto. I bagagli passano ai raggi X, quindi metti in conto qualche minuto in più."},
+    {"en": "On the train your passport is the ticket. Gates open about 15 minutes before departure and close 5 minutes before, and the stations are enormous.", "it": "In treno il passaporto è il biglietto. I cancelli aprono circa 15 minuti prima della partenza e chiudono 5 minuti prima, e le stazioni sono enormi."},
+    {"en": "Carry tissues. Public toilets rarely have paper, and squat toilets are the norm — a western one is usually at the end of the row.", "it": "Porta con te dei fazzoletti. I bagni pubblici raramente hanno carta, e le turche sono la norma: quella occidentale di solito è in fondo."},
+    {"en": "Do not drink the tap water. Every hotel room has a kettle, and bottled water costs almost nothing.", "it": "Non bere l'acqua del rubinetto. Ogni camera d'hotel ha il bollitore, e l'acqua in bottiglia costa pochissimo."},
+    {"en": "Many restaurants order by QR code (扫码点餐). If you cannot take the heat, say bú yào là — and 素 (sù) means vegetarian.", "it": "Molti ristoranti ordinano con il QR code (扫码点餐). Se non reggi il piccante, dì bú yào là: 素 (sù) significa vegetariano."},
+    {"en": "Tipping is not expected anywhere — restaurants, taxis, hotels. It is not rude to leave nothing.", "it": "Le mance non sono previste da nessuna parte: ristoranti, taxi, hotel. Non lasciare niente non è scortese."},
+    {"en": "Keep your passport with you at all times: hotels, train stations and many museums ask for it.", "it": "Tieni sempre il passaporto con te: hotel, stazioni e molti musei lo chiedono."},
+    {"en": "Emergencies: 110 police, 120 ambulance, 119 fire. They rarely speak English — your saved phrase cards do the talking.", "it": "Emergenze: 110 polizia, 120 ambulanza, 119 vigili del fuoco. Raramente parlano inglese: parlano le tue carte salvate."},
+    {"en": "A photo of a menu translates fine in Alipay or Baidu Translate. Offline, your saved phrases are the fallback.", "it": "La foto di un menù si traduce bene con Alipay o Baidu Translate. Offline, le frasi salvate sono il piano B."},
+    {"en": "Bargaining belongs in markets, not malls. A smile and 太贵了 (tài guì le — too expensive) gets you a long way.", "it": "Si contratta nei mercati, non nei centri commerciali. Un sorriso e 太贵了 (tài guì le — troppo caro) fanno miracoli."},
+    {"en": "You need a passport to buy a Chinese SIM card — grab one at the airport, or set up an eSIM before you leave home.", "it": "Serve il passaporto per comprare una SIM cinese: prendila in aeroporto, oppure attiva una eSIM prima di partire."}
+  ],
   "tabs": [
     {
       "id": "vocab",
