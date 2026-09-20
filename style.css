@@ -595,12 +595,17 @@ h1 {
   -webkit-user-select: none;
 }
 
+/* One flex item inside .toolbar, filling whatever the buttons leave.
+   NO vertical margin: the toolbar centres its items on the MARGIN box, so a
+   bottom margin here lifts the pill off the buttons' centre line by half of
+   it (a 1.2rem leftover from when search was its own block above the toolbar
+   did exactly that, by 9.6px). `position: relative` is the containing block
+   for the ✕ (.search-clear). */
 .search-wrap {
   position: relative;
-  max-width: 860px;
-  margin: 0 auto 1.2rem;
+  flex: 1;
+  min-width: 0;
   display: flex;
-  justify-content: center;
 }
 
 .toolbar {
@@ -632,7 +637,6 @@ h1 {
   }
 }
 
-.search-wrap { flex: 1; min-width: 0; }
 .search-field { width: 100%; }
 
 .search-input {
