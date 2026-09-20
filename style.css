@@ -30,7 +30,14 @@
   --lang-shadow: rgba(23,21,15,0.10);
 
   /* System font stacks - no external fonts needed */
-  --font-hanzi: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Heiti SC", system-ui, sans-serif;
+  /* Latin faces FIRST, then the CJK ones. Fallback is per glyph, so hanzi still
+     come from PingFang SC / Hiragino / YaHei while Latin letters come from the
+     UI font. Without this, "Hàndy" was set entirely in PingFang SC on iOS and
+     the à — which PingFang's narrow Latin does not cover — was served by a
+     different font, so that one letter looked bolder than its neighbours. */
+  --font-hanzi: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui,
+                "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Heiti SC",
+                "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
   --font-mono: ui-monospace, "SF Mono", "Menlo", "Monaco", monospace;
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
 }
