@@ -1055,7 +1055,6 @@ body.search-on .hero { display: none; } /* no hero over search results */
 .tip-bubble:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 .tip-heading {
-  font-family: var(--font-serif);
   font-style: italic;
   font-weight: 600;
   font-size: 0.8rem;
