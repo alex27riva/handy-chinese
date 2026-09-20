@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- user-scalable=no is ignored by Safari when browsing (Apple forces zoom there),
+     but honoured in an installed PWA — which is the only place it applies. Show
+     mode (hold a card) is the deliberate way to enlarge a phrase. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Hàndy</title>
 
 <!-- PWA meta tags -->

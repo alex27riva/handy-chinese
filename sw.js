@@ -1,6 +1,6 @@
 // Single source of truth for the app version: index.html reads this name back out
 // of Cache Storage to render .app-version. Bump it on every user-visible change.
-const CACHE = 'handy-v0.30.3';
+const CACHE = 'handy-v0.30.4';
 const ASSETS = ['./', './index.html', './content.json', './style.css', './manifest.json', './icon.svg', './icon-maskable.svg', './apple-touch-icon.png',
   './assets/mascot-idle.svg', './assets/mascot-hi.svg', './assets/mascot-help.svg', './assets/mascot-think.svg', './assets/mascot-love.svg', './assets/mascot-celebrate.svg',
   './js/app.js', './js/settings.js', './js/i18n.js', './js/toast.js', './js/tts.js',
